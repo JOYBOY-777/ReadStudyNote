@@ -93,7 +93,7 @@ PriorityQueue:https://www.processon.com/view/link/61dd6cd1e401fd06a8c52580
 
 1. 整数类型：整数类型有byte、 short、int和long,分别占1、 2、4、 8个字节，他们的取值范围如下
 
- ![a](\ReadStudyNote\javaimg\数据类型.png)
+![](https://raw.githubusercontent.com/JOYBOY-777/ReadStudyNote/main/javaimg/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png)
 
 
 
