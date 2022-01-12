@@ -737,13 +737,9 @@ public static long factorial(int n){
 
 当程序在**main**函数调用Sum.sum之前,栈的情况
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/sum%E4%B9%8B%E5%89%8D.png?raw=true)
 
-
-
-
-
-
-
+栈中主要存放了两个变量args和d
 
 
 
