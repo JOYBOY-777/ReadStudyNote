@@ -95,6 +95,16 @@ PriorityQueue:https://www.processon.com/view/link/61dd6cd1e401fd06a8c52580
 
 ![](https://raw.githubusercontent.com/JOYBOY-777/ReadStudyNote/main/javaimg/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png)
 
+不过要注意的是在给long类型赋值的时候,**如果常量超过了int的表示范围**,要在后面加上L
+
+比如：
+
+``` java
+long a = 3232343433L;
+```
+
+
+
 
 
 
