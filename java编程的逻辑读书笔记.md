@@ -735,11 +735,50 @@ public static long factorial(int n){
 12 }
 ```
 
-当程序在**main**函数调用Sum.sum之前,栈的情况
+当程序在**main**函数调用Sum.sum之前,栈的情况,栈中主要存放了两个变量args和d
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/sum%E4%B9%8B%E5%89%8D.png?raw=true)
 
-栈中主要存放了两个变量args和d
+在程序执行到Sum.sum的函数内部,准备返回之前,即第5行,栈的情况:
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8.png?raw=true)
+
+以上的过程可以简单的描述为
+
+1. main函数调用Sum.sum之前，将main方法的参数arg和d入栈
+2. 在main函数调用Sum.sum时，首先将参数1和2入栈
+3. 将**调用函数结束后**要执行的**指令地址**，简单来说就是调用函数结束后，要跳转到哪个地址上去
+4. 接着跳转到sum函数，为局部变量c分配一个空间
+5. 在返回之前,返回值保存到了专门的返回值存储器中
+6. 在调用return后,程序会跳转到栈中保存的返回地址（主程序具体的哪一行上）
+7. sum函数相关的 数据会出栈
+
+函数中的参数和函数内定义的变量,都分配在栈中,这些变量  只有在**函数被调用的时候才分配**,而且**在调用结束后就被释放了**。但这个说法主要针对**基本数据类型**
+
+
+
+### 1.7.3  数组和对象的内存分配
+
+数组和对象类型，它们都有两块内存,一块存放实际的内容,一块存放实际内容的地址，实际的内容（对象，或者数组的真实值等）空间一般不是分配在栈上的,而是分配在**堆中**，但存放地址的空间（对象引用，数组引用）是分配在**栈上**的
+
+```java
+public class ArrayMax {
+    public static int max(int min, int[] arr) {
+       int max = min;
+       for(int a : arr){
+          if(a>max){
+            max = a;
+      }
+}
+      return max;
+}
+public static void main(String[] args) {
+    int[] arr = new int[]{2,3,4};
+     int ret = max(0, arr);
+     System.out.println(ret);
+}
+
+```
 
 
 
