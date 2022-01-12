@@ -780,9 +780,29 @@ public static void main(String[] args) {
 
 ```
 
+程序执行到max函数的return语句之前的时候,内存中**栈和堆**的情况
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/%E6%95%B0%E7%BB%84%E6%A0%88%E5%92%8C%E5%A0%86.png?raw=true)
+
+对于数组arr ,在栈中存放的是实际内容的地址0x1000,存放地址的栈空间会随着入栈分配出栈释,但存放实际内容的堆空间不受影响
 
 
 
+### 1.7.4 递归调用的原理
+
+```java
+public static int factorial(int n){
+       if(n==0){
+          return 1;
+       }else{
+          return n*factorial(n-1);
+       }
+}
+public static void main(String[] args) {
+      int ret = factorial(4);
+      System.out.println(ret);
+}
+```
 
 
 
