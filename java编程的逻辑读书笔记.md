@@ -91,7 +91,7 @@ PriorityQueue:https://www.processon.com/view/link/61dd6cd1e401fd06a8c52580
 
 **基本类型**：
 
-1. 整数类型：整数类型有byte、 short、int和long,分别占1、 2、4、 8个字节，他们的取值范围如下
+1.整数类型：整数类型有byte、 short、int和long,分别占1、 2、4、 8个字节，他们的取值范围如下
 
 ![](https://raw.githubusercontent.com/JOYBOY-777/ReadStudyNote/main/javaimg/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.png)
 
@@ -102,6 +102,82 @@ PriorityQueue:https://www.processon.com/view/link/61dd6cd1e401fd06a8c52580
 ``` java
 long a = 3232343433L;
 ```
+
+
+
+2.小数类型：小数类型有ﬂoat和double,占用的内存空间分别是4和8字节,有不同的取值范围和精度, double表示的范围更大,精度更高。他们的取值范围如下：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/double.png?raw=true)
+
+在给double赋值的时候就直接赋值就行
+
+```java
+double d = 333.33;
+```
+
+但是由于小数类型的话默认为double类型那么在赋值float的时候就需要在后面写上f
+
+```java
+float f = 333.33f;
+```
+
+也可以把小数直接赋值给float,double
+
+```java
+float f = 33;
+double d = 3333333333333L;
+```
+
+
+
+3.真假类型：直接赋值就行了
+
+```java
+boolean b = true;
+b = false;
+```
+
+
+
+4.字符类型：字符类型用于表示一个字符，可以是**中文字符**，也可以是**英文字符**，char占用两个字节，赋值的时候用''括起来
+
+```java
+char c = 'A';
+char z = '马 ';
+```
+
+
+
+### 1.2.2 数组类型
+
+在java中给数据赋值的形式有三种：
+
+```java
+1. int[] arr = {1,2,3};
+2. int[] arr = new int[]{1,2,3};
+3. int[] arr = new int[3];      arr[0]=1; arr[1]=2; arr[2]=3;
+```
+
+第三种赋值方式，如果没有给数组赋值那么也会有**默认值**。这个默认值跟数组的类型有关
+
+注意：不能在给定初始值的同时给定长度,这样是不被允许的
+
+```java
+int[] arr = new int[3]{1,2,3}
+```
+
+
+
+数组类型和基本类型是有明显不同的：
+
+1. 一个基本类型变量,内存中只会有一块对应的内存空间
+2. 数组有两块内存空间：一块用于存储**数组内容本身**，另一块存储内容的位置
+
+
+
+
+
+
 
 
 
