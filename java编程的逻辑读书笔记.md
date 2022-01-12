@@ -804,7 +804,9 @@ public static void main(String[] args) {
 }
 ```
 
+在factorial第一次被调用的时候, n是4,在执行到n*factorial (n-1),即4*factorial  (3)之前的时候, 栈的情况
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/%E6%A0%881.4.png?raw=true)
 
 
 
