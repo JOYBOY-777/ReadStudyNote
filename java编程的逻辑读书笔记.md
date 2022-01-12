@@ -804,7 +804,7 @@ public static void main(String[] args) {
 }
 ```
 
-在factorial第一次被调用的时候, n是4,在执行到n*factorial (n-1),即4*factorial  (3)之前的时候, 栈的情况
+在factorial第一次被调用的时候, n是4,在执行到n*factorial (n-1),即4*factorial  (3)之前的时候, 栈的情况，这时只有基本的几个变量入栈
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/%E6%A0%881.4.png?raw=true)
 
@@ -812,11 +812,27 @@ public static void main(String[] args) {
 
 
 
+这时的返回值存储器是没有值的,在调用factorial (3)后,栈的情况，
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/%E6%A0%881.5.png?raw=true)
+
+栈的深度增加了,返回值存储器依然为空,就这样,每递归调用一次,栈的深度就增加一层,每次  调用都会分配对应的参数和局部变量,也都会保存调用的返回地址，这里的**factorial(4)的下一条指令地址记录的是n*f(3)执行完要跳转到f(4)的什么位置的地址** 
 
 
 
 
 
+在调用到n等于0的时候,栈的情况：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/1.6%E6%A0%88.png?raw=true)
+
+这个时候,终于有返回值了,我们将factorial简写为f。f (0)的返回值为1 ; f (0)返回到f (1), f (1)执行1乘f (0),结果也是1;然后返回到f (2), f (2)执行2乘f (1),结果是2;接着返回到  f (3), f (3)执行3乘f (2),结果是6;然后返回到f (4)，执行4乘f (3),然后跳转到main函数相应的代码位置，在进行后续的出栈操作
+
+**之前的情况是先执行函数，在记录要跳转的地方，后来出栈，就变成了先跳转在执行**，以上就是递归函数的执行过程,函数代码虽然只有一份,但在执行的过程中,每调用一次,就会有 一次入栈,生成一份不同的参数、局部变量和返回地址
+
+
+
+函数调用主要是通过栈来存储相关的数据,系统就函数调用者和 函数如何使用栈做了约定,返回值可以简单认为是通过一个专门的返回值存储器存储的，另 外,栈的空间不是无限的,一般正常调用都是没有问题的,但如果栈空间过深,系统就会抛出错误   java.lang.StackOverﬂowError ,即栈溢出。
 
 
 
