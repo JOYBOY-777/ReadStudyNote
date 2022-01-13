@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/javaimg/二进制.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/java编程的逻辑读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/java编程的逻辑读书笔记.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,7 +57,7 @@
       <option name="presentableId" value="Default" />
       <updated>1641972984771</updated>
       <workItem from="1641972987850" duration="8498000" />
-      <workItem from="1642056941462" duration="1221000" />
+      <workItem from="1642056941462" duration="1859000" />
     </task>
     <servers />
   </component>
