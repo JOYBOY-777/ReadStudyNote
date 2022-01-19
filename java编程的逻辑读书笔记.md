@@ -1379,9 +1379,112 @@ public class Person {
 }
 ```
 
+使用：
+
+```java
+public static void main(String[] args){
+   Person laoma = new Person("老马");
+   Person xiaoma = new Person("小马");
+   xiaoma.setFather(laoma);
+   laoma.setChildren(new Person[]{xiaoma});
+   System.out.println(xiaoma.getFather().getName());
+}
+```
+
+Person类对象的内存布局：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/fa.png?raw=true)
+
+只要类里面有引用的话，那么在堆上其实存放的还是地址
 
 
 
+### 3.3 代码的组织
+
+包、 jar包、程序的编译与链接到底有什么关系
+
+
+
+### 3.3.1 包的概念
+
+带完整包名的类名称为其完全限定名:String类 的完全限定名为java.lang.String
+
+**通过包使用类**
+
+同一个包下的类之间互相引用是不需要包名的,可以直接使用,但如果类不在同一个包内,则必须要知道其所在的包,那么有两种方式：
+
+1. 通过类的完全限定名
+2. 将用到的类引入当前类
+3. java.lang包下的类可以直接使用,不需要引入,也不需要使用完全限定名,比如String    类、  System类,其他包内的类则不行
+
+使用Arrays类中的sort方法,通过**完全限定名**：
+
+```java
+int[] arr = new int[]{1,4,2,3};
+java.util.Arrays.sort(arr);
+System.out.println(java.util.Arrays.toString(arr));
+```
+
+使用import:
+
+```java
+package shuo.laoma;
+import java.util.Arrays;
+
+public class Hello {
+public static void main(String[] args) {
+   int[] arr = new int[]{1,4,2,3};
+   Arrays.sort(arr);
+   System.out.println(Arrays.toString(arr));
+  }
+}
+```
+
+
+
+有一种特殊类型的导入,称为静态导入,它有一个static关键字,可以直接导入类的公开静态方法和成员:
+
+```java
+import static java.lang.System.out; //导入静态变量out
+```
+
+
+
+**包范围可见性**: private<默认(包) <protected<public
+
+
+
+### 3.3.2 jar 包
+
+为方便使用第三方代码,也为了方便我们写的代码给其他人使用,各种程序语言大多有打包的概念，但是打包的一般不是源代码,而是**编译后**的代码，打包将多个编译后的文件**打包为一个文件**,方便其他程 序调用
+
+在Java中,编译后的一个或多个包的Java class文件可以打包为一个文件, Java中打包命令为jar,打包 后的文件扩展名为.jar,一般称之为jar包
+
+可以使用如下方式打包：
+
+```java
+jar -cvf <包名>.jar <最上层包名>
+```
+
+如果Hello.class位于E: \bin\shuo\laoma\Hello.class,则可以到目录E: \bin下,然后运行:
+
+```java
+jar -cvf hello.jar shuo
+```
+
+
+
+### 3.3.3 程序的编译与链接
+
+从Java源代码到运行的程序,有编译和链接两个步骤:
+
+1. 编译是将源代码文件变成扩展名是.class的一种 字节码,这个工作一般是由javac命令完成的
+2.  .class文件不能直接运行,运 行的是Java虚拟机,它执行的就是Java命令,这个命令解析.class文件,转换为机器能识别的二进制代码,然后运行
+3. 链接是在运行时动态执行的，是根据引用到的类加载相应的字节码并执行
+
+
+
+## 第四章 类的继承
 
 
 
