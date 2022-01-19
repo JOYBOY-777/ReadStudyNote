@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="" />
+    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/java编程的逻辑读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/java编程的逻辑读书笔记.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -56,7 +58,7 @@
       <updated>1641972984771</updated>
       <workItem from="1641972987850" duration="8498000" />
       <workItem from="1642056941462" duration="3679000" />
-      <workItem from="1642585851776" duration="133000" />
+      <workItem from="1642585851776" duration="617000" />
     </task>
     <servers />
   </component>
