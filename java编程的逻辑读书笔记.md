@@ -1353,11 +1353,31 @@ public static void main(String[] args) {
 }
 ```
 
+内存布局：line的两个实例成员都是引用类型,引用实际的point
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/%E5%9B%BE%E5%BD%A2%E7%B1%BB%E5%86%85%E5%AD%98.png?raw=true)
+
+start、end、line三个引用型变量分配在栈中,保存的是实际内容的地址,实际内容保存在堆中, line的两个实例变量**line.start和line.end还是引用**,同样保存的是**实际内容的地址**。
 
 
 
+person类：
 
-
+```java
+public class Person {
+    //姓名
+    private String name;
+    //父亲
+    private Person father;
+    //母亲
+    private Person mother;
+    //孩子数组
+    private Person[] children;
+    public Person(String name) {
+    this.name = name;
+  }
+}
+```
 
 
 
