@@ -1497,7 +1497,153 @@ jar -cvf hello.jar shuo
 
 
 
+### 4.1 基本概念
 
+在Java中,所有类都有一个父类**Object**
+
+
+
+### 4.1.1 根父类Object
+
+Object中的方法：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/object.png?raw=true)
+
+
+
+### 4.1.2 方法重写
+
+我们可以重写Object类中的toString()方法来进行自定义的输出：
+
+```java
+@Override
+public String toString() {
+  return "("+x+","+y+")";
+}
+```
+
+这样的话在调用toString()的时候就变成了自定义的输出
+
+
+
+###  4.1.3 图形类继承体系
+
+此书中运用了四个类来表示图形的继承关系：
+
+1. 父类Shape,表示图形
+2. 类Circle,表示圆
+3. 类Line,表示直线
+4. 类ArrowLine,表示带箭头的直线
+
+并通过**extends**关键字来表示他们之间的父子关系
+
+说明：
+
+1. Java使用extends关键字表示继承关系,一个类最多只能有**一个**父类
+2. 子类不能直接访问父类的私有属性和方法
+3. 除了私有的外,子类继承了父类的其他属性和方法
+4. 在new的过程中,父类的**构造方法**也会执行,且会优先于**子类**执行，就是父类比子类先初始化
+5. super用于指代父类,可用于调用**父类构造方法**,访问父类**方法和变量**，注意在子类构造器中调用父类构造器时super要显示的放在**第一行**
+
+
+
+一个继承的妙用体现：
+
+```java
+public static void main(String[] args) {
+    ShapeManager manager = new ShapeManager();
+    manager.addShape(new Circle(new Point(4,4),3));
+    manager.addShape(new Line(new Point(2,3), new Point(3,4),"green"));
+    manager.addShape(new ArrowLine(new Point(1,2),
+    new Point(5,5),"black",false,true));
+    manager.draw();
+}
+```
+
+因为在父类中shape是总的父类，其他的图形是他的实现类，函数的形参声明的是Shape shape，但是由于**向上转型**的原因，我们就可以给他赋值成他的子类，即**父类的引用可以有多种子类的表现形态**，这实际上就是**多态**：一种类型的变量,可引用**多种实际类型对象**
+
+
+
+这里面又引出了两个很重要的概念：
+
+1. 静态类型：Shape就是引用shape的静态类型
+2. 动态类型：后面的多种表现形式比如new Circle，new Line等就是引用的动态类型
+3. 在调用方法的时候shapes[i].draw () 就是**动态绑定**的，实际执行的是不同的动态类型中的draw方法
+4. 为什么需要多态和动态绑定呢？ 实际上就是我们操作对象的代码往往知道对象是**某种父类型**就行了，做到统一的，清晰的管理
+
+
+
+继承和多态的基本概念：
+
+1. 每个类有且只有一个父类,没有声明父类的,其父类为Object,子类继承了父类非private的属性和 方法,可以增加自己的属性和方法,以及重写父类的方法实现
+2. new过程中,父类先进行初始化,可通过super调用父类相应的构造方法,没有使用super的情况 下,调用父类的默认构造方法
+3. 子类变量和方法与父类重名的情况下,可通过super强制访问父类的变量和方法
+4. 子类对象可以赋值给父类引用变量,这叫多态;实际执行调用的是子类实现,这叫动态绑定
+
+
+
+### 4.2 继承的细节
+
+对继承中类的其他成员进行说明
+
+
+
+### 4.2.1 构造方法
+
+1. 在子类中通过super调用父类的构造方法，如果子类没有通过super调用的话，就会**自动调用**父类的默认构造方法
+2. 在父类没有默认的构造方法之后，子类必须在它的构造器中用super显示调用父类的有参构造：
+
+```java
+public class Child extends Base {
+   public Child(String member) {
+   super(member);
+  }
+}
+```
+
+注意：在父类构造方法中调用了可被重写的方法,则可能会出现意想不到的结果
+
+```java
+public class Base {
+   public Base(){
+    test();
+}
+    public void test(){
+  }
+}
+
+
+public class Child extends Base {
+     private int a = 123;
+     public Child(){
+  }
+     public void test(){
+      System.out.println(a);
+   }
+}
+```
+
+那么在输出的时候a先是0，因为先初始化父类的构造方法，但是test被子类重写了，但是这时候子类的a 还没有被赋值所以是0
+
+
+
+### 4.2.2 重名与静态绑定
+
+重名的private变量和方法：在子类中访问:是子类:;在父类中访问:是父类，因为是私有的
+
+重名的public变量和方法：变量的访问看静态类型（引用左边的），方法的访问看动态类型（引用的右边）
+
+重要结论：**实例变量、静态变量、静态方法、 private方法,都是静态绑定的**，实例方法是动态绑定的
+
+
+
+### 4.2.3  重载和重写
+
+重载就是只有方法名字一样，其他的都可以不一样
+
+重写是只有具体的实现不一样
+
+注意：当有**多个重名函数**的时候在决定要调用哪个函数的过程中首先是按照**参数类型**进行匹配的，比如long与int如果匹配的话就是重载方法形参有int类型的占优势
 
 
 
