@@ -1849,9 +1849,15 @@ new Child ()就是创建Child对象过程：
 
 
 
+如：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/%E8%99%9A%E6%96%B9%E6%B3%95%E8%A1%A8.png?raw=true)
+
+变量的访问过程就是动态绑定的
 
 
 
+### 4.4  为什么说继承是把双刃剑
 
 
 
