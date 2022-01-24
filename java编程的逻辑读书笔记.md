@@ -1669,6 +1669,143 @@ public class Child extends Base {
 
 
 
+### 4.3 继承实现的基本原理
+
+### 4.3.1 示例
+
+书中列举了一个很好的例子来说明了类加载的顺序，以及静态绑定，子类重写的综合例子：
+
+Base类:
+
+```java
+public class Base {
+    public static int s;
+    private int a;
+    static {
+        System.out.println("基类静态代码块 , s: "+s);
+        s = 1;
+    }
+    {
+        System.out.println("基类实例代码块 , a: "+a);
+        a = 1;
+    }
+    public Base(){
+        System.out.println("基类构造方法 , a: "+a);
+        a = 2;
+    }
+    protected void step(){
+        System.out.println("base s: " + s +", a: "+a);
+    }
+    public void action(){
+       System.out.println("start");
+       step();
+       System.out.println("end");
+    }
+}
+```
+
+Child类：
+
+```java
+public class Child extends Base {
+    public static int s;
+    private int a;
+    static {
+       System.out.println("子类静态代码块 , s: "+s);
+       s = 10;
+    }
+    {
+       System.out.println("子类实例代码块 , a: "+a);
+       a = 10;
+    }
+     public Child(){
+       System.out.println("子类构造方法 , a: "+a);
+       a = 20;
+    }
+    protected void step(){
+       System.out.println("child s: " + s +", a: "+a);
+    }
+}
+```
+
+测试：
+
+```java
+public static void main(String[] args) {
+    System.out.println("---- new Child()");
+    Child c = new Child();
+    System.out.println("\n---- c.action()");
+    c.action();
+    Base b = c;
+    System.out.println("\n---- b.action()");
+    b.action();
+    System.out.println("\n---- b.s: " + b.s);
+    System.out.println("\n---- c.s: " + c.s);
+}
+```
+
+**输出结果**：
+
+```java
+---- new Child()
+基类静态代码块 , s: 0
+子类静态代码块 , s: 0
+基类实例代码块 , a: 0
+基类构造方法 , a: 1
+子类实例代码块 , a: 0
+子类构造方法 , a: 10
+    
+---- c.action()
+start
+child s: 10, a: 20
+end
+    
+---- b.action()
+start
+child s: 10, a: 20
+end
+    
+---- b.s: 1
+---- c.s: 10
+```
+
+
+
+### 4.3.2  类加载过程
+
+在Java中,类是动态加载的,当第一次使 用这个类的时候才会加载,加载一个类时,会查看其**父类**是否已加载,如果没有,则会**加载其父类**
+
+
+
+类的信息包含：
+
+1. 类变量(静态变量)
+2. 类初始化代码
+3. 类方法(静态方法)
+4. 实例变量
+5. 实例初始化代码
+6. 实例方法
+7. 父类信息引用
+
+
+
+类加载过程包括：
+
+1. 分配内存保存类的信息
+2. 给类变量赋默认值
+3. **加载父类**
+4. 设置父子关系
+5. 执行类初始化代码
+
+
+
+注意：
+
+1. 类初始化代码,是**先执行父类**的,**再执行子类**的，在执行父类的时候子类静态变量的值是默认值
+2. 内存分为**栈和堆**,栈存放**函数**的**局部变量**,而**堆**存放**动态分配的对象**
+
+
+
 
 
 
