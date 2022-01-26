@@ -2059,15 +2059,113 @@ System.out.println("sort: "+ Arrays.toString(points));
 
 ### 5.1.5  接口的细节
 
+接口中的变量：
+
+```java
+public interface Interface1 {
+  public static final int a = 0;
+}
+```
+
+在接口中变量的修饰符是：public static ﬁnal，就算你不写也是一样的，这个变量可以使用**接口名.变量名**的方式使用,如Interface1.a
 
 
 
+接口的继承：
+
+```java
+public interface IBase1 {
+	void method1();
+}
+public interface IBase2 {
+	void method2();
+}
+public interface IChild extends IBase1, IBase2 {
+    
+}
+```
+
+接口的继承跟类的继承一样，并且接口可以有多个父接口
 
 
 
+类的继承与接口：
+
+```java
+public class Child extends Base implements IChild {
+//主体代码
+}
+```
+
+类可以在继承基类的情况下,同时实现一个或多个接口，不过要注意：关键字extends要放在implements**之前**
 
 
 
+ instanceof：
+
+```java
+Point p = new Point(2,3);
+if(p instanceof MyComparable){
+	System.out.println("comparable");
+}
+```
+
+接口也可以使用instanceof关键字,用来判断一个对象**是否实现了某接口**
+
+
+
+### 5.1.6  使用接口替代继承
+
+ 使用接口替代继承,针对接口编程,可以实现**统一处理不同类型**的对象，但是接口没有实现不能复用代码，那么将组合和接口结合起来替代继承就可以了：
+
+```java
+public interface IAdd {
+    void add(int number);
+    void addAll(int[] numbers);
+}
+
+public class Base implements IAdd {
+	//主体代码,与代码清单4-10一样
+}
+
+public class Child implements IAdd {
+	//主体代码,组合使用Base,与代码清单4-12一样
+}
+```
+
+
+
+### 5.1.7  Java 8和Java 9对接口的增强
+
+在Java 8之前,接口中的方法都是抽象方法,都没有实现体，Java 8允许在接口中定义两类新方法: **静态方法**和**默认方法**
+
+```java
+public interface IDemo {
+	void hello();
+	public static void test() {
+    System.out.println("hello");
+}
+	default void hi() {
+	System.out.println("hi");
+	}
+}
+```
+
+可以通过IDemo.test  ()调用,默认方法与抽象方法都是接口的方法,不同在于,默认方法**有默认的实现**,实现类可以改变它的实现,也可以不改变,为的是**函数式编程**用，
+
+函数式数据处理需要给一些接口**增加一些新的方法**,所以就有了默认方法的概念,接口增加了新方法,而接口现有的实现类也**不需要必须实现**，比如list中的sort接口：
+
+```java
+default void sort(Comparator<? super E> c) {
+	Object[] a = this.toArray();
+	Arrays.sort(a, (Comparator) c);
+	ListIterator<E> i = this.listIterator();
+	for(Object e : a) {
+		i.next ();
+		i.set((E) e);
+	}
+}
+```
 
 
 
