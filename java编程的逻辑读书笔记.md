@@ -1669,7 +1669,7 @@ public class Child extends Base {
 
 
 
-### 4.3 继承实现的基本原理
+### 4.3 继承实现的基本原理（以下重要）
 
 ### 4.3.1 示例
 
@@ -1943,7 +1943,121 @@ public static void main(String[] args) {
 
 ## 第五章 类的扩展
 
+除了基本类型和类的概念，还有一些拓展概念：包括**接口**、**抽象类**、**内部类**和**枚举**，代替继承我们可以用**接口**，在**接口和类之间**还有一个**抽象类**的概念
 
+
+
+### 5.1 接口的本质
+
+在很多情况下，我们关注的其实不是对象的**类型**，而是对象的**能力**，对象类型并不重要，重要的是这个对象能给你带来什么能力，那么**接口**就是能正确的表现出对象的**能力**的一种方式
+
+
+
+### 5.1.1 接口的概念
+
+接口声明了**一组能力**,但它自己并没有**实现**这个能力，它只是做了一个约定
+
+
+
+### 5.1.2 定义接口
+
+接口声明的例子：
+
+```java
+public interface MyComparable {
+  int compareTo(Object other);
+}
+```
+
+1. Java使用**interface**这个关键字来声明接口,修饰符一般都是**public**
+2. 接口定义里面,声明了一个方法compareTo,但没有定义方法体，Java 8之前,接口内不能实现方法，以后可以
+3. 接口方法不需要加修饰符,加与不加相当于都是**public abstract**
+4. 接口需要两个参与者：一个需要**实现接口**,另一个**使用接口**
+
+
+
+### 5.1.3  实现接口
+
+类可以实现接口,表示**类的对象**具有**接口**所表示的**能力**
+
+实现接口的例子：
+
+```java
+public class Point implements MyComparable {
+    private int x;
+    private int y;
+public Point(int x, int y) {
+    this.x = x;
+    this.y = y;
+}
+public double distance(){
+    return Math.sqrt(x*x+y*y);
+}
+@Override
+public int compareTo(Object other) {
+    if(!(other instanceof Point)){
+        throw new IllegalArgumentException();
+}
+    Point otherPoint = (Point)other;
+    double delta = distance() - otherPoint.distance();
+    if(delta<0){
+    return -1;
+    }else if(delta>0){
+    return 1;
+}else{
+    return 0;
+	}
+}
+@Override
+public String toString() {
+    return "("+x+","+y+")";
+	}
+}
+```
+
+1. Java使用implements这个关键字表示实现接口,前面是类名,后面是接口名
+2. 实现接口必须要实现接口中声明的方法, Point实现了compareTo方法
+
+
+
+一个类也可以实现多个接口：
+
+```java
+public class Test implements Interface1, Interface2 {
+// 主体代码
+}
+```
+
+
+
+### 5.1.4  使用接口
+
+接口不能new但是可以声明**接口类型**的变量,**引用**实现了接口的类对象比如：
+
+```java
+MyComparable p1 = new Point(2,3);
+MyComparable p2 = new Point(1,2);
+System.out.println(p1.compareTo(p2));
+```
+
+如果一个类型实现了**多个接口**,那么这种类型的对象就可以被**赋值给任一接口类型**的变量
+
+```java
+Point[] points = new Point[]{
+new Point(2,3), new Point(3,4), new Point(1,2)
+};
+System.out.println("max: " + CompUtil.max(points));
+CompUtil.sort(points);
+System.out.println("sort: "+ Arrays.toString(points));
+```
+
+只要任意一个类实现了MyComparable接口那么就可以使用CompUtil.max，针对**接口**而非**具体类型**进行编程,是计算机程序的一种重要思维方式，
+
+针对MyComparable接口编程,它并不知道**具体的类型**是什么,也并不关心,但 却可以对**任意实现了**MyComparable接口的类型进行操作，并且接口更重要的是**降低了耦合**,**提高了灵活性**
+
+
+
+### 5.1.5  接口的细节
 
 
 
