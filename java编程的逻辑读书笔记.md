@@ -2169,6 +2169,10 @@ default void sort(Comparator<? super E> c) {
 
 
 
+### 5.2  抽象类
+
+
+
 
 
 
