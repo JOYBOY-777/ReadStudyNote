@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="" />
+    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/代码随想录/代码随想录.md" beforeDir="false" afterPath="$PROJECT_DIR$/代码随想录/代码随想录.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,7 +69,7 @@
       <workItem from="1643023956958" duration="3150000" />
       <workItem from="1643121278844" duration="1559000" />
       <workItem from="1643182967752" duration="1379000" />
-      <workItem from="1643453459314" duration="354000" />
+      <workItem from="1643453459314" duration="973000" />
     </task>
     <servers />
   </component>
