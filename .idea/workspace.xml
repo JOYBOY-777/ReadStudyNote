@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/代码随想录/算法gif/二叉树层序遍历.gif" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/代码随想录/代码随想录.md" beforeDir="false" afterPath="$PROJECT_DIR$/代码随想录/代码随想录.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +70,7 @@
       <workItem from="1643023956958" duration="3150000" />
       <workItem from="1643121278844" duration="1559000" />
       <workItem from="1643182967752" duration="1379000" />
-      <workItem from="1643453459314" duration="2302000" />
+      <workItem from="1643453459314" duration="2916000" />
     </task>
     <servers />
   </component>
