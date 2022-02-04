@@ -2287,25 +2287,232 @@ public class Outer {
     //内部类定义
     public static class StaticInner {
     public void innerMethod(){
+    //内部类直接访问外部类的静态变量和方法    
     System.out.println("inner " + shared);
     }
     }
     public void test(){
+    //直接new出内部类的对象直接调用    
     StaticInner si = new StaticInner();
         si.innerMethod();
     }
 }
 ```
 
+静态内部类除了位置放在其他 类内部外,它与一个**独立的类差别不大**,可以有**静态变量**、**静态方法**、**成员方法**、**成员变量**、**构造方法**等
+
+注意：
+
+1. 内部类直接访问外部类的静态变量和方法
+2. **不**可以访问**实例变量**和**方法**
+3. 在类内部,可以直接使用内部静态 类,如test ()方法所示
+4. public静态内部类可以被**外部使用**,只是需要通过“**外部类.静态内部类**”的方式使用
+
+```java
+//相当于是Outer对象的一个静态属性
+Outer.StaticInner si = new Outer.StaticInner();
+si.innerMethod();
+```
+
+使用场景：如果它与外部类关系密切,且**不依赖**于外部类实例,则可以考虑  定义为静态内部类
 
 
 
+### 5.3.2  成员内部类
+
+与静态内部类相比,成员内部类**没有static修饰符**
+
+```java
+public class Outer {
+    private int a = 100;
+    //成员内部类
+    public class Inner {
+    public void innerMethod(){
+    System.out.println("outer a " +a);
+    Outer.this.action();
+    }
+    }
+    private void action(){
+    System.out.println("action");
+    }
+    public void test(){
+    //new出对象直接调用    
+    Inner inner = new Inner();
+    inner.innerMethod();
+    }
+}
+```
+
+注意：
+
+1. 与静态内部类不同,除了静态变量和方法，成员内部类还可以直接访问**外部类**的**实例变量**和**方法**
+2. 成员内部类还可以通过“外部类.this.xxx”（在重名的情况下）的方式引用外部类的实例变量和方法，不重名直接省略
+3. 成员内部类对象总是与一个外部类对象相连的，在外部使用时,它不能直接通过new Outer.Inner ()的方式创建对象
+
+```java
+Outer.Inner inner = new Outer().new Inner();
+inner.innerMethod();
+```
+
+4. **成员内部类**中**不可以**定义**静态变量和方法**
+5. 方法内部类和匿名内部类也都不可以
+
+使用场景：如果内部类与外部类关系密切,需要**访问外部类**的实例变量或方法,则可以考虑定义为成员内部类，比如：外部类的一些方法的返回值可能是某个接口,为了返回这个接口,外部类方法可能**使用内部类实现这个接口**,这个内部类可以被设为private,对外完全隐藏
 
 
 
+### 5.3.3  方法内部类
+
+内部类还可以定义在一个方法体中：
+
+```java
+public class Outer {
+    private int a = 100;
+    public void test(final int param){
+    final String str = "hello";
+    //方法内部类    
+    class Inner {
+    public void innerMethod(){
+    System.out.println("outer a " +a);
+    System.out.println("param " +param);
+    System.out.println("local var " +str);
+    }
+    }
+    Inner inner = new Inner();
+    inner.innerMethod();
+    }
+}
+```
+
+注意：
+
+1. 如果方法是**实例方法**,则除了静态变量和方法,内部类还可以**直接访问**外部类的实例变量和方法
+
+2. 如果方法是**静态方法**,则方法内部类只能访问外部类的静态变量和方法
+
+3. 如果方法是静态方法,则方法内部类只能访问外部类的静态变量和方法，这些变量必须被声明为**ﬁnal**，
+
+   因为：方法内部类操作的并不是外部的变量,而是它自己的实例变量，只是这些变量的值和外部一 样,对这些变量赋值,并不会改变外部的值,为避免混淆,所以干脆强制规定必须声明为ﬁnal
 
 
 
+### 5.3.4  匿名内部类
+
+匿名内部类没有单独的类定义,它在创建对象的同时定义类：
+
+```java
+new 父类 (参数列表) {
+//匿名内部类实现部分
+}
+
+或者：
+    
+new 父接口 () {
+//匿名内部类实现部分
+}    
+    
+```
+
+如：
+
+```java
+public class Outer {
+    public void test(final int x, final int y){
+    Point p = new Point(2,3){
+    @Override
+    public double distance() {
+    return distance(new Point(x,y));
+    }
+    };
+    System.out.println(p.distance());
+    }
+}
+```
+
+1. 创建Point对象的时候定义了一个匿名内部类,**这个类的父类是Point**
+2. 它没有名字,没有构造方法,但可以根据参数列表调用对应的父类构造方法
+3. 它可以定义实例变量和方法可以有初始化代码块
+4. 匿名内部类也可以访问外 部类的所有变量和方法
+5. 可以访问方法中的ﬁnal参数和局部变量
+
+
+
+### 5.4  枚举的本质
+
+枚举是一种特殊的数据,它的取值是有限的,是可以枚举出来的
+
+
+
+### 5.4.1  基础
+
+可以用枚举来表示衣服的尺寸：
+
+```java
+public enum Size {
+    SMALL, MEDIUM, LARGE
+}
+```
+
+使用size:
+
+```java
+Size size = Size.MEDIUM
+```
+
+枚举变量的toString方法返回其字面值,所有枚举类型也都有一个name()方法,返回值与 toString()一样
+
+```java
+Size size = Size.SMALL;
+System.out.println(size.toString());
+System.out.println(size.name());
+```
+
+枚举变量可以使用**equals和==**进行比较,结果是一样的
+
+枚举类 型都有一个方法int ordinal(),表示枚举值在声明时的顺序,从0开始
+
+```java
+Size size = Size.MEDIUM;
+System.out.println(size.ordinal());
+```
+
+枚举变量可以用于和其他类型变量一样的地方,如**方法参数、类变量、实例变量**
+
+```java
+static void onChosen(Size size){
+    switch(size){
+    case SMALL:
+    System.out.println("chosen small"); break;
+    System.out.println("chosen medium"); break;
+    System.out.println("chosen large"); break;    
+    }
+}
+```
+
+还可以给枚举值添加属性，以及构造器：
+
+```java
+public enum jj {
+    SIZS(1),ZZ(2);
+    public Integer size;
+
+    jj(int i) {
+        this.size = i;
+    }
+}
+
+class te{
+    public static void main(String[] args) {
+        jj j = jj.SIZS;
+        jj j1 = jj.ZZ;
+        System.out.println(j.size);
+    }
+}
+```
+
+
+
+## 第六章 异常
 
 
 
