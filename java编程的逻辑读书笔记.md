@@ -2683,6 +2683,59 @@ public static int test(){
 
 
 
+### 6.3.4  try-with-resources
+
+没有try-with-resources时：
+
+```java
+public static void useResource() throws Exception {
+    AutoCloseable r = new FileInputStream("hello"); //创建资源
+    try {
+    //使用资源
+    } finally {
+    r.close();
+    }
+}
+```
+
+使用try-with-resources语法:
+
+```java
+public static void useResource() throws Exception {
+    try(AutoCloseable r = new FileInputStream("hello")) { //创建资源
+    //使用资源
+    }
+}
+```
+
+资源r的声明和初始化放在**try语句内**,不用再调用ﬁnally,在语句执行完try语句后,会自动调用资源的close ()方法,相当于变得简洁了，直接写try就行了
+
+
+
+### 6.3.5  throws
+
+用于声明一个方法可能抛出的异常：
+
+```java
+public void test() throws AppException,SQLException, NumberFormatException {
+	//主体代码
+}
+```
+
+throws跟在方法的括号后面,可以声明多个异常,以逗号分隔,表示这个方法可能抛出这些异常，并且调用者必须对这些异常做出处理
+
+注意：
+
+1. **未受检异常**,是**不要求**使用throws进行声明的,但对于**受检异常**,则**必须进行声明**
+2. 子类不能抛出父类方法中没有声明的受检异常
+3. 如果一个方法内调用了另一个声明抛出受检异常的方法,则必须**处理这些受检异常**,处理的方式既可以是catch,也可以是**继续使用throws**
+
+
+
+### 6.3.6  对比受检和未受检异常
+
+受检异常必须出现在throws语句中,调 用者必须处理，未受检异常则没有这个要求
+
 
 
 
