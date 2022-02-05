@@ -2529,13 +2529,157 @@ Java的默认异常处理机制是退出程序,异常**发生点后**的代码�
 
 
 
+对于try/catch的使用：
+
+1. 使用try/catch捕获并处理了异常, try后面的花括号{}内包含可能抛出异常的代码
+2. 括号后的 catch语句包含能捕获的异常和处理代码
 
 
 
+### 6.2  异常类
+
+所有异常类都有一个共同的父类 **Throwable**
 
 
 
+### 6.2.2   异常类体系
 
+以Throwable为根, Java定义了非常多的异常类,表示各种类型的异常：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E5%9B%BE%E7%89%87/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E4%BD%93%E7%B3%BB.png?raw=true)
+
+Throwable是所有异常的基类,它有两个子类: **Error**和**Exception**
+
+**Error**:表示系统错误或资源耗尽,由Java系统自己使用,应用程序不应抛出和处理,比如OutOfMemory-Error
+
+**Exception**：应用程序错误,它有很多子类,应用程序也可以通过继承Exception或其子类创建自定义异常
+
+
+
+**受检异常**：别在于Java如何处理这两种异常。对于受检异常, 
+
+**未受检异常**：程序可以运行，不会强制进行处理
+
+
+
+### 6.2.3  自定义异常
+
+通过继承Exception或者它的某个子类来实现自定义异常，如果你继承的父类是受检异常那么你自定义的异常就是受检异常，父类是非受检异常同理
+
+
+
+### 6.3  异常处理
+
+Java语言对异常处理的支持,包括catch、throw、 ﬁnally、try-with-resources和throws
+
+
+
+### 6.3.1  catch匹配
+
+catch还可以 有多条,每条对应一种异常类型：
+
+```java
+try{
+//可能触发异常的代码
+}catch(NumberFormatException e){
+	System.out.println("not valid number");
+}catch(RuntimeException e){
+	System.out.println("runtime exception "+e.getMessage());
+}catch(Exception e){
+    //e.getMessage  ()获取异常消息, e.printStackTrace  ()打印异 常栈到标准错误输出流
+	e.printStackTrace();
+}
+```
+
+注意：
+
+1. 抛出的异常类型是catch中声明异常的**子类**也算匹配
+
+
+
+如果多种异常处理的代码是类似的,可以用|来进行处理：
+
+```java
+try {
+//可能抛出  ExceptionA和ExceptionB
+} catch (ExceptionA | ExceptionB e) {
+	e.printStackTrace();
+}
+```
+
+
+
+### 6.3.2  重新抛出异常
+
+在catch块内处理完后,可以重新抛出异常,异常可以是**原来的**,也可以是**新建的**:
+
+```java
+try{
+//可能触发异常的代码
+}catch(NumberFormatException e){
+	System.out.println("not valid number");
+    //对异常进行捕获以后在抛出
+	throw new AppException("输入格式不正确", e);
+}catch(Exception e){
+	e.printStackTrace();
+	throw e;
+}
+```
+
+
+
+### 6.3.3  ﬁnally
+
+catch后面可以跟ﬁnally语句：
+
+```java
+try{
+//可能抛出异常
+}catch(Exception e){
+//捕获异常
+}finally{
+//不管有无异常都执行
+}
+```
+
+ﬁnally内的代码不管有无异常发生,**都会执行**
+
+注意：
+
+1. 如果没有异常发生,在try内的代码执行结束后执行
+2. 如果有异常发生且被catch捕获,在catch内的代码执行结束后执行
+3. 如果有异常发生但没被捕获,则在异常**被抛给上层之前**执行
+4. 如果在try或者catch语句内有**return**语句,则return语句在**ﬁnally语句执行结束后**才执行,但ﬁnally并**不能改变返回值**
+5. 如果在ﬁnally中也有return语句, try和catch内的return**会丢失**,实际会返回**ﬁnally中的返回值**
+
+```java
+public static int test(){
+	int ret = 0;
+try{
+	return ret;
+}finally{
+	ret = 2;
+}
+}
+```
+
+结果是0不是2
+
+
+
+```java
+public static int test(){
+    int ret = 0;
+    try{
+    int a = 5/0;
+    return ret;
+    }finally{
+    return 2;
+    }
+}
+```
+
+结果是2不是0
 
 
 
