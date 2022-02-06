@@ -2738,11 +2738,124 @@ throws跟在方法的括号后面,可以声明多个异常,以逗号分隔,表�
 
 
 
+## 第七章 常用基础类
+
+这章节主要是对常用的包装类进行说明，还有String类的使用
 
 
 
+### 包装类
+
+在java中的每一种基本类型都会有一个对用的包装类，其中会分为装箱还有拆箱的过程，每个包装类都有一个**valueOf**方法，表示把一个基本类型转换为包装类，建议使用这个静态方法，不通过包装类的构造方法，减少new对象的次数，节省资源。
+
+**equals**:
+
+在最原始的equals方法中，内部直接使用==来比较两个对象的地址，这个默认的实现一般是不合适的，子类需要**重写**该实现，这样进行比较的就是两个对象的实际内容
 
 
+
+**hashCode**:
+
+返回一个对象的哈希值,由对象中**一般不变**的属性映射得来,一个对象的哈希值不能改变
+
+注意：
+
+1. **相同对象**的哈希值**必须一样**
+2. **不同**对象的哈希值**一般应不同**,但这不是必需的,可以有**对象不同**但**哈希值相同**的情况
+3. 对两个对象,如果equals方法返回true,则hashCode也必须一样
+4. equal方法返回false时, hashCode可以一样,也可以不一样,但应该尽量不一样
+5.  hashCode的默 认实现一般是将对象的内存地址转换为整数
+6. 子类如果重写了equals方法,也必须重写hashCode
+7. 包装类都重写了hashcode
+
+
+
+**Comparable**：每个包装类都实现了Java API中的Comparable接口
+
+```java
+public interface Comparable<T> {
+	public int compareTo(T o);
+}
+```
+
+接口只有一个方法 compareTo,**当前对象**与**参数对象**进行比较,在**小于、等于、大于**参数时,应分别返回-**1、0、 1**
+
+
+
+**包装类和String**:
+
+valueOf:根据字符串表示**返回包装类对象**,注意这个是返回的包装类对象，返回的是对象
+
+```java
+Boolean b = Boolean.valueOf("true");
+Float f = Float.valueOf("123.45f");
+```
+
+
+
+静态的parseXXX:根据字符串表示返回**基本类型值**,这个是根据字符串，来返回基本类型，是返回的基本类型
+
+```java
+System.out.println(Boolean.toString(true));
+System.out.println(Double.toString(123.45));
+```
+
+
+
+### String
+
+可以通过常量定义String变量：
+
+```java
+String name = "老马说编程";
+```
+
+可以通过new创建String变量:
+
+```java
+String name = new String("老马说编程");
+```
+
+
+
+注意：
+
+```java
+String name1 = "老马说编程";
+String name2 = "老马说编程";
+System.out.println(name1==name2);
+```
+
+输出为true,在内存中,它们被放在一个共享的地方,这个地方称为**字符串常量池**，它保存所有的常量字符串,每个常量只会保存一份,被所有使用者共享，当通过**常量**的形式 使用一个字符串的时候,使用的就是**常量池**中的那个对应的String类型的对象，注意是通过常量的像是使用字符串，这时候只会产生**一个对象**就是在字符串的常量池中，相当于如下的代码：
+
+```java
+//这里只会产生一个对象，在常量池中存放，给别的使用者共享
+String laoma = new String(new char[]{'老 ','马 ','说','编 ','程 '});
+String name1 = laoma;
+String name2 = laoma;
+System.out.println(name1==name2);
+```
+
+
+
+通过new创建结果就不会为true：
+
+```java
+String name1 = new String("老马说编程");
+String name2 = new String("老马说编程");
+System.out.println(name1==name2);
+```
+
+相当于：
+
+```java
+String laoma = new String(new char[]{'老 ','马 ','说','编 ','程 '});
+String name1 = new String(laoma);
+String name2 = new String(laoma);
+System.out.println(name1==name2);
+```
+
+这里相当与创建了三个对象，两个在堆中，一个在常量池中，位置不一样但是指向的value是一样的
 
 
 
