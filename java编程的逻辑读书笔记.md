@@ -2954,11 +2954,169 @@ String key = (String)kv.getFirst();
 String value = (String)kv.getSecond();
 ```
 
+泛型的原理就是这样，对于泛型类, **Java编译器**会将泛型代码转换为普通的**非泛型代码**，将类型参数**T擦除**，这么设计是为了兼容性而不得已的一个选择
 
 
 
+**好处**：
+
+泛型大致有两个好处：更好的安全性,更好的可读性
+
+因为object可以接收任意的类型，但是返回类型与传入的类型不符的话就会发生错误：
+
+```java
+Pair pair = new Pair("老马",1);
+//接收值跟构造器传入的类型不符
+Integer id = (Integer)pair.getFirst();
+String name = (String)pair.getSecond();
+```
+
+但是编译时没有问题的，在程序运行的时候才会出现问题，如果使用泛型的话程序就会出现编译错误：
+
+```java
+Pair<String,Integer> pair = new Pair<>("老马",1);
+Integer id = pair.getFirst(); //有编译错误
+String name = pair.getSecond(); //有编译错误
+```
 
 
+
+**泛型方法**：
+
+方法也可以是泛型的,而且,一个方法是不是泛型的,与它所在的类是不是泛型**没有什么关系**
+
+```java
+public static <T> int indexOf(T[] arr, T elm){
+    for(int i=0; i<arr.length; i++){
+    if(arr[i].equals(elm)){
+    return i;
+    }
+    }
+    return -1;
+}
+
+//多个泛型也是可以的
+public static <U,V> Pair<U,V> makePair(U first, V second){
+    Pair<U,V> pair = new Pair<>(first, second);
+    return pair;
+}	
+```
+
+T是一个泛型,放在**方法返回值前**，意味着这个方法可以使用这个T,一般形参也会加上与方法返回值之前的泛型一致的泛型
+
+
+
+**泛型接口**：
+
+接口也可以是泛型的：表示接口里面的返回值或者形参可以是泛型的
+
+```java
+public interface Comparable<T> {
+    public int compareTo(T o);
+    }
+    public interface Comparator<T> {
+    int compare(T o1, T o2);
+    boolean equals(Object obj);
+}
+```
+
+
+
+**类型参数的限定**：
+
+> 上界为某个具体类：表示这个NumberPair的两个参数必须是Number的子类（必须继承Number才行）
+
+```java
+public class NumberPair<U extends Number, V extends Number>
+    extends Pair<U, V> {
+    public NumberPair(U first, V second) {
+    super(first, second);
+    }
+}
+```
+
+使用：
+
+```java
+//Integer和Double是Number的子类
+NumberPair<Integer, Double> pair = new NumberPair<>(10, 12.34);
+double sum = pair.sum();
+```
+
+
+
+> 上界为某个接口，这个类必须实现这个接口才行
+
+```java
+public static <T extends Comparable> T max(T[] arr){
+    T max = arr[0];
+    for(int i=1; i<arr.length; i++){
+    if(arr[i].compareTo(max)>0){
+    max = arr[i];
+    }
+    }
+    return max;
+}
+
+//合理版本， T表示一种数据类型,必须实现Comparable接口,且必须可以与相同类型的元素进行比较
+public static <T extends Comparable<T>> T max(T[] arr){
+//主体代码
+}
+```
+
+
+
+> 上界为其他类型参数 
+
+```java
+//T必须是E的子类
+public <T extends E> void addAll(DynamicArray<T> c) {
+    for(int i=0; i<c.size; i++){
+    add(c.get(i));
+    }
+}
+```
+
+使用：
+
+```java
+DynamicArray<Number> numbers = new DynamicArray<>();
+DynamicArray<Integer> ints = new DynamicArray<>();
+ints.add(100);
+ints.add(34);
+//要求ints的类型必须是number的子类，这里也确实是
+numbers.addAll(ints);
+```
+
+
+
+### 8.2  解析通配符
+
+例子：
+
+```java
+public void addAll(DynamicArray<? extends E> c) {
+    for(int i=0; i<c.size; i++){
+    add(c.get(i));
+    }
+}
+```
+
+c的类型是DynamicArray<? extends E>,匹配E或E的某个子类型,具体什么子类型是未知的
+
+
+
+< T extends E>和< ? extends E>的区别：
+
+1.  < T extends E>用于**定义类型参数**,它声明了一个类型参数T,可放在泛型类定义中类名后面、泛型方法返回值前面
+2.  < ? extends E>用于实例化类型参数,它用于实例化泛型变量中的类型参数,只是这个具体类型是未知的,只知道它是**E或E的某个子类型**
+
+相等写法：
+
+```java
+public void addAll(DynamicArray<? extends E> c)
+public <T extends E> void addAll(DynamicArray<T> c)
+```
 
 
 
