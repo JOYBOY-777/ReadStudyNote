@@ -2857,9 +2857,102 @@ System.out.println(name1==name2);
 
 这里相当与创建了三个对象，两个在堆中，一个在常量池中，位置不一样但是指向的value是一样的
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E5%9B%BE%E7%89%87/String.png?raw=true)
+
+这章其他的内容都是对一些java类的api进行说明，这里就不做赘述了
 
 
 
+## 第八章 泛型
+
+### 8.1  基本概念和原理
+
+举例(泛型类)：
+
+```java
+public class Pair<T> {
+    T first;
+    T second;
+    public Pair(T first, T second){
+    this.first = first;
+    this.second = second;
+    }
+    public T getFirst() {
+    return first;
+    }
+    public T getSecond() {
+    return second;
+    }
+}
+```
+
+在class的后面加上了<T>表示泛型类，这个类里面的成员可以使用这个T，关于这个T的实际内容是什么，需要在外部实例化的时候来进行具体的说明,可以作为参数的传入如：
+
+```java
+Pair<Integer> minmax = new Pair<Integer>(1,100);
+Integer min = minmax.getFirst();
+Integer max = minmax.getSecond();
+```
+
+类型参数可以有多个：
+
+```java
+public class Pair<U, V> {
+    U first;
+    V second;
+    public Pair(U first, V second){
+    this.first = first;
+    this.second = second;
+    }
+    public U getFirst() {
+    return first;
+    }
+    public V getSecond() {
+    return second;
+    }
+}	
+```
+
+在外部使用的时候就可以传入两个参数：
+
+```java
+Pair<String,Integer> pair = new Pair<String,Integer>("老马",100);
+```
+
+
+
+**基本原理**：
+
+可以在类里面直接用object进行接收：
+
+```java
+public class Pair {
+    Object first;
+    Object second;
+    public Pair(Object first, Object second){
+    this.first = first;
+    this.second = second;
+    }
+    public Object getFirst() {
+    return first;
+    }
+    public Object getSecond() {
+    return second;
+    }
+}
+
+```
+
+使用：
+
+```java
+Pair minmax = new Pair(1,100);
+Integer min = (Integer)minmax.getFirst();
+Integer max = (Integer)minmax.getSecond();
+Pair kv = new Pair("name","老马");
+String key = (String)kv.getFirst();
+String value = (String)kv.getSecond();
+```
 
 
 
