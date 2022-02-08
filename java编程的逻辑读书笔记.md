@@ -3227,7 +3227,29 @@ public static void removeAll(ArrayList<Integer> list){
 
 
 
+3.**ArrayList的add方法**
 
+1. 首先会调用ensureCapacityInternal(size + 1)，这个方法直译过来就是**确保内部容量**
+2. ensureCapacityInternal(size + 1)会调用ensureExplicitCapacity(calculateCapacity(elementData, minCapacity))直译过来就是**确保显示容量**，这个方法会判断要不要进行扩容操作
+3. 确保显示容量把**计算容量**calculateCapacity的调用结果当做方法的参数，如果是空数据第一次调用的话，计算容量就是返回最小的10容量给这个数组中，否则其余的情况是添加数组的时候元素逐渐增一
+
+其实核心的方法就是ensureCapacityInternal(size + 1)确保内部容量这个方法，里面会有扩容的操作，当你的最小容量逐渐增一的过程，比数组的长度多的时候就进行扩容：
+
+```java
+private void grow(int minCapacity) {
+        // overflow-conscious code
+        int oldCapacity = elementData.length;
+        int newCapacity = oldCapacity + (oldCapacity >> 1);
+        if (newCapacity - minCapacity < 0)
+            newCapacity = minCapacity;
+        if (newCapacity - MAX_ARRAY_SIZE > 0)
+            newCapacity = hugeCapacity(minCapacity);
+        // minCapacity is usually close to size, so this is a win:
+        elementData = Arrays.copyOf(elementData, newCapacity);
+    }
+```
+
+就是进行1.5倍扩容，调用**ArrayCopy()**按照新的参数复制一下给ElementData数组元素
 
 
 
