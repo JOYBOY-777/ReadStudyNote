@@ -3256,7 +3256,8 @@ private void grow(int minCapacity) {
 **4.ArrayList的remove方法**
 
 ```java
-实现思路：                                                                                 public E remove(int index) {
+实现思路：
+public E remove(int index) {
        //首先调用rangeCheck查看一下你要删除的位置合不合理，如果比size大的话就抛出异常说明删除位置不合理
         rangeCheck(index);
         //之后统计修改次数
