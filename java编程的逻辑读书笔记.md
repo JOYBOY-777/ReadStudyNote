@@ -3249,7 +3249,9 @@ private void grow(int minCapacity) {
     }
 ```
 
-就是进行1.5倍扩容，调用**ArrayCopy()**按照新的参数复制一下给ElementData数组元素
+就是进行1.5倍扩容，调用**ArrayCopy方法**按照新的参数复制一下给ElementData数组元素
+
+
 
 
 
