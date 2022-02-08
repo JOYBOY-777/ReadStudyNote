@@ -3149,11 +3149,81 @@ public void copyTo(DynamicArray<? super E> dest){
 
 ArrayList的具体分析请看脑图总结：https://www.processon.com/view/link/61376e1ce401fd1fb6afe32f
 
+ArrayList继承的是List< E>，Collection< E>,Iterable< E>接口：
 
 
 
+**Iterable< E>**：
+
+只要对象实现了Iterable接口,就可以使用foreach语法,他是个接口，他里面有一个返回值类型为**Iterator< T>**类型的接口，这个接口里面有常见的next(),hasNext()等常见的方法
 
 
+
+**Collection< E>**：
+
+Collection表示一个数据集合，数据间**没有位置或顺序**的概念，里面有一些常见的add后者remove方法等
+
+
+
+**List< E>**:
+
+List：表示**有序**或位置的数据集合，扩展了它扩展了Collection
+
+
+
+**在ArrayList中要关注的几个点**：
+
+**1.关于迭代器**：**在迭代器中**，通过增强for循环里面**直接调用**容器的**remove**方法，这是会产生异常：java.util.ConcurrentModificationException
+
+```java
+public void remove(ArrayList<Integer> list){
+    for(Integer a : list){
+    if(a<=100){
+    list.remove(a);
+    }
+    }
+}
+```
+
+下面就不会抛出异常：
+
+```java
+public static void remove(ArrayList<Integer> list){
+    Iterator<Integer> it = list.iterator();
+    while(it.hasNext()){
+        if(it.next()<=100){
+    it.remove();
+    }
+    }
+}
+```
+
+因为使用增强for循环调用迭代器的next方法，next方法检查modCount与expectedModCount是否一样，在前面add方法的时候会增加modecount，**因为expectedModCount只能在迭代器的remove方法中更新**，但是由于调用的是ArrayList中实现的remove()方法，导致两个值不一样，因为调用的是ArrayLIst的remove导致更新不了expectedModCount
+
+
+
+**2.在调用迭代器的remove方法前没有调用next**：
+
+```java
+//错误
+public static void removeAll(ArrayList<Integer> list){
+    Iterator<Integer> it = list.iterator();
+    while(it.hasNext()){
+    it.remove();
+    }
+}
+
+//正确：
+public static void removeAll(ArrayList<Integer> list){
+    Iterator<Integer> it = list.iterator();
+    while(it.hasNext()){
+    it.next ();
+    it.remove();
+    }
+}
+```
+
+直接调用remove会导致，lastRet的值还是初始化状态，**只有调用迭代器的next方法才会对这个属性进行正确的更新**,不调用next方法更新不了lastRet的值
 
 
 
