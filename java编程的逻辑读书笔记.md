@@ -3147,6 +3147,8 @@ public void copyTo(DynamicArray<? super E> dest){
 
 ### 9.1  剖析ArrayList
 
+ArrayList的具体分析请看脑图总结：https://www.processon.com/view/link/61376e1ce401fd1fb6afe32f
+
 
 
 
