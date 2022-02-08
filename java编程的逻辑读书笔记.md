@@ -3227,7 +3227,7 @@ public static void removeAll(ArrayList<Integer> list){
 
 
 
-3.**ArrayList的add方法**
+**3**.**ArrayList的add方法**
 
 1. 首先会调用ensureCapacityInternal(size + 1)，这个方法直译过来就是**确保内部容量**
 2. ensureCapacityInternal(size + 1)会调用ensureExplicitCapacity(calculateCapacity(elementData, minCapacity))直译过来就是**确保显示容量**，这个方法会判断要不要进行扩容操作
@@ -3253,9 +3253,33 @@ private void grow(int minCapacity) {
 
 
 
+**4.ArrayList的remove方法**
+
+```java
+实现思路：                                                                                 public E remove(int index) {
+       //首先调用rangeCheck查看一下你要删除的位置合不合理，如果比size大的话就抛出异常说明删除位置不合理
+        rangeCheck(index);
+        //之后统计修改次数
+        modCount++;
+        //之后获取到在index的这个位置的元素
+        E oldValue = elementData(index);
+        //计算要移动的元素个数 比如有5个元素 你要删除第一个（index为0）那么你就需要移动4次（5-0-1）
+        int numMoved = size - index - 1;
+        //如果需要修改的个数大于0，就修改这个数组（修改elementData数组，把index+1这个位置开始的numMoved个元素，复制到elementData中的index位置）
+        if (numMoved > 0)
+            System.arraycopy(elementData, index+1, elementData, index,
+                             numMoved);
+        //把size-1同时释放引用把最后一个数组置空（因为整体前移剩最后一个置为Null（之前是有东西的）不在引用原来的对象）之后进行垃圾回收
+        elementData[--size] = null; // clear to let GC do its work
+        return oldValue;
+    }
+```
+
+实际上关键的地方就是**System.arraycopy方法**很关键，调用这个API来进行所谓的元素的删除操作，就是移动一组连续的元素
 
 
 
+### 9.2 剖析LinkedList
 
 
 
