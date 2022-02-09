@@ -3145,6 +3145,8 @@ public void copyTo(DynamicArray<? super E> dest){
 
 ## 第九章 列表和队列
 
+![](https://javaguide.cn/assets/img/java-collection-hierarchy.9733f6ea.png)
+
 ### 9.1  剖析ArrayList
 
 ArrayList的具体分析请看脑图总结：https://www.processon.com/view/link/61376e1ce401fd1fb6afe32f
@@ -3290,7 +3292,21 @@ LinkedList的具体分析请查看脑图总结：https://www.processon.com/view/
 
 ## 第十章  Map和Set
 
+![](https://javaguide.cn/assets/img/java-collection-hierarchy.9733f6ea.png)
+
 里面重要的容器就是HashMap,HashSet,LinkedHashMap这三个
 
+### 10.1 剖析HashMap
 
+**HashMap原理讲解**：
+
+**HashMap构造方法**：
+
+**HashMap Put方法**：
+
+**HashMap resize扩容方法**：
+
+**HashMap get方法remove方法**：
+
+**HashMap replace方法**：
 
