@@ -2,12 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/javaimg/java编程的逻辑图片/HashMap/01_HashMap.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javaimg/java编程的逻辑图片/HashMap/02_HashMap底层存储结构 .png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javaimg/java编程的逻辑图片/HashMap/03_Node类图.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javaimg/java编程的逻辑图片/HashMap/04_map-put过程形象图.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javaimg/java编程的逻辑图片/HashMap/05_map-put详细流程图.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javaimg/java编程的逻辑图片/HashMap/扩容-链表处理.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/java编程的逻辑读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/java编程的逻辑读书笔记.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,14 +42,15 @@
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\ReadStudyNote\代码随想录" />
-      <recent name="F:\ReadStudyNote\javaimg" />
-      <recent name="F:\ReadStudyNote" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
       <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片\HashMap" />
+      <recent name="F:\ReadStudyNote\代码随想录" />
+      <recent name="F:\ReadStudyNote\javaimg" />
+      <recent name="F:\ReadStudyNote" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -82,7 +77,7 @@
       <workItem from="1644143683770" duration="3151000" />
       <workItem from="1644306088744" duration="5096000" />
       <workItem from="1644331085990" duration="1791000" />
-      <workItem from="1644407105418" duration="1395000" />
+      <workItem from="1644407105418" duration="2037000" />
     </task>
     <servers />
   </component>
