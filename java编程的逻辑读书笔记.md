@@ -3336,7 +3336,112 @@ table的长度必须是**2的次方数**，规定0&0是0，hash碰撞：经过�
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E5%9B%BE%E7%89%87/HashMap/%E6%89%A9%E5%AE%B9-%E9%93%BE%E8%A1%A8%E5%A4%84%E7%90%86.jpg?raw=true)
 
+ 为什么会扩容？因为如果你的查找效率已经很低下了，在桶中存在着大量的hash冲突以及树化，为了提高查找的性能以及效率就开始扩容
 
+
+
+**常量分析**：
+
+```java
+//默认数组大小（桶的大小），如果你调用无参的构造函数就会为桶创建默认的长度为16
+1.static final int DEFAULT_INITIAL_CAPACITY = 1 << 4;
+
+//table的最大容量
+2.static final int MAXIMUM_CAPACITY = 1 << 30;
+
+//默认负载因子
+3.static final float DEFAULT_LOAD_FACTOR = 0.75f;
+
+//树化阈值,;链表长度超过8以后，这个链表就可能升级成为一棵树（红黑树）
+4.static final int TREEIFY_THRESHOLD = 8;
+
+//树降级成为链表的阈值（你的红黑树里面的元素如果小于6个就变成链表）
+5.static final int UNTREEIFY_THRESHOLD = 6;
+    
+//树化的另一个参数，当哈希表中的所有元素个数超过64时，才会允许树化
+6.static final int MIN_TREEIFY_CAPACITY = 64;    
+```
+
+
+
+**属性分析**：
+
+```java
+//Hash表
+1.transient Node<K,V>[] table;
+
+//当前哈希表中元素个数
+2.transient int size;
+    
+//当前哈希表结构修改次数
+3.transient int modCount;    
+
+//扩容阈值，当你的哈希表中的元素超过阈值时，触发扩容
+4.int threshold;
+
+//负载因子 threshold = capacity * loadFactor，用来计算扩容阈值
+5.final float loadFactor;
+```
+
+
+
+**构造方法**：
+
+```java
+ public HashMap(int initialCapacity, float loadFactor) {
+        //其实就是做了一些校验
+        //capacity必须是大于0 ，最大值也就是 MAX_CAP
+        if (initialCapacity < 0)
+            throw new IllegalArgumentException("Illegal initial capacity: " +
+                    initialCapacity);
+        if (initialCapacity > MAXIMUM_CAPACITY)
+            initialCapacity = MAXIMUM_CAPACITY;
+        //loadFactor必须大于0
+        if (loadFactor <= 0 || Float.isNaN(loadFactor))
+            throw new IllegalArgumentException("Illegal load factor: " +
+                    loadFactor);
+        this.loadFactor = loadFactor;
+        this.threshold = tableSizeFor(initialCapacity);
+    }
+
+
+//tableSizeFor方法计算用来计算扩容阈值
+   /**
+     * Returns a power of two size for the given target capacity.
+     * 作用：返回一个大于等于当前值cap的一个数字，并且这个数字一定是2的次方数
+     * cap = 10
+     * n = 10 - 1 => 9
+     *|的意思是只要有一个是1就是1（有1就是1）
+     * 0b1001 | 0b0100 => 0b1101
+     * 0b1101 | 0b0011 => 0b1111
+     * 0b1111 | 0b0000 => 0b1111
+     *
+     * 0b1111 => 15
+     * return 15 + 1;
+     * cap = 16
+     *
+     * n = 16;
+     * 0b10000 | 0b01000 =>0b11000
+     * 0b11000 | 0b00110 =>0b11110
+     * 0b11110 | 0b00001 =>0b11111
+     * =>0b11111 => 31
+     * return 31 + 1;
+     *
+     * 0001 1101 1100 => 0001 1111 1111 + 1 => 0010 0000 0000 一定是2的次方数
+     */
+    static final int tableSizeFor(int cap) {
+        int n = cap-1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+    }
+
+```
+
+总的来说这个构造方法就是给hashMap的属性**负载因子**和**扩容阈值赋值**，并且保证扩容阈值一定是2的次方数，并且保证扩容阈值不是初始容量的**二倍**关系，保证扩容阈值比初值值大的刚刚好，保证扩容阈值是2的次方数后保证扩容以后的桶也是2的次方数，进而保证桶一直是2的次方数，无论你传入的初始容量是什么
 
 
 
