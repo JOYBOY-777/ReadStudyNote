@@ -3282,11 +3282,15 @@ public E remove(int index) {
 
 ### 9.2 剖析LinkedList
 
+LinkedList的具体分析请查看脑图总结：https://www.processon.com/view/link/6139c33d1efad40d93a5e396
+
+特点：有序，并且允许元素重复，内部实现是一个双向的联表，node节点里面有两哥指针，next和prev指向node节点的前一个，或后一个元素
 
 
 
+## 第十章  Map和Set
 
-
+里面重要的容器就是HashMap,HashSet,LinkedHashMap这三个
 
 
 
