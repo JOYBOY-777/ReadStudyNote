@@ -3300,6 +3300,36 @@ LinkedList的具体分析请查看脑图总结：https://www.processon.com/view/
 
 **HashMap原理讲解**：
 
+**继承体系**：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E5%9B%BE%E7%89%87/HashMap/01_HashMap.png?raw=true)
+
+题外话：多态的作用是可以通过一个统一的引用去拥有**不同的实例**
+
+
+
+**node节点**：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E5%9B%BE%E7%89%87/HashMap/03_Node%E7%B1%BB%E5%9B%BE.png?raw=true)
+
+注意这个hash值**不是hashcode**，是key的hash值经过一个**扰动函数**之后生层的hash值
+
+
+
+**底层存储结构**：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E5%9B%BE%E7%89%87/HashMap/02_HashMap%E5%BA%95%E5%B1%82%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%20.png?raw=true)
+
+当hash碰撞链表的元素达到9个并且HashMap里面的所有元素的个数超过64个就会变成红黑树
+
+
+
+
+
+
+
+
+
 **HashMap构造方法**：
 
 **HashMap Put方法**：
