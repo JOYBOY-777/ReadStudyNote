@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="" />
+    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/java高并发核心编程卷2读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/java高并发核心编程卷2读书笔记.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,6 +78,7 @@
       <workItem from="1644306088744" duration="5096000" />
       <workItem from="1644331085990" duration="1791000" />
       <workItem from="1644407105418" duration="3956000" />
+      <workItem from="1644576304400" duration="414000" />
     </task>
     <servers />
   </component>
