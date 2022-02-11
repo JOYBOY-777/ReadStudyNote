@@ -191,23 +191,89 @@ Print.hint("商场版本的销售");
 1. 通过继承Thread类实现多线程能更好地做到多个线程并发地完成各自的任务，访问各自的数据资源
 2. 通过实现Runnable接口实现多线程能更好地做到多个线程并发地完成同一个任务，**访问同一份数据资源**。多个线程的代码逻辑可以方便地访问和处理同一个共享数据资源（如例子中的MallGoods.goodsAmount），这样可以将线程逻辑和业务数据进行有效的分离，更好地体现了面向对象的设计思想
 3. 通过实现Runnable接口实现多线程时，如果数据资源存在多线程共享的情况，那么数据共享资源需要使用原子类型（而不是普通数据类型），或者需要进行线程的同步控制，以保证对共享数据操作时不会出现线程安全问题
-4. 
+4. 偏向于通过实现Runnable接口来实现线程执行目标类，这样能使代码更加简洁明了
 
 
 
+**线程创建方法三：使用Callable和FutureTask创建线程**
+
+这种方式可以**获取异步执行的结果**
+
+**Callable接口**：可以用call方法来获取异步的执行结果，允许方法的实现版本直接抛出异常，并且Callable接口的call()**有返回值**,但是**不能**作为Thread线程实例的的target来使用
+
+```java
+@FunctionalInterface
+ public interface Callable<V> {
+ V call() throws Exception;
+ }
+```
 
 
 
+**RunnableFuture接口**
+
+可以作为Thread线程实例的**target实例**，二是可以**获取异步执行的结果**，因为继承了Runnable接口
+
+```java
+public interface RunnableFuture<V> extends Runnable,Future<V> {
+	 void run();
+ }
+```
 
 
 
+**Future接口**
+
+强大的功能：
+
+1. 能够**取消**异步执行中的任务
+2. 判断异步任务**是否执行完成**
+3. **获取**异步任务完成后的**执行结果**
+
+```java
+public interface Future<V> {
+ boolean cancel(boolean mayInterruptRunning); //取消异步执行
+ boolean isCancelled();
+ boolean isDone();//判断异步任务是否执行完成
+ //获取异步任务完成后的执行结果
+ V get() throws InterruptedException,
+ExecutionException;
+ //设置时限，获取异步任务完成后的执行结果
+ V get(long timeout, TimeUnit unit) throws
+InterruptedException, 
+ 
+ExecutionException, TimeoutException;
+ ...
+ }
+```
+
+重要方法：
+
+1. **V get()**：获取异步任务执行的结果，这个方法的调用是阻塞性的。如果异步任务没有执行完成，异步结果获取线程（调用线程）会一直被阻塞，一直阻塞到异步任务执行完成
+2. **V get(Long timeout,TimeUnit unit)**：设置时限，调用线程就等待你形参里面的时间，超过时间将抛出异常
+
+​             
+
+**FutureTask类**：
+
+这个类实现了RunnableFuture接口，既能作为一个Runnable类型的**target**执行目标直接**被Thread执行**，又能作为Future异步任务来获取**Callable的计算结果**
+
+FutureTask在类内部用—**callable实例属性**来保存并发执行的Callable<V>类型的任务，在其**run()方法**的实现版本中会执行callable成员的**call()方法**，并且用 **outcome**来保存callable成员call()方法的**异步执行结果**
 
 
 
+创建线程步骤：
+
+1. 创建一个Callable接口的实现类，并实现其call()方法，编写好异步执行的具体逻辑，可以有返回值
+2. 使用Callable实现类的实例构造一个FutureTask实例
+3. 使用FutureTask实例作为Thread构造器的target入参，构造新的Thread线程实例
+4. 调用Thread实例的start()方法启动新线程，启动新线程的run()方法并发执行
+5. 内部执行过程：启动Thread实例的run()方法并发执行后，会执行FutureTask实例的run()方法，最终会并发执行Callable实现类的call()方法
+6. 调用FutureTask对象的**get()方法**阻塞性地获得并发线程的执行结果
 
 
 
-
+在main线程中在开启一个FutureTask线程
 
 
 
