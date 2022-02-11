@@ -3320,7 +3320,7 @@ LinkedList的具体分析请查看脑图总结：https://www.processon.com/view/
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E5%9B%BE%E7%89%87/HashMap/02_HashMap%E5%BA%95%E5%B1%82%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%20.png?raw=true)
 
-当hash碰撞链表的元素**达到9个**并且HashMap里面的所有元素的个数**超过64个**就会变成**红黑树**
+当hash碰撞链表的元素**超过8达到9个**并且HashMap里面的所有元素的个数**超过64个**就会变成**红黑树**
 
 
 
