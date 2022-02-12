@@ -372,7 +372,7 @@ TERMINATED状态：
 
 TIMED_WAITING状态：
 
-线程处于限时等待状态，比如说调用一些限定时间等待的API，Thread.sleep(int n)，在限定的时间内等待获取时间片，类似于Thread.join()就是等待状态
+线程处于限时等待状态，比如说调用一些限定时间等待的API，Thread.sleep(int n)，在限定的时间内等待获取时间片，类似于Thread.join()就是这个状态
 
 
 
@@ -382,19 +382,90 @@ TIMED_WAITING状态：
 
 sleep的作用是让目前正在执行的线程休眠，让CPU去执行其他的任务。从线程状态来说，就是从执行状态变成限时阻塞状态
 
-值得注意的是:当线程睡眠时间满后，线程不一定会立即得到执行，因为此时CPU可能正在执行其他的任务，线程首先进入**就绪状态**，等待分配CPU时间片以便有机会执行,线程的sleep操作会让当前的线程释放锁，让其他的线程来获取锁
+值得注意的是:当线程睡眠时间满后，线程不一定会立即得到执行，因为此时CPU可能正在执行其他的任务，线程首先进入**就绪状态**，等待分配CPU时间片以便有机会执行,线程的sleep操作不会让当前的线程释放锁
 
 
 
 **线程的interrupt操作**：
 
+由于调用stop()方法来终止线程可能会产生不可预料的结果，因此不推荐调用stop()方法，进而采用下Thread的interrupt()方法，注意：此方法本质**不是用来中断一个线程**，而是将线程设置为**中断状态**
+
+当调用线程的interrupt()方法时会有如下两个作用：
+
+1. 如果此线程处于**阻塞状态**,在调用interrupt方法的时候会**立马退出阻塞**，并且**抛出InterruptedException异常**，
+2. 如果此线程正处于**运行之中**，线程就不受任何影响，继续运行，仅仅是线程的**中断标记**被设置为**true**，程序可以在适当的位置调用**isInterrupted**()方法，查看自己是否被中断
+
+它只是一个表示位，让正在阻塞的线程调用之后推出阻塞抛出异常，不是让一个正在运行的线程中断，这样在危险了
 
 
 
+线程是否停止执行，需要**用户程序去监视线程的isInterrupted**()状态，并进行相应的处理：
+
+```java
+public class InterruptDemo{
+     //测试用例：获取异步调用的结果
+     @Test
+     public void testInterrupted2(){
+     Thread thread = new Thread(){
+     public void run(){
+     Print.tco("线程启动了");
+     //一直循环
+     while (true){
+     Print.tco(isInterrupted());
+     sleepMilliSeconds(5000);
+     //如果外面的操作设置了线程的中断标志位，线程捕获到自己的中断信号后，就退出死循环
+     if (isInterrupted()) {
+     Print.tco("线程结束了");
+     return;
+     }
+     }
+     }
+     };
+         
+     thread.start();
+     sleepSeconds(2); //等待2秒
+     thread.interrupt(); //中断线程
+     sleepSeconds(2); //等待2秒
+     thread.interrupt();
+     }
+ }
+```
+
+如果外面的操作设置了线程的中断标志位，线程捕获到自己的中断信号后，就退出死循环，写在run方法里面
 
 
 
+**线程的join操作**
 
+线程合并，线程A需要将线程B的执行流程合并到自己的执行流程中：
+
+```java
+class ThreadA extends Thread{
+ void run() {
+ Thread threadb = new Thread("thread-b");
+ threadb.join();
+ }
+ }
+```
+
+join的三个重载版本：
+
+```java
+//重载版本1：此方法会把当前线程变为TIMED_WAITING，直到被合并线程执行结束
+ public final void join() throws InterruptedException：
+ 
+ //重载版本2：此方法会把当前线程变为TIMED_WAITING，直到被合并线程执行结束，或者等待被合并线程执行millis的时间
+ public final synchronized void join(long millis) throwsInterruptedException：
+ 
+ //重载版本3：此方法会把当前线程变为TIMED_WAITING，直到被合并线程执行结束，或者等待被合并线程执行millis+nanos的时间
+ public final synchroinzed void join(long millis, intnanos) throws InterruptedException：
+```
+
+注意：
+
+1. 执行threadb.join()这行代码的当前线程为合并线程（甲方），进入TIMED_WAITING等待状态，让出CPU
+2. 如果设置了被合并线程的执行时间millis（或者millis+nanos），并不能保证当前线程一定会在millis时间后变为RUNNABLE
+3. 如果主动方合并线程在等待时被中断，就会抛出InterruptedException受检异常（因为本身就是阻塞状态）
 
 
 
