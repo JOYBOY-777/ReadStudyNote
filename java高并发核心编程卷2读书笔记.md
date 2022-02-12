@@ -281,25 +281,80 @@ FutureTask在类内部用—**callable实例属性**来保存并发执行的Call
 
 **线程创建方法四：通过线程池创建线程**
 
+通过线程池可以做到**复用**线程实例
+
+通过**Executors工厂类**创建线程池：
+
+```java
+//创建一个包含三个线程的线程池
+ private static ExecutorService pool =Executors.newFixedThreadPool(3);
+```
+
+有**三个**执行的方法：
+
+```java
+//方法一：执行一个 Runnable类型的target执行目标实例，无返回
+ void execute(Runnable command);
+//方法二：提交一个 Callable类型的target执行目标实例, 返回一个Future异步任务实例
+ <T> Future<T> submit(Callable<T> task);
+//方法三：提交一个 Runnable类型的target执行目标实例, 返回一个Future异步任务实例
+ Future<?> submit(Runnable task);
+```
+
+submit和execute的区别是：
+
+1. 接受的参数不一样，submit接收两种返回的参数一个是有返回值的Callable类型参数，另外一个是Runnable类型的无返回值参数
+2. submit有返回值，execute无返回值
+
+使用：
+
+```java
+//创建一个包含三个线程的线程池
+ private static ExecutorService pool =Executors.newFixedThreadPool(3);
+pool.execute(new DemoThread()); //执行线程实例，无返回
+//提交Callable 执行目标实例，有返回
+ Future future = pool.submit(newReturnableTask());
+```
 
 
 
+### 1.4 线程的核心原理
+
+**线程的调度与时间片**
+
+时间片：就是CPU在一段时间上的计算量非常的高，线程就是抢占这些cpu的时间片来执行相应的代码
+
+线程的调度：基于CPU时间片方式进行线程调度，线程只有得到CPU时间片才能执行指令，处于执行
+
+状态，没有得到时间片的线程处于就绪状态，等待系统分配下一个CPU时间片
 
 
 
+线程的调度模型：
+
+主要分为两种：
+
+1. 分时调度模型，线程轮流占用cpu时间片
+
+2. 抢占式调度模型：系统按照线程**优先级**分配CPU时间片，优先级高的线程获取的CPU时间片相
+
+   对多一些
 
 
 
+**线程的优先级**
+
+Thread实例的priority属性默认是级别**5**，对应的类常量是NORM_PRIORITY。优先级最大值为**10**，最小值为**1**
+
+priority实例属性的**优先级越高**，线程获得CPU时间片的**机会就越多**，但也**不是绝对的**
 
 
 
+**线程的生命周期**
 
+NEW状态：创建成功但是**没有调用start()方法**启动的Thread线程实例都处于NEW状态
 
-
-
-
-
-
+RUNNABLE状态(就绪运行):
 
 
 
