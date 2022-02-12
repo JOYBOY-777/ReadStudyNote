@@ -372,7 +372,7 @@ TERMINATED状态：
 
 TIMED_WAITING状态：
 
-线程处于限时等待状态，比如说调用一些限定时间等待的API，Thread.sleep(int n)，在限定的时间内等待获取时间片，类似于Thread.join()就是这个状态
+线程处于限时等待状态，比如说调用一些限定时间等待的API，Thread.sleep(int n)，在限定的时间内等待获取时间片，Thread.join()就属于WAITING状态
 
 
 
@@ -466,8 +466,9 @@ join的三个重载版本：
 1. 执行threadb.join()这行代码的当前线程为合并线程（甲方），进入TIMED_WAITING等待状态，让出CPU
 2. 如果设置了被合并线程的执行时间millis（或者millis+nanos），并不能保证当前线程一定会在millis时间后变为RUNNABLE
 3. 如果主动方合并线程在等待时被中断，就会抛出InterruptedException受检异常（因为本身就是阻塞状态）
+4. join方法没有办法直接取得乙方线程的执行结果
 
-
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/join%E7%BA%BF%E7%A8%8B%E6%B5%81%E7%A8%8B.png?raw=true)
 
 
 
