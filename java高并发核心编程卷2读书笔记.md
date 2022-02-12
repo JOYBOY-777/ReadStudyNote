@@ -631,7 +631,9 @@ AbstractExecutorService是一个抽象类，它实现了ExecutorService接口。
 
 **Executors的4种快捷创建线程池的方法**
 
+Java通过Executors工厂类提供了4种快捷创建线程池的方法:
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E6%B1%A0.png?raw=true)
 
 
 
