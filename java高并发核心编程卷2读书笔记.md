@@ -472,11 +472,20 @@ join的三个重载版本：
 
 
 
+**线程的WAITING**状态:
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/%E7%BA%BF%E7%A8%8B%E7%9A%84waiting%E7%8A%B6%E6%80%81.png?raw=true)
 
 
 
+**线程的yield(让步)操作**
 
+让目前正在执行的线程放弃当前的执行，让出CPU的执行权限，使得CPU去执行其他的线程，该线程所对应的操作系统层面的线程从状态上来说会从执行状态变成就绪状态，在java层面是RUNNABLE
 
+注意：
+
+1. 它可以让当前正在执行的线程暂停，但它不会阻塞该线程，只是让线程转入就绪状态
+2. yield只是让当前线程暂停一下，让系统的线程调度器重新调度一次
 
 
 
