@@ -592,17 +592,44 @@ LockSupport.parkNanos(time)/parkUntil(time)方法，对应的唤醒方式为：�
 
 **JUC的线程池架构**
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%9E%B6%E6%9E%84.png?raw=true)
+
+Executor:
+
+Executor是Java异步目标任务的“执行者”接口，其目标是执行目标任务。“执行者”Executor提供了execute()接口来执行已提交的Runnable执行目标实例
+
+```java
+void execute(Runnable command)
+```
 
 
 
+ExecutorService:
+
+ExecutorService继承于Executor。它是Java异步目标任务的“执行者服务接”口，对**外提供异步任务的接收服务**
+
+```java
+//向线程池提交单个异步任务
+ <T> Future<T> submit(Callable<T> task);
+ //向线程池提交批量异步任务
+ <T> List<Future<T>> invokeAll(Collection<? extendsCallable<T>> tasks)throws InterruptedException;
+```
 
 
 
+AbstractExecutorService:
+
+AbstractExecutorService是一个抽象类，它实现了ExecutorService接口。AbstractExecutorService存在的目的是为ExecutorService中的接口提供默认实现
 
 
 
+**ThreadPoolExecutor**:
+
+是线程池的**实现类**，继承于AbstractExecutorService抽象类，线程池中预先提供了**指定数量的可重用线程**，所以使用线程池会**节省系统资源**，并且每个线程池都维护了一些**基础的数据统计**，方便线程的**管理和监控**
 
 
+
+**Executors的4种快捷创建线程池的方法**
 
 
 
