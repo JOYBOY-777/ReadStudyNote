@@ -3445,6 +3445,53 @@ table的长度必须是**2的次方数**，规定0&0是0，hash碰撞：经过�
 
 
 
+**put方法/putVal方法**：
+
+```java
+ public V put(K key, V value) {
+        return putVal(hash(key), key, value, false, true);
+    }
+```
+
+
+
+让hash值更散列的**扰动hash函数**：
+
+```java
+static final int hash(Object key) {
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+    }
+```
+
+当你向hashmap中put一个key为null的值的时候，默认放在桶中的第一个，为了尽可能的散列通过寻址算法的时候只有后四位有用，为了尽可能让计算出来的hash值的后四位也参与运算就要无符号右移16位
+
+
+
+
+
+
+
+
+
+
+
+其实在内部调用的是**putVal**这个方法
+
+```java
+ 
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
