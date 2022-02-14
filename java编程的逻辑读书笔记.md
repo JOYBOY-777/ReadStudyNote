@@ -3630,7 +3630,7 @@ final Node<K,V>[] resize() {
                         ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
                     else { // preserve order
                         //第三种情况：桶位已经形成链表
-
+ 
                         //低位链表：存放在扩容之后的数组的下标位置，与当前数组的下标位置一致。
                         Node<K,V> loHead = null, loTail = null;
                         //高位链表：存放在扩容之后的数组的下表位置为 当前数组下标位置 + 扩容之前数组的长度
