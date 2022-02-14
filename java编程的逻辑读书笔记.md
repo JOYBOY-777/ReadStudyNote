@@ -3468,18 +3468,75 @@ static final int hash(Object key) {
 
 
 
-
-
-
-
-
-
-
-
-其实在内部调用的是**putVal**这个方法
+其实在内部调用的是**putVal**这个方法，这个方法是才是真正插入数据的方法
 
 ```java
- 
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,boolean evict) {
+        //tab：引用当前hashMap的散列表
+        //p：表示当前散列表的元素
+        //n：表示散列表数组的长度
+        //i：表示路由寻址 结果
+        Node<K,V>[] tab; Node<K,V> p; int n, i;
+
+        //延迟初始化逻辑，第一次调用putVal时会初始化hashMap对象中的最耗费内存的散列表
+        if ((tab = table) == null || (n = tab.length) == 0)
+            n = (tab = resize()).length;
+
+        //最简单的一种情况：寻址找到的桶位 刚好是 null，这个时候，直接将当前k-v=>node 扔进去就可以了
+        if ((p = tab[i = (n - 1) & hash]) == null)
+            tab[i] = newNode(hash, key, value, null);
+
+        else {
+            //e：不为null的话，找到了一个与当前要插入的key-value一致的key的元素
+            //k：表示临时的一个key
+            Node<K,V> e; K k;
+
+            //表示桶位中的该元素，与你当前插入的元素的key完全一致，表示后续需要进行替换操作
+            if (p.hash == hash &&
+                    ((k = p.key) == key || (key != null && key.equals(k))))
+                e = p;
+
+            else if (p instanceof TreeNode)//红黑树，下期讲。进QQ群:865-373-238
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+            else {
+                //链表的情况，而且链表的头元素与我们要插入的key不一致。
+                for (int binCount = 0; ; ++binCount) {
+                    //条件成立的话，说明迭代到最后一个元素了，也没找到一个与你要插入的key一致的node
+                    //说明需要加入到当前链表的末尾
+                    if ((e = p.next) == null) {
+                        p.next = newNode(hash, key, value, null);
+                        //条件成立的话，说明当前链表的长度，达到树化标准了，需要进行树化
+                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                            //树化操作
+                            treeifyBin(tab, hash);
+                        break;
+                    }
+                    //条件成立的话，说明找到了相同key的node元素，需要进行替换操作
+                    if (e.hash == hash &&
+                            ((k = e.key) == key || (key != null && key.equals(k))))
+                        break;
+                    p = e;
+                }
+            }
+
+            //e不等于null，条件成立说明，找到了一个与你插入元素key完全一致的数据，需要进行替换
+            if (e != null) { // existing mapping for key
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+
+        //modCount：表示散列表结构被修改的次数，替换Node元素的value不计数
+        ++modCount;
+        //插入新元素，size自增，如果自增后的值大于扩容阈值，则触发扩容。
+        if (++size > threshold)
+            resize();
+        afterNodeInsertion(evict);
+        return null;
+    }
 ```
 
 
