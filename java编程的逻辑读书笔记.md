@@ -3553,6 +3553,141 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,boolean evict) {
 
 
 
+**扩容方法**：为了解决哈希冲突导致的链化影响查询效率的问题，扩容会缓解该问题(比如长度为**8**的链表会被拆开成**两个长度为4**的链表)
+
+```java
+final Node<K,V>[] resize() {
+        //oldTab：引用扩容前的哈希表
+        Node<K,V>[] oldTab = table;
+        //oldCap：表示扩容之前table数组的长度
+        int oldCap = (oldTab == null) ? 0 : oldTab.length;
+        //oldThr：表示扩容之前的扩容阈值，触发本次扩容的阈值
+        int oldThr = threshold;
+        //newCap：扩容之后table数组的大小
+        //newThr：扩容之后，下次再次触发扩容的条件
+        int newCap, newThr = 0;
+
+        //条件如果成立说明 hashMap中的散列表已经初始化过了，这是一次正常扩容
+        if (oldCap > 0) {
+            //扩容之前的table数组大小已经达到 最大阈值后，则不扩容，且设置扩容条件为 int 最大值。
+            if (oldCap >= MAXIMUM_CAPACITY) {
+                threshold = Integer.MAX_VALUE;
+                return oldTab;
+            }
+
+            //oldCap左移一位实现数值翻倍，并且赋值给newCap， newCap 小于数组最大值限制且扩容之前的阈值 >= 16
+            //这种情况下，则 下一次扩容的阈值 等于当前阈值翻倍
+            else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
+                    oldCap >= DEFAULT_INITIAL_CAPACITY)
+                newThr = oldThr << 1; // double threshold
+        }
+
+        //oldCap == 0,说明hashMap中的散列表是null，扩容之前数组长度是0，就把他旧扩容阈值成为数组的长度
+        //1.new HashMap(initCap, loadFactor);
+        //2.new HashMap(initCap);
+        //3.new HashMap(map); 并且这个map有数据
+        else if (oldThr > 0) // initial capacity was placed in threshold
+            newCap = oldThr;
+
+        //oldCap == 0，oldThr == 0
+        //new HashMap();
+        else {               // zero initial threshold signifies using defaults
+            newCap = DEFAULT_INITIAL_CAPACITY;//16
+            newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);//12
+        }
+
+        //newThr（新扩容阈值）为零时，通过newCap和loadFactor计算出一个newThr，然后给取整
+        if (newThr == 0) {
+            float ft = (float)newCap * loadFactor;
+            newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
+                    (int)ft : Integer.MAX_VALUE);
+        }
+
+        threshold = newThr;
+
+        //创建出一个更长 更大的数组
+        @SuppressWarnings({"rawtypes","unchecked"})
+        Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
+        table = newTab;
+
+        //扩容之前的hash表不为null，说明，hashMap本次扩容之前，table不为null
+        if (oldTab != null) {
+
+            for (int j = 0; j < oldCap; ++j) {
+                //当前node节点
+                Node<K,V> e;
+                //说明当前桶位中有数据，但是数据具体是 单个数据，还是链表 还是 红黑树 并不知道
+                if ((e = oldTab[j]) != null) {
+                    //方便JVM GC时回收内存
+                    oldTab[j] = null;
+
+                    //第一种情况：当前桶位只有一个元素，从未发生过碰撞，这情况 直接计算出当前元素应存放在 新数组中的位置，然后扔进去就可以了
+                    if (e.next == null)
+                        newTab[e.hash & (newCap - 1)] = e;
+
+                    //第二种情况：当前节点已经树化，本期先不讲，下一期讲，红黑树。QQ群：865-373-238
+                    else if (e instanceof TreeNode)
+                        ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
+                    else { // preserve order
+                        //第三种情况：桶位已经形成链表
+
+                        //低位链表：存放在扩容之后的数组的下标位置，与当前数组的下标位置一致。
+                        Node<K,V> loHead = null, loTail = null;
+                        //高位链表：存放在扩容之后的数组的下表位置为 当前数组下标位置 + 扩容之前数组的长度
+                        Node<K,V> hiHead = null, hiTail = null;
+
+                        Node<K,V> next;
+                        do {
+                            next = e.next;
+                            //hash-> .... 1 1111
+                            //hash-> .... 0 1111
+                            // 0b 10000
+
+                            if ((e.hash & oldCap) == 0) {
+                                if (loTail == null)
+                                    loHead = e;
+                                else
+                                    loTail.next = e;
+                                loTail = e;
+                            }
+                            else {
+                                if (hiTail == null)
+                                    hiHead = e;
+                                else
+                                    hiTail.next = e;
+                                hiTail = e;
+                            }
+
+                        } while ((e = next) != null);
+
+
+                        if (loTail != null) {
+                            loTail.next = null;
+                            newTab[j] = loHead;
+                        }
+
+                        if (hiTail != null) {
+                            hiTail.next = null;
+                            newTab[j + oldCap] = hiHead;
+                        }
+
+                    }
+                }
+            }
+
+
+
+        }
+        return newTab;
+    }
+```
+
+这个方法做的事：
+
+前半部分计算**新的数组大小和新的扩容阈值**
+
+
+
 
 
 
