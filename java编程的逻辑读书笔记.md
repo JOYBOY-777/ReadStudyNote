@@ -3555,6 +3555,14 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,boolean evict) {
 
 **扩容方法**：为了解决哈希冲突导致的链化影响查询效率的问题，扩容会缓解该问题(比如长度为**8**的链表会被拆开成**两个长度为4**的链表)
 
+扩容示意图：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E5%9B%BE%E7%89%87/HashMap/%E6%89%A9%E5%AE%B9-%E9%93%BE%E8%A1%A8%E5%A4%84%E7%90%86.jpg?raw=true)
+
+寻址为15的hash结果为15，说明通过寻址算法：数组长度-1（15：1111）&扰动hash的结果为1111（15），但是你的扰动hash值只有后四位参与运算，但是通过新的一轮寻址算法的时候，数组长度的hash值多了一位（31:11111）那么你的扰动hash参与运算的位也多了一个，计算结果一定只有两种情况，利用这一点拆分出两个链表，在代码里面实际上是用**e.hash & oldCap**这个算法实现的，用**当前链表节点的hash值**&上**旧容量的大小**，这样的结果也就只有两种情况，拆分成高低位链表
+
+
+
 ```java
 final Node<K,V>[] resize() {
         //oldTab：引用扩容前的哈希表
@@ -3642,7 +3650,8 @@ final Node<K,V>[] resize() {
                             //hash-> .... 1 1111
                             //hash-> .... 0 1111
                             // 0b 10000
-
+							//通过上面的15桶位的例子可以知道结果只有两种情况0或者16
+                            //放在低位链表上
                             if ((e.hash & oldCap) == 0) {
                                 if (loTail == null)
                                     loHead = e;
@@ -3650,6 +3659,7 @@ final Node<K,V>[] resize() {
                                     loTail.next = e;
                                 loTail = e;
                             }
+                            //放在高位链表上
                             else {
                                 if (hiTail == null)
                                     hiHead = e;
@@ -3674,22 +3684,134 @@ final Node<K,V>[] resize() {
                     }
                 }
             }
-
-
-
         }
         return newTab;
     }
 ```
 
-扩容示意图：
-
-![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E7%BC%96%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E5%9B%BE%E7%89%87/HashMap/%E6%89%A9%E5%AE%B9-%E9%93%BE%E8%A1%A8%E5%A4%84%E7%90%86.jpg?raw=true)
-
-寻址为15的hash结果为15，说明通过寻址算法：数组长度-1（15：1111）&扰动hash的结果为1111（15），但是你的扰动hash值只有后四位参与运算，但是通过新的一轮寻址算法的时候，数组长度的hash值多了一位（31:11111）那么你的扰动hash参与运算的位也多了一个，计算结果一定只有两种情况，利用这一点拆分出两个链表
+实际上扩容算法就是前面的部分会计算出下一次触发扩容的扩容的条件，和扩容之后的桶大小，后面代码的部分是根据节点的情况进行相应节点的放置，值得注意的是当前的桶位上是个链表的时候，会根据**当前的hash值&旧的容量大小**来进行链表的拆分操作
 
 
 
+**get方法**：
+
+```java
+ public V get(Object key) {
+        Node<K,V> e;
+        return (e = getNode(hash(key), key)) == null ? null : e.value;
+    }
+
+final Node<K,V> getNode(int hash, Object key) {
+        //tab：引用当前hashMap的散列表
+        //first：桶位中的头元素
+        //e：临时node元素
+        //n：table数组长度
+        Node<K,V>[] tab; Node<K,V> first, e; int n; K k;
+
+        if ((tab = table) != null && (n = tab.length) > 0 &&
+                (first = tab[(n - 1) & hash]) != null) {
+            //第一种情况：定位出来的桶位元素 即为咱们要get的数据
+            if (first.hash == hash && // always check first node
+                    ((k = first.key) == key || (key != null && key.equals(k))))
+                return first;
+
+            //说明当前桶位不止一个元素，可能 是链表 也可能是 红黑树
+            if ((e = first.next) != null) {
+                //第二种情况：桶位升级成了 红黑树
+                if (first instanceof TreeNode)//下一期说
+                    return ((TreeNode<K,V>)first).getTreeNode(hash, key);
+                //第三种情况：桶位形成链表
+                do {
+                    if (e.hash == hash &&
+                            ((k = e.key) == key || (key != null && key.equals(k))))
+                        return e;
+
+                } while ((e = e.next) != null);
+            }
+        }
+        return null;
+    }
+```
+
+取元素的时候**第一种情况**：当前的桶位上的元素就是你要找的元素，没准这个桶位上面的元素已经树化，或者链化但是都与所谓
+
+在不是单个元素的情况下（防止当前桶位上就一个元素，并且你还给取走了），就是链表和树的情况，是树的话就通过树的方法取，是链表的话就遍历然后hash还有值都一样的情况下就返回
+
+
+
+**remove方法**：
+
+```java
+ final Node<K,V> removeNode(int hash, Object key, Object value,
+                               boolean matchValue, boolean movable) {
+        //tab：引用当前hashMap中的散列表
+        //p：当前node元素
+        //n：表示散列表数组长度
+        //index：表示寻址结果
+        Node<K,V>[] tab; Node<K,V> p; int n, index;
+
+        if ((tab = table) != null && (n = tab.length) > 0 &&
+                (p = tab[index = (n - 1) & hash]) != null) {
+            //说明路由的桶位是有数据的，需要进行查找操作，并且删除
+
+            //node：查找到的结果
+            //e：当前Node的下一个元素
+            Node<K,V> node = null, e; K k; V v;
+
+            //第一种情况：当前桶位中的元素 即为 你要删除的元素
+            if (p.hash == hash &&
+                    ((k = p.key) == key || (key != null && key.equals(k))))
+                node = p;
+
+
+            else if ((e = p.next) != null) {
+                //说明，当前桶位 要么是 链表 要么 是红黑树
+
+                if (p instanceof TreeNode)//判断当前桶位是否升级为 红黑树了
+                    //第二种情况
+                    //红黑树查找操作，下一期再说
+                    node = ((TreeNode<K,V>)p).getTreeNode(hash, key);
+                else {
+                    //第三种情况
+                    //链表的情况
+                    do {
+                        if (e.hash == hash &&
+                                ((k = e.key) == key ||
+                                        (key != null && key.equals(k)))) {
+                            node = e;
+                            break;
+                        }
+                        p = e;
+                    } while ((e = e.next) != null);
+                }
+            }
+
+
+            //判断node不为空的话，说明按照key查找到需要删除的数据了
+            if (node != null && (!matchValue || (v = node.value) == value ||
+                    (value != null && value.equals(v)))) {
+
+                //第一种情况：node是树节点，说明需要进行树节点移除操作
+                if (node instanceof TreeNode)
+                    ((TreeNode<K,V>)node).removeTreeNode(this, tab, movable);
+
+                //第二种情况：桶位元素即为查找结果，则将该元素的下一个元素放至桶位中
+                else if (node == p)
+                    tab[index] = node.next;
+
+                else
+                    //第三种情况：将当前元素p的下一个元素 设置成 要删除元素的 下一个元素。
+                    p.next = node.next;
+
+                ++modCount;
+                --size;
+                afterNodeRemoval(node);
+                return node;
+            }
+        }
+        return null;
+    }
+```
 
 
 
@@ -3720,9 +3842,6 @@ final Node<K,V>[] resize() {
 
 
 
-这个方法做的事：
-
-前半部分计算**新的数组大小和新的扩容阈值**
 
 
 
