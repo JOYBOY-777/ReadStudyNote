@@ -1178,11 +1178,43 @@ class Solution {
 
 # 剑指offer
 
-## 剑指03 数组中重复的数字
+### 剑指03 数组中重复的数字
+
+```java
+class Solution {
+    public int findRepeatNumber(int[] nums) {
+        Set<Integer> set = new HashSet();
+        for(int i = 0;i<nums.length;i++){
+            if(set.contains(nums[i])) return nums[i];
+            set.add(nums[i]);
+        }
+        return -1;
+    }
+}
+```
+
+就是用一个hashset来保存元素，利用里面没有重复元素的特点
 
 
 
+### 剑指04 二维数组中的查找
 
+```java
+class Solution {
+    public boolean findNumberIn2DArray(int[][] matrix, int target) {
+        if(matrix==null || matrix.length==0||matrix[0].length==0) return false;
+        int r = matrix.length,c = matrix[0].length;
+        for(int i = 0;i<r;i++){
+            for(int j = 0;j<c;j++){
+                if(matrix[i][j]==target) return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+暴力解法，值得注意的是二维数组arr[0].length的长度是表示列的元素个数
 
 
 
