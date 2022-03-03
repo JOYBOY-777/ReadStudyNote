@@ -1218,6 +1218,24 @@ class Solution {
 
 
 
+### 剑指06 从头到尾打印链表
+
+```java
+class Solution {
+    public int[] reversePrint(ListNode head) {
+       List<Integer> res = new ArrayList();
+       while(head!=null){
+            res.add(0,head.val);
+            head = head.next;
+       }
+       int[] arr = new int[res.size()];
+       for(int i = 0;i<res.size();i++)
+           arr[i] = res.get(i);
+       return arr;
+    }
+}
+```
+
 
 
 
