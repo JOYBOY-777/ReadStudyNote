@@ -1270,6 +1270,34 @@ class Solution {
 
 
 
+### lc 101对称二叉树
+
+```java
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        LinkedList<TreeNode> que = new LinkedList();
+        if(root==null) return false;
+        que.add(root.left);
+        que.add(root.right);
+        while(!que.isEmpty()){
+            TreeNode left = que.remove();
+            TreeNode right = que.remove();
+            if(left==null && right==null) continue;
+            if(left==null || right==null || left.val!=right.val) return false;
+            que.add(left.left);
+            que.add(right.right);
+            que.add(left.right);
+            que.add(right.left);
+        }
+        return true;
+    }
+}
+```
+
+利用队列，一次比较两个节点，空也算是一种对称的情况，节点的加入顺序是外层向内层加入，然后在比较，有空节点或者节点值不一样的情况就返回false
+
+
+
 
 
 
