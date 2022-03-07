@@ -912,6 +912,27 @@ class Solution {
         return res;
     }
 }
+
+//模板二：推荐
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList();
+        Deque<TreeNode> stack = new ArrayDeque();
+        while(root!=null || !stack.isEmpty()){
+            //找到最左边的
+            while(root!=null){
+             stack.push(root);
+             root = root.left;
+            }
+            //出栈
+             root = stack.pop();
+             res.add(root.val);
+            //更新root遍历他的右边
+             root = root.right;
+        }
+         return res;
+    }
+}
 ```
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/algorithm/%E7%AE%97%E6%B3%95gif/%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86.gif?raw=true)
