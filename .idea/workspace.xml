@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/计网.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/algorithm/algorithm.md" beforeDir="false" afterPath="$PROJECT_DIR$/algorithm/algorithm.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +92,8 @@
       <workItem from="1646054686742" duration="616000" />
       <workItem from="1646057301402" duration="382000" />
       <workItem from="1646297467038" duration="5489000" />
-      <workItem from="1646391511729" duration="712000" />
+      <workItem from="1646391511729" duration="750000" />
+      <workItem from="1646624427548" duration="667000" />
     </task>
     <servers />
   </component>

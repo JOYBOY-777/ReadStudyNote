@@ -1146,6 +1146,42 @@ class Solution {
 
 
 
+### 117 填充每个节点的下一个右侧节点指针||
+
+```java
+class Solution {
+    public Node connect(Node root) {
+        LinkedList<Node> que = new LinkedList();
+        if(root == null) return root;
+        que.add(root);
+        while(!que.isEmpty()){
+            int size = que.size();
+            Node node = que.get(0);
+            for(int i = 1;i<size;i++){
+                node.next = que.get(i);
+                node = que.get(i);
+            }
+            for(int i = 0;i<size;i++){
+                 node = que.remove();
+                if(node.left!=null) que.add(node.left);
+                if(node.right!=null) que.add(node.right);
+            }
+        }
+        return root;
+    }
+}
+```
+
+一样的代码...
+
+
+
+### 104 二叉树的最大深度
+
+```java
+
+```
+
 
 
 
