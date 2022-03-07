@@ -1298,7 +1298,30 @@ class Solution {
 
 
 
+### 222 完全二叉树的节点个数
 
+```java
+class Solution {
+    public int countNodes(TreeNode root) {
+        LinkedList<TreeNode> que = new LinkedList();
+        if(root==null) return 0;
+        que.add(root);
+        int count = 0;
+        while(!que.isEmpty()){
+            int size = que.size();
+            for(int i = 0;i<size;i++){
+                count++;
+                TreeNode node = que.remove();
+                if(node.left!=null) que.add(node.left);
+                if(node.right!=null) que.add(node.right);
+            }
+        }
+        return count;
+    }
+}
+```
+
+这个题就是把负责计数的count放在遍历队列元素节点的for循环里面就行了
 
 
 
