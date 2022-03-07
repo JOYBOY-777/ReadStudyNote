@@ -964,29 +964,22 @@ class Solution {
 
 ```java
 class Solution {
-    List<List<Integer>> resList = new ArrayList();
     public List<List<Integer>> levelOrder(TreeNode root) {
-            order(root);
-            return resList;
-    }
-
-    public void order(TreeNode node){
-        if(node==null) return;
-        Queue<TreeNode> que = new LinkedList();
-        //头结点加入队列
-        que.offer(node);
-        while(!que.isEmpty()){
-            List<Integer> itemList = new ArrayList();
-            int len = que.size();
-            while(len>0){
-                TreeNode tnode = que.poll();
-                itemList.add(tnode.val);
-                if(tnode.left!=null) que.offer(tnode.left);
-                if(tnode.right!=null) que.offer(tnode.right);
-                len--;
+        List<List<Integer>> res = new ArrayList();
+        Queue<TreeNode> q = new LinkedList();
+        if(root != null) q.offer(root);
+        while(!q.isEmpty()){
+            int size = q.size();
+            List <Integer> level = new ArrayList();
+            for(int i = 0;i<size;i++){
+                TreeNode cur = q.poll();
+                level.add(cur.val);
+                if(cur.left!=null) q.offer(cur.left);
+                if(cur.right!=null) q.offer(cur.right);
             }
-            resList.add(itemList);
+            res.add(level);
         }
+        return res;
     }
 }
 ```
@@ -1200,7 +1193,24 @@ class Solution {
 ### 104 二叉树的最大深度
 
 ```java
-
+class Solution {
+    public int maxDepth(TreeNode root) {
+        LinkedList<TreeNode> que = new LinkedList();
+        if(root==null) return 0;
+        que.add(root);
+        int deep = 0;
+        while(!que.isEmpty()){
+            deep++;
+            int size= que.size();
+            for(int i = 0;i<size;i++){
+               TreeNode node = que.remove();
+                if(node.left!=null) que.add(node.left);
+                if(node.right!=null) que.add(node.right);
+            }
+        }
+        return deep;
+    }
+}
 ```
 
 
