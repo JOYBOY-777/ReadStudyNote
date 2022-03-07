@@ -1245,6 +1245,29 @@ class Solution {
 
 
 
+### lc 226 反转二叉树
+
+```java
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        LinkedList<TreeNode> que = new LinkedList();
+        if(root==null) return root;
+        que.add(root);
+        while(!que.isEmpty()){
+            TreeNode node = que.remove();
+            TreeNode mid = node.right;
+            node.right = node.left;
+            node.left = mid;
+            if(node.left!=null) que.add(node.left);
+            if(node.right!=null) que.add(node.right);
+        }
+        return root;
+    }
+}
+```
+
+利用二叉树的层序遍历遍历每一个节点，然后在互换位置
+
 
 
 
