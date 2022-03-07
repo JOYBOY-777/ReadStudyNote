@@ -1213,7 +1213,35 @@ class Solution {
 }
 ```
 
+实际上最大深度就是层数
 
+
+
+### 111 二叉树的最小深度
+
+```java
+class Solution {
+    public int minDepth(TreeNode root) {
+        LinkedList<TreeNode> que = new LinkedList();
+        if(root==null) return 0;
+        que.add(root);
+        int deep = 0;
+        while(!que.isEmpty()){
+            deep++;
+            int size = que.size();
+            for(int i = 0;i<size;i++){
+                TreeNode node = que.remove();
+                if(node.left!=null) que.add(node.left);
+                if(node.right!=null) que.add(node.right);
+                if(node.left==null&&node.right==null) return deep;
+            }
+        }
+        return deep;
+    }
+}
+```
+
+当只有左孩子右孩子没有的时候就说明到达了最小深度
 
 
 
