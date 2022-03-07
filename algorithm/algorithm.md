@@ -1325,7 +1325,26 @@ class Solution {
 
 
 
+### 110 平衡二叉树
 
+```java
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        return getHeight(root) != -1;
+    }
+
+    public int getHeight(TreeNode root){
+        if(root==null) return 0;
+        int lh = getHeight(root.left);
+        if(lh==-1) return -1;
+        int rh = getHeight(root.right);
+        if(rh==-1) return -1;
+        return Math.abs(lh-rh)>1?-1:Math.max(lh,rh)+1;
+    }
+}
+```
+
+不理解 return Math.abs(lh-rh)>1?-1:Math.max(lh,rh)+1;
 
 
 
