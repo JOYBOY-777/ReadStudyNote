@@ -1427,7 +1427,57 @@ class Solution {
 
 
 
+### 513 找树左下角的值
 
+我的傻办法：
+
+```java
+class Solution {
+    public int findBottomLeftValue(TreeNode root) {
+        List<Integer> res = new ArrayList();
+        LinkedList<TreeNode> que = new LinkedList();
+        if(root==null) return 0;
+        que.add(root);
+        while(!que.isEmpty()){
+            int size = que.size();
+            for(int i = 0;i<size;i++){
+                TreeNode node = que.remove();
+                if(i==0) res.add(node.val);
+                if(node.left!=null) que.add(node.left);
+                if(node.right!=null) que.add(node.right);
+            }
+        }
+        return res.get(res.size()-1);
+    }
+}
+```
+
+
+
+其实不用开一个list集合的：
+
+```java
+class Solution {
+    public int findBottomLeftValue(TreeNode root) {
+        LinkedList<TreeNode> que = new LinkedList();
+        if(root==null) return 0;
+        que.add(root);
+        int res = 0;
+        while(!que.isEmpty()){
+            int size = que.size();
+            for(int i = 0;i<size;i++){
+                TreeNode node = que.remove();
+                if(i==0) res = node.val;
+                if(node.left!=null) que.add(node.left);
+                if(node.right!=null) que.add(node.right);
+            }
+        }
+        return res;
+    }
+}
+```
+
+每一次赋值，刷新res的值就可以了
 
 
 
@@ -1512,56 +1562,6 @@ class Solution {
 
 
 ### 剑指07 重建二叉树
-
-我的傻办法：
-
-```java
-class Solution {
-    public int findBottomLeftValue(TreeNode root) {
-        List<Integer> res = new ArrayList();
-        LinkedList<TreeNode> que = new LinkedList();
-        if(root==null) return 0;
-        que.add(root);
-        while(!que.isEmpty()){
-            int size = que.size();
-            for(int i = 0;i<size;i++){
-                TreeNode node = que.remove();
-                if(i==0) res.add(node.val);
-                if(node.left!=null) que.add(node.left);
-                if(node.right!=null) que.add(node.right);
-            }
-        }
-        return res.get(res.size()-1);
-    }
-}
-```
-
-
-
-其实不用开一个list集合的：
-
-```java
-class Solution {
-    public int findBottomLeftValue(TreeNode root) {
-        LinkedList<TreeNode> que = new LinkedList();
-        if(root==null) return 0;
-        que.add(root);
-        int res = 0;
-        while(!que.isEmpty()){
-            int size = que.size();
-            for(int i = 0;i<size;i++){
-                TreeNode node = que.remove();
-                if(i==0) res = node.val;
-                if(node.left!=null) que.add(node.left);
-                if(node.right!=null) que.add(node.right);
-            }
-        }
-        return res;
-    }
-}
-```
-
-每一次赋值，刷新res的值就可以了
 
 
 
