@@ -1344,11 +1344,40 @@ class Solution {
 }
 ```
 
-理解 return Math.abs(lh-rh)>1?-1:Math.max(lh,rh)+1：就是当前节点为根节点的二叉树所在的高度为左右节点高度的最大值+1，这个1是根节点的高度默认为1，可以理解为当前节点所在二叉树的高度
+理解 return Math.abs(lh-rh)>1?-1:Math.max(lh,rh)+1：就是当前节点为根节点的二叉树所在的高度为左右节点高度的最大值+1，这个1是根节点的高度默认为1，可以理解为当前节点为根节点所在二叉树的高度
 
 
 
+### 257 二叉树的所有路径
 
+```java
+ class Solution {
+     List<String> res = new ArrayList();
+     LinkedList<String> path = new LinkedList();
+    public List<String> binaryTreePaths(TreeNode root) {
+       dfs(root);
+       return res;
+    }
+
+    public void dfs(TreeNode root){
+        path.add(String.valueOf(root.val));
+        if(root.left==null&&root.right==null){
+            res.add(String.join("->",path));
+            return;
+        }
+        if(root.left!=null){
+            dfs(root.left);
+            path.removeLast();
+        }
+        if(root.right!=null){
+            dfs(root.right);
+            path.removeLast();
+        }
+    }
+}
+```
+
+利用队列保存路径，并在递归的但层逻辑上回溯，还得掌握好**递归的使用**
 
 
 
