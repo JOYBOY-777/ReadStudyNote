@@ -1344,7 +1344,7 @@ class Solution {
 }
 ```
 
-不理解 return Math.abs(lh-rh)>1?-1:Math.max(lh,rh)+1;
+理解 return Math.abs(lh-rh)>1?-1:Math.max(lh,rh)+1：就是当前节点为根节点的二叉树所在的高度为左右节点高度的最大值+1，这个1是根节点的高度默认为1，可以理解为当前节点所在二叉树的高度
 
 
 
