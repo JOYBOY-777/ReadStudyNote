@@ -1381,6 +1381,60 @@ class Solution {
 
 
 
+### 404 左叶子之和
+
+递归：
+
+```java
+class Solution {
+    public int sumOfLeftLeaves(TreeNode root) {
+        if(root==null) return 0;
+        int leftValue = sumOfLeftLeaves(root.left);
+        int rightValue = sumOfLeftLeaves(root.right);
+        int value = 0;
+        if(root.left!=null && root.left.left==null && root.left.right==null) 
+            value += root.left.val;
+        int sum = leftValue+rightValue+value;
+        return sum;    
+    }
+}
+```
+
+得查看一下root有没有求和的条件
+
+
+
+迭代：
+
+```java
+class Solution {
+    public int sumOfLeftLeaves(TreeNode root) {
+        Deque<TreeNode> steak = new ArrayDeque();
+        if(root==null) return 0;
+        steak.push(root);
+        int res = 0;
+        while(!steak.isEmpty()){
+            TreeNode node = steak.pop();
+            if(node.left!=null && node.left.left==null && node.left.right==null)
+            res+=node.left.val;
+            if(node.left!=null) steak.push(node.left);
+            if(node.right!=null) steak.push(node.right);
+        }
+        return res;
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
