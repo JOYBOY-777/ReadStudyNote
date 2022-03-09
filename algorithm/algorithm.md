@@ -1484,10 +1484,30 @@ class Solution {
 ### 112 路径总和
 
 ```java
+class Solution {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if(root==null) return false;
+        return check(root,targetSum-root.val);
+    }
 
+    public boolean check(TreeNode root,int sum){
+        if(root.left==null && root.right==null && sum==0) return true;
+        if(root.left!=null){
+            sum-=root.left.val;
+            if(check(root.left,sum)) return true;
+            sum+=root.left.val;
+        }
+        if(root.right!=null){
+            sum-=root.right.val;
+            if(check(root.right,sum)) return true;
+            sum+=root.right.val;
+        }
+        return false;
+    }
+}
 ```
 
-
+回溯就是递归前修改的状态在递归后修改回来，来保持上一个状态
 
 
 
