@@ -1483,6 +1483,8 @@ class Solution {
 
 ### 112 路径总和
 
+搜索某一路径，需要返回值
+
 ```java
 class Solution {
     public boolean hasPathSum(TreeNode root, int targetSum) {
@@ -1515,6 +1517,34 @@ class Solution {
 回溯就是递归前修改的状态在递归后修改回来，来保持上一个状态
 
 
+
+### 113 路径总和 ||
+
+搜索整棵树，不需要返回值
+
+```java
+class Solution {
+    List<List<Integer>> res = new ArrayList();
+    LinkedList<Integer> path = new LinkedList();
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        dfs(root,targetSum);
+        return res;
+    }
+
+    public void dfs(TreeNode root,int targetSum){
+        if(root == null) return;
+        path.add(root.val);
+        targetSum -= root.val;
+        if(root.left == null && root.right == null && targetSum == 0) 
+        res.add(new LinkedList(path));
+        dfs(root.left,targetSum);
+        dfs(root.right,targetSum);
+        path.removeLast();
+    }
+}
+```
+
+这也是回溯，感觉树还有dfs回溯密不可分
 
 
 
