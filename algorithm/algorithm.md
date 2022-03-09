@@ -1550,7 +1550,32 @@ class Solution {
 
 
 
+### 106 从中序与后序遍历序列构造二叉树
 
+```java
+class Solution {
+    Map<Integer,Integer> map = new HashMap();
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        int n = inorder.length;
+        for(int i = 0;i<n;i++)
+            map.put(inorder[i],i);
+        return dfs(inorder,postorder,0,n-1,0,n-1);    
+    }
+
+    public TreeNode dfs(int[] inorder,int[] postorder,int il,int ir,int pl,int pr){
+        if(il>ir || pl>pr) return null;
+        int k = map.get(postorder[pr]);
+        TreeNode node = new TreeNode(postorder[pr]);
+        //递归，根节点左子树的位置是在中序遍历和后序遍历中左子树的下标位置
+        node.left = dfs(inorder,postorder,il,k-1,pl,pl+k-1-il);
+        //递归，根节点右子树的位置是在中序遍历和后序遍历中右子树的下标位置
+        node.right = dfs(inorder,postorder,k+1,ir,pl+k-1-il+1,pr-1);
+        reurn node;
+    }
+}
+```
+
+要做到逐渐理解递归，与DFS
 
 
 
