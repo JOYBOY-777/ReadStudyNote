@@ -1491,15 +1491,20 @@ class Solution {
     }
 
     public boolean check(TreeNode root,int sum){
+        //遇到左右节点为空并且合为空，表示当前节点已经是末尾
         if(root.left==null && root.right==null && sum==0) return true;
+        //左节点不为空继续递归，知道找到符合的节点
         if(root.left!=null){
             sum-=root.left.val;
             if(check(root.left,sum)) return true;
             sum+=root.left.val;
         }
+        //右点不为空继续递归，知道找到符合的节点
         if(root.right!=null){
+            //递归之前的状态
             sum-=root.right.val;
             if(check(root.right,sum)) return true;
+            //恢复递归之前的状态，回溯
             sum+=root.right.val;
         }
         return false;
