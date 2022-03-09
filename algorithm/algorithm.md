@@ -1533,12 +1533,14 @@ class Solution {
 
     public void dfs(TreeNode root,int targetSum){
         if(root == null) return;
+        //递归之前的状态
         path.add(root.val);
         targetSum -= root.val;
         if(root.left == null && root.right == null && targetSum == 0) 
         res.add(new LinkedList(path));
         dfs(root.left,targetSum);
         dfs(root.right,targetSum);
+        //递归之后的状态还原
         path.removeLast();
     }
 }
