@@ -1565,6 +1565,7 @@ class Solution {
 
     public TreeNode dfs(int[] inorder,int[] postorder,int il,int ir,int pl,int pr){
         if(il>ir || pl>pr) return null;
+        //获取根节点在中序遍历中的下标
         int k = map.get(postorder[pr]);
         TreeNode node = new TreeNode(postorder[pr]);
         //递归，根节点左子树的位置是在中序遍历和后序遍历中左子树的下标位置
@@ -1583,7 +1584,25 @@ class Solution {
 ### 105 从前序与中序遍历序列构造二叉树
 
 ```java
+class Solution {
+    Map<Integer,Integer> map = new HashMap();
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        int n = inorder.length;
+        for(int i = 0;i<n;i++){
+            map.put(inorder[i],i);
+        }
+        return dfs(preorder,inorder,0,n-1,0,n-1);
+    }
 
+    public TreeNode dfs(int[] preorder,int[] inorder,int prl,int prr,int il,int ir){
+        if(prl>prr || il>ir) return null;
+        int k = map.get(preorder[prl]);
+        TreeNode node = new TreeNode(preorder[prl]);
+        node.left = dfs(preorder,inorder,prl+1,k-il+prl,il,k-1);
+        node.right = dfs(preorder,inorder,k-il+prl+1,prr,k+1,ir);
+        return node;
+    }
+}
 ```
 
 
