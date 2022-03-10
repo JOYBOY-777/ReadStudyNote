@@ -1558,6 +1558,7 @@ class Solution {
     public TreeNode buildTree(int[] inorder, int[] postorder) {
         int n = inorder.length;
         for(int i = 0;i<n;i++)
+            //利用hash记录中序遍历节点值与数组下标的位置，方便获取根节点的下标位置（后序遍历根节点的值确定）
             map.put(inorder[i],i);
         return dfs(inorder,postorder,0,n-1,0,n-1);    
     }
@@ -1576,6 +1577,14 @@ class Solution {
 ```
 
 要做到逐渐理解递归，与DFS
+
+
+
+### 105 从前序与中序遍历序列构造二叉树
+
+```java
+
+```
 
 
 
