@@ -1607,6 +1607,34 @@ class Solution {
 
 
 
+### 654 最大二叉树
+
+```java
+class Solution {
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        return dfs(nums,0,nums.length-1);
+    }
+
+    public TreeNode dfs(int[] nums,int l,int r){
+        if(l>r) return null;
+        int max = Integer.MIN_VALUE,j = 0;
+        for(int i = l;i<r+1;i++){
+            if(nums[i]>max){
+                max = nums[i];
+                j = i;
+            }
+        }
+
+        TreeNode node = new TreeNode(max);
+        node.left = dfs(nums,l,j-1);
+        node.right = dfs(nums,j+1,r);
+        return node;
+    }
+}
+```
+
+这个题就是相当于在中序排序中手动计算根节点的位置，**记住吧 在递归中求最大值还是用Integer.MIN_VALUE**
+
 
 
 
