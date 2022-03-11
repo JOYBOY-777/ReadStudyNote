@@ -1637,7 +1637,39 @@ class Solution {
 
 
 
+### 617 合并二叉树
 
+```java
+class Solution {
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        if(root1==null) return root2;
+        if(root2==null) return root1;
+        TreeNode node = new TreeNode(root1.val+root2.val);
+        node.left = mergeTrees(root1.left,root2.left);
+        node.right = mergeTrees(root1.right,root2.right);
+        return node;
+    }
+}
+```
+
+注意两个根节点是否为null，为null的话就返回另一个（因为有一个点为null叠加之后返回的就是另一个节点）
+
+
+
+### 700 二叉搜索树中的搜索
+
+```java
+class Solution {
+    public TreeNode searchBST(TreeNode root, int val) {
+        if(root == null || root.val == val) return root;
+        if(root.val<val) return searchBST(root.right,val);
+        if(root.val>val) return searchBST(root.left,val);
+        return null;
+    }
+}
+```
+
+根据节点大小与val值相比较，分情况在递归
 
 
 
