@@ -1673,6 +1673,164 @@ class Solution {
 
 
 
+### 98 验证二叉搜索树
+
+```java
+class Solution {
+    List<Integer> res = new ArrayList();
+    public boolean isValidBST(TreeNode root) {
+        isSearchTree(root);
+        for(int i = 1; i<res.size();i++){
+            if(res.get(i)<=res.get(i-1)) return false;
+        }
+        return true;   
+    }
+
+    public void isSearchTree(TreeNode node){
+        if(node == null) return;
+        isSearchTree(node.left);
+        res.add(node.val);
+        isSearchTree(node.right);
+    }
+}
+```
+
+注意：在遍历的时候要<=，因为二叉搜索树中不允许有等于的元素，二叉搜索树的顺序是升序的
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 剑指offer
 
 ### 剑指03 数组中重复的数字
