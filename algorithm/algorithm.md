@@ -1726,7 +1726,47 @@ class Solution {
 
 
 
+### 501 二叉搜索树中的众数
 
+```java
+class Solution {
+    int count = 0;  //当前元素个数
+    int max = 1;    //当前元素最大个数
+    int pre_value = 0;  //前一个元素的值
+    List <Integer> list = new ArrayList();  
+
+    public int[] findMode(TreeNode root) {
+        BST(root);
+        int [] result = new int [list.size()];  
+        for(int i = 0; i < list.size(); i++) {  
+            result[i] = list.get(i);
+        }
+        return result;
+    }
+
+    public void BST(TreeNode root) {    
+        if(root == null) return;
+        BST(root.left);
+
+        if(root.val == pre_value) { //如果和前一个元素值相同 当前元素个数+1
+            count++;
+        }  else {       //否则不同的话就更新前一个元素的值，并且刷新当前元素的个数
+            pre_value = root.val;
+            count = 1;
+        }
+        if(count == max){   //如果当前元素个数与最大个数相同
+            list.add(root.val); //加入list里
+        } else if (count > max) {   //或者超过最大个数
+            list.clear();   //清空整个list
+            list.add(root.val); //加入list里（新的max）
+            max = count;    //刷新max
+        }
+        BST(root.right);
+    }
+}
+```
+
+核心逻辑就是递归处理中序遍历当前元素的根节点
 
 
 
