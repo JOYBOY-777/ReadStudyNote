@@ -1699,6 +1699,33 @@ class Solution {
 
 
 
+### 530 二叉搜索树的最小绝对差
+
+```java
+class Solution {
+    List<Integer> res = new ArrayList();
+    public int getMinimumDifference(TreeNode root) {
+        int min = Integer.MAX_VALUE;
+        InOrder(root);
+        for(int i = 1;i<res.size();i++){
+               min = Math.min(min,res.get(i)-res.get(i-1));
+        }
+        return min;
+    }
+
+    public void InOrder(TreeNode node){
+        if(node == null) return;
+        InOrder(node.left);
+        res.add(node.val);
+        InOrder(node.right);
+    }
+}
+```
+
+注意：不需要用两层for这个关系可以用数组的后一个arr[i]-arr[i-1]来代替，这样时间复杂度就少很多...
+
+
+
 
 
 
