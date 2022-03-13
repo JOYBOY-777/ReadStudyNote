@@ -1772,6 +1772,10 @@ class Solution {
 
 ### 236 二叉树的最近公共祖先
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/algorithm/%E7%AE%97%E6%B3%95gif/236%E9%A2%98%E8%A7%A3.png?raw=true)
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/algorithm/%E7%AE%97%E6%B3%95gif/236%E9%A2%98%E8%A7%A32.png?raw=true)
+
 ```java
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) 
