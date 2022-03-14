@@ -1828,10 +1828,37 @@ class Solution {
 
 
 
-### 450 删除二叉搜索树中的节点
+### 450 删除二叉搜索树中的节点(经典)
 
 ```java
-
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        //递归终止条件
+        if(root == null) return root;
+        //单层递归的逻辑，如果找到要删除的key，看他属于那种要删除的情况，根据不同的情况返回不同的根节点
+        if(root.val == key){
+            //删除节点的左节点为null，删除节点后新的根节点就是被删除节点的右节点
+            if(root.left == null) return root.right;
+            //删除节点的右节点为null，删除节点后新的根节点就是被删除节点的左节点
+            else if(root.right == null) return root.left;
+            //删除节点左右都有节点，那么就把删除节点的左子节点放到删除节点右子节点的左子节点上
+            else{
+                TreeNode node = root.right;
+                while(node.left!=null){
+                    node = node.left;
+                }
+                node.left = root.left;
+                //新的节点就是删除节点的右子节点，并返回
+                root = root.right;
+                return root;
+            }
+        }
+        //下探到下一层，根据二叉搜索树的特点递归不同的分支
+        if(root.val<key) root.right = deleteNode(root.right,key);
+        if(root.val>key) root.left = deleteNode(root.left,key);
+        return root;
+    }
+}
 ```
 
 
