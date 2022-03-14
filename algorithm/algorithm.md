@@ -1794,7 +1794,20 @@ class Solution {
 
 
 
+### 235 二叉搜索树的最近公共祖先
 
+```java
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null) return root;
+        if(root.val<p.val && root.val<q.val) return lowestCommonAncestor(root.right,p,q);
+        if(root.val>p.val && root.val>q.val) return lowestCommonAncestor(root.left,p,q);
+        return root;
+    }
+}
+```
+
+注意这个是二叉搜索树，所以有顺序可言，当root节点的大小可以与p,q节点的大小进行比较，然后在按照情况递归
 
 
 
