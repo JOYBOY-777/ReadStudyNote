@@ -1754,9 +1754,9 @@ class Solution {
             pre_value = root.val;
             count = 1;
         }
-        if(count == max){   //如果当前元素个数与最大个数相同
+        if(count == max)   //如果当前元素个数与最大个数相同
             list.add(root.val); //加入list里
-        } else if (count > max) {   //或者超过最大个数
+         if (count > max) {   //或者超过最大个数
             list.clear();   //清空整个list
             list.add(root.val); //加入list里（新的max）
             max = count;    //刷新max
@@ -1808,6 +1808,23 @@ class Solution {
 ```
 
 注意这个是二叉搜索树，所以有顺序可言，当root节点的大小可以与p,q节点的大小进行比较，然后在按照情况递归
+
+
+
+### 701 二叉搜索树中的插入操作
+
+```java
+class Solution {
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if(root == null) return new TreeNode(val);
+        if(root.val<val) root.right = insertIntoBST(root.right,val);
+        if(root.val>val) root.left = insertIntoBST(root.left,val);
+        return root;
+    }
+}
+```
+
+根据二叉搜索树特点看左右区间大小的比较，并且用左右子树分别接收来分配位置
 
 
 
