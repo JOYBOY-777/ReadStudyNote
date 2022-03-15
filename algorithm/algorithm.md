@@ -1863,6 +1863,25 @@ class Solution {
 
 
 
+### 669 修建二叉搜索树
+
+```java
+class Solution {
+    public TreeNode trimBST(TreeNode root, int low, int high) {
+        //递归终止条件
+        if(root == null) return root;
+        //单层的逻辑，根节点<low 遍历右子树返回一个比low大的
+        if(root.val<low) return trimBST(root.right,low,high);
+        //下面与上面相反
+        if(root.val>high) return trimBST(root.left,low,high);
+        //下探到下一层，当没有触发上面的逻辑就继续遍历左右的两遍子树，知道找到可以触发上面的条件的root节点，并且更新root节点
+        root.left = trimBST(root.left,low,high);
+        root.right = trimBST(root.right,low,high);
+        return root;
+    }
+}
+```
+
 
 
 
