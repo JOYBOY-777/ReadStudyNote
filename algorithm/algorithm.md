@@ -1865,6 +1865,8 @@ class Solution {
 
 ### 669 修建二叉搜索树
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/algorithm/%E7%AE%97%E6%B3%95gif/669%E9%A2%98%E8%A7%A3.png?raw=true)
+
 ```java
 class Solution {
     public TreeNode trimBST(TreeNode root, int low, int high) {
@@ -1884,7 +1886,26 @@ class Solution {
 
 
 
+### 108 将有序数组转换成二叉树
 
+```java
+class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return dfs(nums,0,nums.length-1);
+    }
+
+    public TreeNode dfs(int[] arr,int il,int ir){
+        if(il>ir) return null;
+        int midIndex = (il+ir)/2;
+        TreeNode node = new TreeNode(arr[midIndex]);
+        node.left = dfs(arr,il,midIndex-1);
+        node.right = dfs(arr,midIndex+1,ir);
+        return node;
+    }
+}
+```
+
+就是算出中间下标然后实例化，构造二叉树的题都是l,r下标来进行递归处理
 
 
 
