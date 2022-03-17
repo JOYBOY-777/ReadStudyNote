@@ -1941,7 +1941,6 @@ class Solution {
        dfs(n,k,1);
        return res;
     }
-
     public void dfs(int n,int k,int index){
         //结束条件
         if(path.size()==k){
@@ -1964,7 +1963,36 @@ class Solution {
 
 
 
+### 216 组合问题|||
 
+```java
+class Solution {
+    List<List<Integer>> res = new ArrayList();
+    LinkedList<Integer> path = new LinkedList();
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        dfs(k,n,0,1);
+        return res;
+    }
+    public void dfs(int k,int n,int sum,int index){
+        if(k==path.size()){
+            if(n == sum) res.add(new ArrayList(path));
+            return;
+        }
+        for(int i = index;i<=9;i++){
+            //实际上是把所有的1-9组成形式的和都计算出来了
+            sum += i;
+            //加入路径
+            path.add(i);
+            dfs(k,n,sum,i+1);
+            //根据上面的顺序进行回溯
+            sum -= i;
+            path.removeLast(); 
+        }
+    }
+}
+```
+
+实际上就是进行一个sum的统计
 
 
 
