@@ -1909,6 +1909,24 @@ class Solution {
 
 
 
+### 538 把二叉搜索树转换为累加树
+
+```java
+class Solution {
+    int sum = 0;
+    public TreeNode convertBST(TreeNode root) {
+        if(root == null) return root;
+        convertBST(root.right);
+        root.val+=sum;
+        sum = root.val;
+        convertBST(root.left);
+        return root;
+    }
+}
+```
+
+从右往左遍历，就是一个降序数组，然后累加即可
+
 
 
 
