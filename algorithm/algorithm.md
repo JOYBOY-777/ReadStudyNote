@@ -1929,6 +1929,41 @@ class Solution {
 
 
 
+## 回溯
+
+### 77 组合问题
+
+```java
+class Solution {
+    List<List<Integer>> res = new ArrayList();
+    LinkedList<Integer> path = new LinkedList();
+    public List<List<Integer>> combine(int n, int k) {
+       dfs(n,k,1);
+       return res;
+    }
+
+    public void dfs(int n,int k,int index){
+        //结束条件
+        if(path.size()==k){
+            res.add(new ArrayList(path));
+            return;
+        }
+		//单层逻辑
+        for(int i = index;i<=n;i++){
+            path.add(i);
+            //递归到下一层
+            dfs(n,k,i+1);
+            //回溯，恢复案发现场
+            path.removeLast();
+        }
+    }
+}
+```
+
+整体步骤还是跟递归一样，**确定递归终止条件，单层的逻辑，递归到下一层，回溯恢复原先的状态**
+
+
+
 
 
 
