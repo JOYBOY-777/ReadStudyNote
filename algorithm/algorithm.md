@@ -1999,10 +1999,37 @@ class Solution {
 ### 17 电话号码组合问题
 
 ```java
+class Solution {
+    List<String> res = new ArrayList();
+    StringBuilder path = new StringBuilder();
+    public List<String> letterCombinations(String digits) {
+        if(digits.length() == 0) return res;
+        String[] map = {"","","abc","def","ghi","jkl","mon","pqrs","tuv","wxyz"};
+        back(digits,map,0);
+        return res;
+    }
 
+    public void back(String digits,String[] map,int index){
+        //终止条件
+        if(index == digits.length()){
+            res.add(path.toString());
+            return;
+        }
+        //为了取到对应的下标索引为int，所以要用字符串-字符串得出对应的下标
+        String item = map[digits.charAt(index)-'0'];
+        for(int i = 0;i<item.length();i++){
+            //加入路径
+            path.append(item.charAt(i));
+            //进入下一层
+            back(digits,map,index+1);
+            //回溯
+            path.deleteCharAt(path.length()-1);
+        }
+    }
+}
 ```
 
-
+​          
 
  
 
