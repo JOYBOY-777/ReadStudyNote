@@ -2033,6 +2033,8 @@ class Solution {
 
  ### 39 组合总和
 
+数组中可以有重复元素，加上之后等于target
+
 ```java
 class Solution {
     List<List<Integer>> res = new ArrayList();
