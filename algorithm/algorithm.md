@@ -2067,6 +2067,43 @@ class Solution {
 
 
 
+### 40 组合问题 ||
+
+要求在集合中有重复元素，但是结果集合中不允许有重复的元素加上等于target
+
+```java
+class Solution {
+    List<List<Integer>> res = new ArrayList();
+    LinkedList<Integer> path = new LinkedList();
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        boolean[] flag = new boolean[candidates.length];
+        back(candidates,target,flag,0,0);
+        return res;
+    }
+    public void back(int[] arr,int target,boolean[] flag,int index,int sum){
+        if(sum == target){
+            res.add(new ArrayList(path));
+            return;
+        }
+         for (int i = index; i < arr.length && arr[i] + sum <= target; i++) {
+            //当前节点和前一个节点是一样的，并且前一个节点没有用过，那你就不能使用当前这个节点，只有前一个节点被使用过了，你才能使用这个节点，就是保证节点前面的节点都被使用过
+            if (i > 0 && arr[i] == arr[i - 1] && !flag[i - 1]) {
+                continue;
+            }
+            flag[i] = true;
+            sum += arr[i];
+            path.add(arr[i]);
+            //每个节点仅能选择一次，所以从下一位开始
+            back(arr, target,flag,i+1,sum);
+            flag[i] = false;
+            sum-=arr[i];
+            path.removeLast();
+        }
+    }
+}
+```
+
 
 
 
