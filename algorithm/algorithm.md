@@ -2031,7 +2031,37 @@ class Solution {
 
 ​          
 
- 
+ ### 39 组合总和
+
+```java
+class Solution {
+    List<List<Integer>> res = new ArrayList();
+    LinkedList<Integer> path = new LinkedList();    
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        back(candidates,target,0,0);
+        return res;
+    }
+    public void back(int[] candidates,int target,int sum,int index){
+        //下面两个都是终止条件
+        if(sum>target) return;
+        if(target == sum){
+            res.add(new ArrayList(path));
+            return;
+        }
+        for(int i = index;i<candidates.length;i++){
+            sum+=candidates[i];
+            path.add(candidates[i]);
+            //不用下探，i可以出现很多次
+            back(candidates,target,sum,i);
+            //回溯的过程
+            sum-=candidates[i];
+            path.removeLast();
+        }
+    }
+}
+```
+
+注意这个题没说满足要求的几个数，所以就 没有所谓的层级的概念，在递归中的index参数也不用+1，因为可以重复使用
 
 
 
