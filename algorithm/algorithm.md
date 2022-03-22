@@ -2087,7 +2087,7 @@ class Solution {
             return;
         }
          for (int i = index; i < arr.length && arr[i] + sum <= target; i++) {
-            //当前节点和前一个节点是一样的，并且前一个节点没有用过，那你就不能使用当前这个节点，只有前一个节点被使用过了，你才能使用这个节点，就是保证节点前面的节点都被使用过
+            //当前节点和前一个节点是一样的，并且前一个节点没有用过，那你就不能使用当前这个节点，只有前一个节点被使用过了，你才能使用这个节点，就是保证节点前面的节点都被使用过，前一个都没有使用，为什么要使用后一个？
             if (i > 0 && arr[i] == arr[i - 1] && !flag[i - 1]) {
                 continue;
             }
@@ -2105,6 +2105,43 @@ class Solution {
 ```
 
 
+
+### 131 分隔回文串
+
+```java
+class Solution {
+    List<List<String>> res = new ArrayList();
+    LinkedList<String> path = new LinkedList();
+    public List<List<String>> partition(String s) {
+        back(s,0);
+        return res;
+    }
+    public void back(String s,int index){
+        //终止条件
+        if(s.length() == index){
+            res.add(new ArrayList(path));
+            return;
+        }
+        for(int i = index;i<s.length();i++){
+            //判断是不是回文串
+            if(check(s,index,i)){
+                String str = s.substring(index,i+1);
+                path.add(str);
+            }else continue;
+            back(s,i+1);
+            //回溯
+            path.removeLast();
+        }
+        
+    }
+    public boolean check(String s,int l,int r){
+        for(int i = l,j = r;i<j;i++,j--){
+            if(s.charAt(i) != s.charAt(j)) return false;
+        }
+         return true;
+    }
+}
+```
 
 
 
