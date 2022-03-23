@@ -1,4 +1,4 @@
-# 代码随想录
+代码随想录
 
 ## 数组
 
@@ -2145,9 +2145,103 @@ class Solution {
 
 
 
+### 93 复原IP地址
+
+```java
+class Solution {
+    List<String> res = new ArrayList();
+    LinkedList<String> path = new LinkedList();
+    public List<String> restoreIpAddresses(String s) {
+        if(s.length()<4 || s.length()>12) return res;
+        back(s,0,0);
+        return res;
+    }
+    public void back(String s,int index,int level){
+        if(level == 4){
+            res.add(String.join(".",path));
+            return;
+        }
+        for(int i = index;i<s.length();i++){
+            //判断当前三位的ip地址合不合法
+            if(!isLegal(s.substring(index,i+1))) continue;
+            //为了避免出现类似于"2.5.5.2"的情况
+            if((s.length()-i-1) > 3*(3-level)) continue;
+            path.add(s.substring(index,i+1));
+            //递归
+            back(s,i+1,level+1);
+            //回溯
+            path.removeLast();
+        }
+    }
+    public boolean isLegal(String s){
+        if(s.charAt(0)=='0' && s.length()>1) return false;
+        if(s.length()>3) return false;
+        if(Integer.parseInt(s)>255) return false;
+        return true;
+    }
+}
+```
 
 
 
+### 78 子集
+
+```java
+class Solution {
+    List<List<Integer>> res = new ArrayList();
+    LinkedList<Integer> path = new LinkedList();
+    public List<List<Integer>> subsets(int[] nums) {
+        if(nums == null) return res;
+        back(nums,0);
+        return res;
+    }
+
+    public void back(int[] nums,int index){
+        res.add(new ArrayList(path));
+        if(nums.length==index) return;
+        for(int i = index;i<nums.length;i++){
+            path.add(nums[i]);
+            back(nums,i+1);
+            path.removeLast();
+        }
+    }
+}
+```
+
+值得注意的是，不应该在条件判断里面写加入的逻辑，应该放在外面，这样才是全的
+
+
+
+### 90 子集||
+
+```java
+class Solution {
+    List<List<Integer>> res = new ArrayList();
+    LinkedList<Integer> path = new LinkedList();
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        if(nums == null) return res;
+        boolean[] used = new boolean[nums.length];
+        back(nums,used,0);
+        return res;
+    }
+
+    public void back(int[] nums,boolean[] used,int index){
+        res.add(new ArrayList(path));
+        if(nums.length == index) return;
+        for(int i = index;i<nums.length;i++){
+            if(i>0 && nums[i] == nums[i-1] && !used[i-1]) continue;
+            path.add(nums[i]);
+            used[i] = true;
+            back(nums,used,i+1);
+            path.removeLast();
+            used[i] = false;
+        }
+    }
+}
+```
+
+整体思路跟 40 如出一辙，利用了used布尔类型数组
 
 
 
