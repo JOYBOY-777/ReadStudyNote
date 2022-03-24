@@ -1931,6 +1931,8 @@ class Solution {
 
 ## 回溯
 
+**组合问题和排列问题是在树形结构的叶子节点上收集结果，而子集问题就是取树上所有节点的结果**
+
 ### 77 组合问题
 
 ```java
@@ -2263,7 +2265,6 @@ class Solution {
         for(int i = index;i<nums.length;i++){
             if(!path.isEmpty()&&nums[i]<path.get(path.size()-1)||
                 used[nums[i]+100]== 1) continue;
-            
                 used[nums[i]+100] = 1;
                 path.add(nums[i]);
                 back(nums,i+1);
@@ -2311,6 +2312,40 @@ class Solution {
 ```
 
 
+
+### 47 全排列||
+
+```java
+class Solution {
+    List<List<Integer>> res = new ArrayList();
+    LinkedList<Integer> path = new LinkedList();
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        if(nums == null) return res;
+        Arrays.sort(nums);
+        boolean[] used = new boolean[nums.length];
+        back(nums,used);
+        return res;
+    }
+    public void back(int[] nums,boolean[] used){
+        if(path.size() == nums.length){
+            res.add(new ArrayList(path));
+            return;
+        }
+        for(int i = 0;i<nums.length;i++){
+            //前面用过的元素后面不能再用
+            if(i>0 && nums[i] == nums[i-1] && !used[i-1]) continue;
+            //当前元素没有用过的话可以进行回溯操作
+            if(used[i] == false){
+                used[i] = true;
+                path.add(nums[i]);
+                back(nums,used);
+                used[i] = false;
+                path.removeLast();
+            }
+        }
+    }
+}
+```
 
 
 
