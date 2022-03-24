@@ -2245,7 +2245,35 @@ class Solution {
 
 
 
+### 491 递增子序列
 
+```java
+class Solution {
+    List<List<Integer>> res = new ArrayList();
+    LinkedList<Integer> path = new LinkedList();
+    public List<List<Integer>> findSubsequences(int[] nums) {
+        if(nums == null) return res;
+        back(nums,0);
+        return res;
+    }
+    public void back(int[] nums,int index){
+        if(path.size()>1) res.add(new ArrayList(path));
+        if(nums.length == index) return;
+        int[] used = new int[201];
+        for(int i = index;i<nums.length;i++){
+            if(!path.isEmpty()&&nums[i]<path.get(path.size()-1)||
+                used[nums[i]+100]== 1) continue;
+            
+                used[nums[i]+100] = 1;
+                path.add(nums[i]);
+                back(nums,i+1);
+                path.removeLast();
+        }
+    }
+}
+```
+
+为了节约去重的空间，用used数组模拟hash桶位处理，path里面元素>1个的时候就应该加入到res结果集合中（因为只有两个以上的集合个数才能变为递增的子序列）
 
 
 
