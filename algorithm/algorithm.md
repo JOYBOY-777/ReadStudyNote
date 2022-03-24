@@ -2277,6 +2277,41 @@ class Solution {
 
 
 
+### 46 全排列
+
+```java
+class Solution {
+    List<List<Integer>> res = new ArrayList();
+    LinkedList<Integer> path = new LinkedList();
+    public List<List<Integer>> permute(int[] nums) {
+        boolean[] used = new boolean[nums.length];
+        if(nums == null) return res;
+        back(nums,used);
+        return res;
+    }
+    public void back(int[] nums,boolean[] used){
+        if(path.size() == nums.length){
+            res.add(new ArrayList(path));
+            return;
+        }
+		//下标从0开始
+        for(int i = 0 ;i<nums.length;i++){
+            //当前元素使用过就跳出本次循环
+            if(used[i] == true) continue;
+            //标记当前元素为使用过的
+            used[i] = true;
+            path.add(nums[i]);
+            back(nums,used);
+            //回溯
+            used[i] = false;
+            path.removeLast();
+        }
+    }
+}
+```
+
+
+
 
 
 
