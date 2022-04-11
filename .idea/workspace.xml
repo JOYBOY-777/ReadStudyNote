@@ -14,7 +14,7 @@
     <option name="generalSettings">
       <MavenGeneralSettings>
         <option name="localRepository" value="F:\maven\apache-maven-3.6.3\maven-repo" />
-        <option name="mavenHome" value="$PROJECT_DIR$/../maven/apache-maven-3.6.3" />
+        <option name="mavenHome" value="F:/maven/apache-maven-3.6.3" />
         <option name="userSettingsFile" value="F:\maven\apache-maven-3.6.3\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
@@ -40,16 +40,16 @@
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
-      <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\ReadStudyNote" />
       <recent name="F:\ReadStudyNote\algorithm" />
       <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片\HashMap" />
       <recent name="F:\ReadStudyNote\代码随想录" />
       <recent name="F:\ReadStudyNote\javaimg" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
+      <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -111,6 +111,7 @@
       <workItem from="1648017423683" duration="2014000" />
       <workItem from="1648108111785" duration="3027000" />
       <workItem from="1648122244608" duration="2072000" />
+      <workItem from="1649506284653" duration="933000" />
     </task>
     <servers />
   </component>
