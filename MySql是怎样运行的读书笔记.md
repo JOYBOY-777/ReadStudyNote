@@ -54,7 +54,11 @@ Mysql高级：https://www.processon.com/view/link/61cc84b01efad4259ceb1b19
 
 除了记录这几个字段的真实数据，Mysql还会默认为每个记录加上隐藏列：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/cb13fd72877ee60d46150e7d70550d8.jpg?raw=true)
 
+Mysql的主键生成策略：首先会使用用户定义的主键，如果没有定义的话，会找列为非null并且UNIQUE的列作为主键，如果都没有的话会使用row_id作为主键
+
+完整形式：
 
 
 
