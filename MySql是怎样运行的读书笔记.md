@@ -60,7 +60,7 @@ Mysql的主键生成策略：首先会使用用户定义的主键，如果没有
 
 完整形式：
 
-
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/056e8833acfdaf4b99419e8c92941ba.jpg?raw=true)
 
 
 
