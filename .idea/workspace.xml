@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/javaimg/Mysql是怎样运行的图片/47f7ebe248d174995b716ba463ee096.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MySql是怎样运行的读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/MySql是怎样运行的读书笔记.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,23 +36,23 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/javaimg/Mysql是怎样运行的图片" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
+      <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
       <recent name="F:\ReadStudyNote" />
       <recent name="F:\ReadStudyNote\algorithm" />
       <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片\HashMap" />
       <recent name="F:\ReadStudyNote\代码随想录" />
-      <recent name="F:\ReadStudyNote\javaimg" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
-      <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -115,7 +116,7 @@
       <workItem from="1648122244608" duration="2072000" />
       <workItem from="1649506284653" duration="933000" />
       <workItem from="1649662675054" duration="2022000" />
-      <workItem from="1649756095342" duration="1862000" />
+      <workItem from="1649756095342" duration="2754000" />
     </task>
     <servers />
   </component>
