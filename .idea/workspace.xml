@@ -14,7 +14,7 @@
     <option name="generalSettings">
       <MavenGeneralSettings>
         <option name="localRepository" value="F:\maven\apache-maven-3.6.3\maven-repo" />
-        <option name="mavenHome" value="F:/maven/apache-maven-3.6.3" />
+        <option name="mavenHome" value="$PROJECT_DIR$/../maven/apache-maven-3.6.3" />
         <option name="userSettingsFile" value="F:\maven\apache-maven-3.6.3\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
@@ -112,6 +112,7 @@
       <workItem from="1648108111785" duration="3027000" />
       <workItem from="1648122244608" duration="2072000" />
       <workItem from="1649506284653" duration="933000" />
+      <workItem from="1649662675054" duration="2022000" />
     </task>
     <servers />
   </component>
