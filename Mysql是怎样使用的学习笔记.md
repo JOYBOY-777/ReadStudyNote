@@ -71,9 +71,14 @@ insert into 表名() values()
 
 2. 插入部分的记录，你想要插入那个字段就插入那个，但是你得指定的说出来，其余的字段是null
 3. 批量插入的话就在后面的values里面加入多个就行了
-4. 将某个查询的结果加入到表中
+4. 将某个查询的结果加入到表中：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/5c1b729b36403a596f606d81dffbbfa.png?raw=true)
 
+5. insert ignore：就是避免主键后者有唯一去约束的列插入重复的值进而报错的手段，如果有的话就忽略这次插入
+6. 用insert ...on duplicate key update来进行对重复的值的更新操作（作用在主键或者是唯一键上）
+7. 删除数据：delect from 表名 where 表达式，不加where的话，所有的数据都会没
+8. 更新数据：
 
 
 
