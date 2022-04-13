@@ -124,15 +124,26 @@ select a,b from m limit 1 into @a,@b;
 
 
 
+2. 存储过程语法：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/22ff29c56862b441cb8fc2d8b0d5506.jpg?raw=true)
+
+​        例子：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/ef5631fbb4e90c44433fdbc9c735b18.jpg?raw=true)
+
+注意;会被客户端识别的情况
 
 
 
+3. 存储过程调用：相当于调用了一个方法，这个方法里面把逻辑做了
 
+```mysql
+select avg_score('mysql是怎样运行的');
+```
 
-
-
-
-
+4. 查看存储函数：show create function 函数名
+5. 删除存储函数：drop function 函数名
 
 
 
