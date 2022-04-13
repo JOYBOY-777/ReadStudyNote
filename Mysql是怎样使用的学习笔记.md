@@ -98,7 +98,29 @@ insert into 表名() values()
 
 ## 存储程序
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/45b410241875ade1bee839f04a088a0.jpg?raw=true)
 
+1. 在mysql里面自定义变量：
+
+```mysql
+## 为变量赋值,记住要在a的前面加上@
+set @a = 1;
+
+## 也可以把字符串赋值给变量
+set @a = '你好';
+
+## 把一个变量赋值给一个变量
+set @b = @a;
+
+## 把一个查询的结果赋值给变量,注意这个查询的结果集必须是一行一列的
+set @a = (select a from b limit 1)
+
+## 赋值的另外一种写法：into
+select a from b limit 1 into @a;
+
+##当查询多个列的值结果集只有一行时，给这多个结果赋值
+select a,b from m limit 1 into @a,@b;
+```
 
 
 
