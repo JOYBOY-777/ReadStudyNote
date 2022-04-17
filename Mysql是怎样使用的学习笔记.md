@@ -197,7 +197,17 @@ begin
 end     
 ```
 
+例子：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E4%BE%8B%E5%AD%90.jpg?raw=true)
+
+这个存储过程定义了两个参数，然后在执行语句汇总运用到了这两个参数，然后根据接受的参数把数据插入到表里面
+
+用**call**关键字来进行存储过程的调用
+
+```mysql
+call 存储过程([参数列表])
+```
 
 
 
