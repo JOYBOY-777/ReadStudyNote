@@ -209,9 +209,51 @@ end
 call 存储过程([参数列表])
 ```
 
+查看删除存储过程：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E6%9F%A5%E7%9C%8B.jpg?raw=true)
+
+12. 存储过程中的参数前缀：在定义的存储过程中有三个前缀的参数可以选择，分别是：in,out,inout
+
+in参数（默认）：只能用于**读取**，对他赋值不会被调用者看到(**只能查**)
+
+```mysql
+delimiter $
+create procedure p_in(
+	int agr int
+)
+begin
+	select arg;
+	set arg = 123;
+end $
+delimiter;
 
 
+set @a = 1;
+CALL pin(@a); ##结果为1
+select @a; ##a的值并没有因为存储过程中的赋值而改变
+```
 
+out参数：**查不了，只能赋值**
+
+```mysql
+delimiter $
+create procedure p_in(
+	out agr int
+)
+begin
+	select arg;
+	set arg = 123;
+end $
+delimiter;
+
+
+set @b = 1;
+CALL pin(@b); ##结果为null
+select @b; ##b赋值了
+```
+
+inout：传入的必须是定义的变量，不能是直接写的值，注意与存储函数的不同，这个变量作用是机能读取，也能赋值，由于我认为这个例子举得并不好，所以就不写了
 
 
 
