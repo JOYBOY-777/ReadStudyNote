@@ -144,15 +144,28 @@ select avg_score('mysql是怎样运行的');
 
 4. 查看存储函数：show create function 函数名
 5. 删除存储函数：drop function 函数名
-6. 在函数体中定义局部变量：在函数体中定义变量必须用declare关键字，注意局部变量在名不允许加@前缀
+6. 在函数体中定义局部变量：在函数体中定义变量必须用declare关键字，注意局部变量在名不允许加@前缀,并且declare语句要放到其他的语句前面
 
 ```mysql
 declare 变量名1，变量名2 [default 默认值]
 ```
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/105f45de85f8970e982ca8c9843beae.jpg?raw=true)
 
+7. 在函数体中使用用户自定义变量：
 
+```mysql
+delimiter $
+create function user()
+return int 
+begin
+set @abc = 10;
+return @abc;
+end $
+delimiter ;
+```
 
+8. 注意参数的问题，函数可以有多个参数，但是要注意参数的格式
 
 
 
