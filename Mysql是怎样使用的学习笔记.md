@@ -166,8 +166,21 @@ delimiter ;
 ```
 
 8. 注意参数的问题，函数可以有多个参数，但是要注意参数的格式
+9. if判断句语法：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/if%E8%AF%AD%E6%B3%95.jpg?raw=true)
 
+例子：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/if%E8%AF%AD%E6%B3%95%E4%BE%8B%E5%AD%90.jpg?raw=true)
+
+10. while循环：
+
+```mysql
+while 表达式 do
+   语句列表
+end while;   
+```
 
 
 
