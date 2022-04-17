@@ -124,7 +124,7 @@ select a,b from m limit 1 into @a,@b;
 
 
 
-2. 存储过程语法：
+2. 存储函数语法：注意存储函数有返回值，存储过程没有
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/22ff29c56862b441cb8fc2d8b0d5506.jpg?raw=true)
 
@@ -174,7 +174,7 @@ delimiter ;
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/if%E8%AF%AD%E6%B3%95%E4%BE%8B%E5%AD%90.jpg?raw=true)
 
-10. while循环：
+10. while循环：repeat循环和loop循环直接查阅工具书
 
 ```mysql
 while 表达式 do
@@ -182,7 +182,20 @@ while 表达式 do
 end while;   
 ```
 
+例子：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%BE%AA%E7%8E%AF%E4%BE%8B%E5%AD%90.jpg?raw=true)
+
+11. 存储过程：相比于存储函数，存储过程没有返回值
+
+语法：
+
+```mysql
+create procedure 存储过程名称([参数列表])
+begin 
+     需要执行的语句
+end     
+```
 
 
 
