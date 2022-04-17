@@ -132,7 +132,7 @@ select a,b from m limit 1 into @a,@b;
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/ef5631fbb4e90c44433fdbc9c735b18.jpg?raw=true)
 
-注意;会被客户端识别的情况
+注意;会被客户端识别的情况 要用delimiter $来区分;
 
 
 
@@ -144,6 +144,13 @@ select avg_score('mysql是怎样运行的');
 
 4. 查看存储函数：show create function 函数名
 5. 删除存储函数：drop function 函数名
+6. 在函数体中定义局部变量：在函数体中定义变量必须用declare关键字，注意局部变量在名不允许加@前缀
+
+```mysql
+declare 变量名1，变量名2 [default 默认值]
+```
+
+
 
 
 
