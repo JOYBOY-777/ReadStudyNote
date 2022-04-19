@@ -86,7 +86,7 @@ Mysql的主键生成策略：首先会使用用户定义的主键，如果没有
 
 **记录在页中存储**
 
-​		在我们插入记录的时候，实际上就是把第四章说的记录行存储到**User Records**中，因为这个user records和free space部分占用的字节数是不确定的，所以每当插入一条记录的时候都会去**free space**中申请空间，如果这个free space中的空间用完了，如果在插入行记录的话，那么就会去申请**其他的页**，如下：
+​		在我们插入记录的时候，实际上就是把第四章说的记录行存储到**User Records**中，因为这个user records和free space部分占用的字节数是不确定的，所以每当插入一条记录的时候都会去**free space**中**申请空间**，如果这个free space中的空间用完了，如果在插入行记录的话，那么就会去申请**其他的页**，如下：
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E8%AE%B0%E5%BD%95%E5%9C%A8%E9%A1%B5%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8.jpg?raw=true)
 
@@ -96,9 +96,29 @@ Mysql的主键生成策略：首先会使用用户定义的主键，如果没有
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E8%AE%B0%E5%BD%95%E5%9C%A8%E9%A1%B5%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84.jpg?raw=true)
 
+可以看到里面有6个比较重要的属性分别是：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E8%AE%B0%E5%BD%95%E5%A4%B4%E4%BF%A1%E6%81%AF%E7%9A%84%E5%B1%9E%E6%80%A71.jpg?raw=true)
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E8%AE%B0%E5%BD%95%E5%A4%B4%E4%BF%A1%E6%81%AF%E7%9A%84%E5%B1%9E%E6%80%A72.jpg?raw=true)
 
+详细介绍：
+
+1. delete_flag:用来标记这行记录是否被删除，0没删除，1被删除
+
+   注意：被删除的数据也会在磁盘上存在，因为如果删除了，那么就会把磁盘上的记录重新排列，会有性能上的消耗，所以打上一个删除标记（相当于**物理删除**），被删除的记录会形成一个垃圾链表，被称为可重用空间，当有新的记录插入进这个页的时候，就会**覆盖**掉这些记录占用的空间
+
+2. min_rec_flag:B+树中**非叶子节点**中的**最小**的目录项记录会被记录在这个里面，**0**表示**不是**当前的B+树中最小的记录项
+
+3. n_owned:
+
+4. head_no:因为记录时一条一条的紧密排列在数据库中的，那么就把这个结构称之为**堆**，然后把**记录行**在**堆的相对位置**称之为head_no，前面位置的head_no较小，后面的偏大，并且大1，在图5-5中可以看到这个属性没有0和1
+
+   注意：这个属性没有0和1是因为Mysql自动给这个里面插入了两条记录，称之为伪记录，或者虚拟记录（因为不是用户插入的），一条代表这个页中最小记录（Infimum），另外一个是最大记录(Supremun)，他们的相对位置靠前，任何的用户记录都比最小记录大，比最大记录小
+
+   ​			这两部分不是存放在user records部分的，单独存放在**Infimum+Supremun**，是一个独立的空间
+
+5. recore_type:表示当前记录的类型：0（普通记录）1（B+数非页节点目录项记录）2（最小记录Infimum）3（最大记录Supremun）
 
 
 
