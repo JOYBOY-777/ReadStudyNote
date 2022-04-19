@@ -76,13 +76,17 @@ Mysql的主键生成策略：首先会使用用户定义的主键，如果没有
 
 **数据页的结构和占用大小**
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/innodb%E9%A1%B5%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg?raw=true)
+
+详细说明：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E9%A1%B5%E7%BB%93%E6%9E%84.jpg?raw=true)
 
 
 
+**记录在页中存储**
 
-
-
-
+​		在我们插入记录的时候，实际上就是把第四章说的记录行存储到**User Records**中，因为这个user records和free space部分占用的字节数是不确定的，所以每当插入一条记录的时候都会去**free space**中申请空间，如果这个free space中的空间用完了
 
 
 
