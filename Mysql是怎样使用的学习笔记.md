@@ -255,7 +255,9 @@ select @b; ##b赋值了
 
 inout：传入的必须是定义的变量，不能是直接写的值，注意与存储函数的不同，这个变量作用是机能读取，也能赋值，由于我认为这个例子举得并不好，所以就不写了
 
+存储过程和存储函数的异同点：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%BC%82%E5%90%8C%E7%82%B9.jpg?raw=true)
 
 
 
