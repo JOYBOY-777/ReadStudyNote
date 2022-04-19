@@ -44,8 +44,6 @@ Mysql高级：https://www.processon.com/view/link/61cc84b01efad4259ceb1b19
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/24d7b4d84a028c8b2d4e6dc7c61eab1.jpg?raw=true)
 
-
-
 ​		记录头信息：这部分内容有5个字节，里面记录了一些信息
 
 
@@ -69,6 +67,14 @@ Mysql的主键生成策略：首先会使用用户定义的主键，如果没有
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/0cd2d7421fb81ad03da0449f437ce72.jpg?raw=true)
 
 如果一个字段的大小非常大的话甚至已经超过了一条记录的大小65532字节，那么真实数据中会存储两部分，第一部分是768字节的真实数据，另一部分是其他数据页的地址占用20字节，这些地址指向存储数据的页，并且这些页中用链表连接起来
+
+
+
+# 第五章 盛放记录的大盒子——Innodb数据页结构
+
+这章主要是介绍**数据页**的基本结构，上一章介绍了**一行记录**在磁盘中是怎么存储的
+
+**数据页的结构和占用大小**
 
 
 
