@@ -142,11 +142,13 @@ Mysql的主键生成策略：首先会使用用户定义的主键，如果没有
 
 目的是得到存储在**数据页**中记录的**状态信息**
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/pageHeader%E7%BB%93%E6%9E%84%E5%8F%8A%E6%8F%8F%E8%BF%B0.jpg?raw=true)
 
 
 
+**文件头部（File Header）**
 
-
+记录各种页的通用信息
 
 
 

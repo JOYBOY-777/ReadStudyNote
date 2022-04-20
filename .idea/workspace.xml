@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/javaimg/Mysql是怎样运行的图片/使用箭头.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javaimg/Mysql是怎样运行的图片/pageHeader结构及描述.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MySql是怎样运行的读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/MySql是怎样运行的读书笔记.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,16 +43,16 @@
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
+      <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
       <recent name="F:\ReadStudyNote" />
       <recent name="F:\ReadStudyNote\algorithm" />
       <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片\HashMap" />
       <recent name="F:\ReadStudyNote\代码随想录" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
-      <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -120,7 +120,7 @@
       <workItem from="1649823719447" duration="6988000" />
       <workItem from="1650179607918" duration="3829000" />
       <workItem from="1650336306065" duration="6042000" />
-      <workItem from="1650430075034" duration="759000" />
+      <workItem from="1650430075034" duration="1382000" />
     </task>
     <servers />
   </component>
