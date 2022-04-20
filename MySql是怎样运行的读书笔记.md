@@ -6,7 +6,7 @@ Mysql高级：https://www.processon.com/view/link/61cc84b01efad4259ceb1b19
 
 
 
-# 第四章 从一条记录说起——InnoDB记录存储结构
+# 第4章 从一条记录说起——InnoDB记录存储结构
 
 告诉你一条记录行是怎么存储在磁盘上的
 
@@ -70,7 +70,7 @@ Mysql的主键生成策略：首先会使用用户定义的主键，如果没有
 
 
 
-# 第五章 盛放记录的大盒子——Innodb数据页结构
+# 第5章 盛放记录的大盒子——Innodb数据页结构
 
 这章主要是介绍**数据页**的基本结构，上一章介绍了**一行记录**在磁盘中是怎么存储的
 
@@ -150,9 +150,19 @@ Mysql的主键生成策略：首先会使用用户定义的主键，如果没有
 
 记录各种页的通用信息
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/file%20header.jpg?raw=true)
 
 
 
+**文件尾部（File Trailer）**
+
+用于检验页是否完整，占用8字节
+
+
+
+# 第6章 快速查询的密集——B+树索引
+
+在innodb存储引擎中，数据页之间用双向链表连接，页中的各个记录之间用单向链表连接，如下图所示：
 
 
 
