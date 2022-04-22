@@ -2351,7 +2351,26 @@ class Solution {
 
 ## 贪心
 
+### 455 分发饼干
 
+```java
+class Solution {
+    public int findContentChildren(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int count = 0,start = 0;
+        for(int i = 0;i<s.length && start<g.length;i++){
+            if(s[i]>=g[start]){
+                count++;
+                start++;
+            }
+        }
+        return count;
+    }
+}
+```
+
+只有饼干大小>=孩子口味的时候才进行下一个孩子口味，不满足的话就换饼干大小，来与孩子口味进行匹配
 
 
 
