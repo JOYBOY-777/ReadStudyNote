@@ -288,7 +288,15 @@ select * from single_table where  true
 
 从复杂的搜索条件中找出扫描区间
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%A4%8D%E6%9D%82%E7%9A%84%E6%90%9C%E7%B4%A2%E6%9D%A1%E4%BB%B6.jpg?raw=true)
 
+对于这种复杂的搜索条件的话，这里面既然用到了三个索引那么我们就按照用到了那个索引，分别对这个索引进行条件的简化，最后在看看，他的搜索条件是否减少，减少了用索引就是比去全表扫描快的
+
+
+
+使用**联合索引**执行查询时对应的扫描区间
+
+我们给三个varchar(20)的字段设立了一个联合索引，这个索引在磁盘中的样子是：
 
 
 
