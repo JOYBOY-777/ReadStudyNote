@@ -246,17 +246,47 @@ select * from single_table where key2>100 and key2>200;
 select * from single_table where key2>100 or key2 >200;
 ```
 
-形成的扫描区间是key2>100，减少了扫描数量
+形成的扫描区间是key2>100，减少了扫描数量，说明这个索引建的还是有用的，减少了扫描范围
 
 
 
-2. 有的搜索条件不能生成合适的扫描区间
+2. 有的搜索条件**不能生成**合适的扫描区间
+
+先看例子：
+
+```mysql
+select * from single_table where key2>100 and common_field = 'abc';
+```
+
+可以看到使用key2索引可以形成(2,正无穷)的扫描区间，但是对于列common_field来说的话，因为没有给这个字段形成扫描区间，所以他的扫描区间是(负无穷，正无穷)，那么由于用and的作用，两边都为true才是true，由于右边的语句对我们减少扫描区间没有作用，那么我们就会把它变为true,从而整个sql变为key2>100 and true,所以我们可以简化：
+
+```	mysql
+select * from single_table where key2>100
+```
+
+那么，如果用**or**连接的话：
+
+```mysql
+select * from single_table where key2>100 or common_field = 'abc';
+```
+
+按照上面的逻辑简化：
+
+```mysql
+select * from single_table where key2>100 or true
+```
+
+简化：
+
+```mysql
+select * from single_table where  true
+```
+
+结果显而易见，这个索引扫描的条数没有减小，还不用用聚簇索引全表扫描，这期间还少了回表的操作，所以这样写sql是性能浪费很大的，不合理的
 
 
 
-
-
-
+从复杂的搜索条件中找出扫描区间
 
 
 
