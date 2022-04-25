@@ -372,6 +372,12 @@ select * from single_table where key_part1 = 'a' and key_part3 = 'c'
 
 
 
+```mysql
+select * from single_table where key_part1 < 'b' and key_part2 = 'a'
+```
+
+这个只能根据联合索引找到key_part1 < 'b'的记录，不能根据后面的条件进一步的减少需要扫描的数量，因为当前<b的部分还是按照key_part1的顺序来进行排序的，扫描区间是(负无穷，b),**所以尽量利用搜索条件来减少需要扫描的数量**是很关键的
+
 
 
 
