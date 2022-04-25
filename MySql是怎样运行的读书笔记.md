@@ -298,6 +298,16 @@ select * from single_table where  true
 
 我们给三个varchar(20)的字段设立了一个联合索引，这个索引在磁盘中的样子是：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E5%AE%9E%E4%BE%8B.jpg?raw=true)
+
+重点来了，针对这个联合索引来说的查询语句
+
+```mysql
+select * from single_table where key_part1 = 'a'
+```
+
+那么这个形成的扫描区间就是：['a','a']的区间，形成这个搜索条件的语句是：key_part = 'a'，形成的图如下：
+
 
 
 
