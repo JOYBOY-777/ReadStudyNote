@@ -308,13 +308,67 @@ select * from single_table where key_part1 = 'a'
 
 那么这个形成的扫描区间就是：['a','a']的区间，形成这个搜索条件的语句是：key_part = 'a'，形成的图如下：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/7-11.jpg?raw=true)
+
+['a','a']的解释就是第一条符合搜索条件的，到最后一个符合搜索条件的，因为在联合索引中只涉及到了一个列，那么扫描区间就有一个
+
+扫描区间：[('a','b'),('a','b')]形成的搜索条件：key_part1 = 'a' and key_part2 = 'b'
+
+```mysql
+select * from single_table where key_part1 = 'a' and key_part2 = 'b'
+```
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/7-12.jpg?raw=true)
+
+这个的意思就是两个索引**从上到下看**起来第一条符合搜索条件的，到最后一条符合搜索条件的
 
 
 
+```mysql
+select * from single_table where key_part1 = 'a' and key_part2 = 'b' and key_part3 = 'c'
+```
+
+形成的扫描区间：以及示意图其实都是一样的，只不过c也增加了排序
 
 
 
+```mysql
+select * from single_table where key_part1 < 'a'
+```
 
+形成的扫描区间：(负无穷,a)，对应的内存图：第一列索引不符合条件的，上色
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/7-13.jpg?raw=true)
+
+
+
+```mysql
+select * from single_table where key_part1 = 'a' and key_part2 > 'a' and key_part2 < 'd'
+```
+
+形成的扫描区间：[(a,a),(a,d)]
+
+内存图：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/7-14.jpg?raw=true)
+
+
+
+```mysql
+select * from single_table where key_part2 = 'a'
+```
+
+因为这个索引列属于联合索引，三个字段一起的，先是根据key_part1进行排序，但是这个是直接用的key_part2，
+
+因为这个二级索引的记录不是按照这个字段来进行排序的，因此这个搜索条件使用不到这个联合索引
+
+
+
+```mysql
+select * from single_table where key_part1 = 'a' and key_part3 = 'c'
+```
+
+由于这个联合索引先是按照key_part1进行排序，但是他只能根据这个key_part1 = 'a'的搜索条件定位到扫描区间[a,a]这个扫描区间与后面的查询语句key_part = 'c'没有关系，我们可以先根据这个条件查询出携带key_part3的记录，如果后面的记录符合等于c的条件，那么就进行回表操作，否则就不回表，这种方法叫**索引下推**
 
 
 
