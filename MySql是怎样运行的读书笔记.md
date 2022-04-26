@@ -378,9 +378,21 @@ select * from single_table where key_part1 < 'b' and key_part2 = 'a'
 
 这个只能根据联合索引找到key_part1 < 'b'的记录，不能根据后面的条件进一步的减少需要扫描的数量，因为当前<b的部分还是按照key_part1的顺序来进行排序的，扫描区间是(负无穷，b),**所以尽量利用搜索条件来减少需要扫描的数量**是很关键的
 
+内存图：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/7-15.jpg?raw=true)
 
 
 
+```mysql
+select * from single_table where key_part1 <= 'b' and key_part2 = 'a'
+```
+
+别看就加了个=，但是有了这=后面的key_part2 = 'a'就可以帮助减少要扫描的数目了，虽然在key_part1 <'b' 的部分中的顺序不是按照key_part2的顺序排列的，但是**等于key_part的部分是按照key_part2的顺序进行排列的**，因为联合索引的特性
+
+
+
+索引用于**排序**
 
 
 
