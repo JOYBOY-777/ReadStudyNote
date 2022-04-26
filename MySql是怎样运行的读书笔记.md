@@ -194,7 +194,7 @@ B+树中用户记录的页，或者是最下层叶子节点的页中间的记录
 
 **二级索引**（辅助索引）：
 
-​	![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95.jpg?raw=true)这个二级索引与聚簇索引最大的区别就是，聚簇索引是根据主键的大小从小到大进行排列的，并且最下边的一层页节点是完整的用户记录。但是二级索引是你在那个列上加了索引，他就按照那个列的顺序从小到大排列，并且最下面的一层页节点不是完整的用户记录，而是**主键+索引列**的形式，然后**再从聚簇索引的页节点找到完整的用户记录**，这个过程称为**回表**	
+​	![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95.jpg?raw=true)这个二级索引与聚簇索引最大的区别就是，聚簇索引是根据主键的大小从小到大进行排列的，并且最下边的一层页节点是完整的用户记录。但是二级索引是你在那个列上加了索引，他就按照那个列的顺序从小到大排列，并且最下面的一层页节点不是完整的用户记录，而是**索引列的值+主键**的形式，然后**再从聚簇索引的页节点找到完整的用户记录**，这个过程称为**回表**	
 
 
 
@@ -392,33 +392,181 @@ select * from single_table where key_part1 <= 'b' and key_part2 = 'a'
 
 
 
-索引用于**排序**
+**索引用于排序**
+
+在mysql中，在内存或者磁盘中进行排序的方式统称为**文件排序**，那么索引搭配上排序就会出现一些神奇的事情
+
+```mysql
+select * from single_table order by key_part1,key_part2,key_part3
+```
+
+因为有了联合索引，那么就沿着记录行所在的单向链表向后扫描就行了，因为这个联合索引已经替你排好序了
 
 
 
+**使用联合索引排序时注意事项**
+
+1. order by子句后面的列的顺序也必须跟你定义的联合索引的顺序是一致的，因为联合索引的列排列的顺序是固定的
+2. 当你用order by key_part1,或者order by key_part1,key_part2进行排序时也是可以的
+3. 当前两个联合索引列的值确定后对第三个列进行排序那么和这个联合索引也可以使用比如：
+
+```mysql
+select * from single_table where key_part1 = 'a' and key_part2 = 'b' order by key_part3 limit 10
+```
+
+这个sql就是能利用到联合索引的排序，因为列等于a按照第二个列等于b排，这两个都相等按照key_part3排序
 
 
 
+**不可以使用索引进行排序的情况**
+
+1. ASC(默认),DESC混用的情况
+
+以下两种排序的可以用到索引：
+
+```mysql
+order by key_part1,key_part2 limit 10
+等价于
+order by key key_part1 desc,key_part2 desc limit 10
+```
+
+这两种都可以用到索引，但是保证必须排序的顺序是相同的，要么一致，不能混用
+
+混用的情况：
+
+```mysql
+select * from single_table order by key_part1,key_part2 desc limit 10;
+```
+
+这样的话就得反复的从索引中查找记录，但是这样的混用**是不会使用联合索引**执行排序的
 
 
 
+排序列包含非同一个索引的列,就是用来排序的列不是同一个索引
+
+```mysql
+select * from single_table order by key1,key2 limit 10;
+```
+
+很显然，key1,key2不是属于同一个索引
 
 
 
+排序列与联合索引的列不连接
+
+```mysql
+select * from single_table order by key_part1,key_part3 limit 10;
+```
+
+很显然，key_part1与key_part3中间断开了，缺少了key_part2，那么这种情况也不能走联合索引（顺序要一致）
 
 
 
+形成扫描区间的索引列与排序列不同
+
+```mysql
+select * from single_table where key1 = 'a'order by key2 limit 10;
+```
+
+这个形成了扫描区间，但是用不到key2这个索引，感觉这两个压根就没有什么关系...
 
 
 
+不能把索引列加上函数的名字放在排序列里面
+
+```mysql
+select * from single_table order by UPPER(key1) limit10
+```
+
+比如说让这个字段变为大写在利用索引进行排序，有点扯，这是用不到索引的,换句话说就是索引白建了，不能利用索引已经排序的特点
 
 
 
+**索引用于分组**
+
+例子：
+
+```mysql
+select key_part1,key_part2,key_part3,count(*) from single_table group by key_part1,key_part2,key_part3;
+```
+
+这个sql的意思其实就是先把key_part1值相同的值进行分组，这个值一样之后再根据key_part2的值一样的进行分组，然后以此类推，如果不简历索引的话会产生很多的临时表，扫描聚簇索引的记录放在这个临时表中，但是有了索引（已经排好序了）就不用产生临时表的操作了
+
+所以分组列的顺序要与联合索引列的**顺序一致**
 
 
 
+**回表的代价**
+
+找到二级索引进行回表后，先看看聚簇索引的页面在不在内存中，如果不存在内存中，还得需要读取**主键值不连续的聚簇索引记录**会产生很多的随机io，有时候如果需要进行回表的记录比较的多的时候，那其实还需要回表，就不如用全表扫描，去扫描聚簇索引的记录
 
 
 
+**更好的创建个使用索引（重点）**
 
+1. 只为用于**搜索，排序，或者分组的列**创建索引，比如出现在where,连接子句中的连接列，order by，group by子句的列创建索引
+
+```mysql
+select common_field,key_part3 from single_table where key1 = 'a';
+```
+
+common_field,key_part3这连个语句就没有必要建立索引了，where 后面的key1可以创建索引
+
+
+
+2. 考虑索引列中**不重复值**的个数
+
+用二级索引查出来的重复值的个数越多，那么需要回表的次数就越多，随机主键查找聚簇索引io的操作就越多，性能越不好，相反不重复的越多查出来的结果集就越少回表的次数就减小
+
+
+
+3. 索引列的类型尽量的小
+
+索引类的类型尽量的小的话，那么需要的空间就越小，就能正向的循环
+
+
+
+4. 为列前缀简历索引
+
+不如在给一个字符串简历索引的时候，尽管二级索引没有完整的用户记录，但是最下面的一层也需要存储索引列的值个主键，那么你的一个字符串的值越大，这个空间的浪费就越大，所以在创建这个索引的时候，给这个字符串的前几位创建索引为了节省空间
+
+```mysql
+alter table single_table add index idx_key1(key1(10);
+但是这样就不能运用到排序上面了                                            
+```
+
+
+
+5. 覆盖索引
+
+```mysql
+select key1,id from single_table where key1 > 'a' and key1 < 'c';
+
+select key1 from single_table order by key1
+```
+
+上面那个利用了二级索引的最下面一层时索引列+主键，这时候你要查询的列也是这两项，那么就避免了回表的操作，下面那个sql也是利用了索引已经排好序，你查询的时候又查找的是这个索引，也避免了回表的操作，所以在查询的时候，尽量只包含索引项，避免回表
+
+
+
+6. 让索引列以列名的形式在搜索条件中**单独**出现
+
+```mysql
+这个mysql只会全表扫描
+select * from single_table where key2*2<4;
+这个会走索引
+select * from single_table where key2<4/2;
+```
+
+
+
+7. 插入记录的时候尽量保证主键大小依次递增
+
+这样就避免了在插入一个“不恰当”主键大小的记录行时页面要进行分裂的操作，所以一切就是为了节省资源
+
+
+
+8. 冗余和重复索引
+
+其实就是给一个列加上多个索引，每加一个索引就意味着多建一棵b+树，其实是没有必要的，可以利用之前的索引已经排列好的序，来节省空间
 
