@@ -2426,8 +2426,21 @@ class Solution {
 
 ### 122 买股票的最佳时机||
 
-```java
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/algorithm/%E7%AE%97%E6%B3%95gif/122%E5%9B%BE%E8%A7%A3.png?raw=true)
 
+```java
+class Solution {
+    public int maxProfit(int[] prices) {
+        int res = 0,profit = 0;
+        for(int i = 1;i< prices.length;i++){
+            //计算每天利润
+            profit = prices[i]-prices[i-1];
+            //把正的利润累加
+            res += Math.max(profit,0);
+        }
+        return res;
+    }
+}
 ```
 
 
