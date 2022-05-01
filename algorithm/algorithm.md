@@ -2405,10 +2405,30 @@ class Solution {
 ### 53 最大子序和
 
 ```java
-
+class Solution {
+    public int maxSubArray(int[] nums) {
+        if(nums.length == 1) return nums[0];
+        int sum = 0,res = Integer.MIN_VALUE;
+        for(int i = 0;i<nums.length;i++){
+            sum += nums[i];
+            res = Math.max(sum,res);
+            //这块代码用了贪心的思想，如果结果小了，就从0开始
+            if(sum<=0) sum = 0;
+        }
+        return res;
+    }
+}
 ```
 
+遍历数组，维护一个res，然后让这个res和结果做比较，当结果为负数或者是0的情况的话，直接把结果替换为理想的状态值0
 
+
+
+### 122 买股票的最佳时机||
+
+```java
+
+```
 
 
 
