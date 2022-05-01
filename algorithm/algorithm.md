@@ -2374,7 +2374,31 @@ class Solution {
 
 
 
+## 376 摆动序列
 
+```java
+class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        if(nums.length<=1) return nums.length;
+        //从前往后表示当前差值，上一个差值，差值数量
+        int curdiff = 0,prediff = 0,count = 1;
+        for(int i = 1;i<nums.length;i++){
+            //计算当前的差值
+            curdiff = nums[i]-nums[i-1];
+            //差值的波动情况
+            if(curdiff<0 && prediff>=0 || curdiff>0 && prediff<=0){
+                //增加差值数量
+                count++;
+                //交换差值
+                prediff = curdiff;
+            }
+        }
+        return count;
+    }
+}
+```
+
+这个题实际上即使找相邻差值的正负的波动关系
 
 
 
