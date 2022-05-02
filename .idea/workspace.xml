@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="" />
+    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/MySql是怎样运行的读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/mysql/MySql是怎样运行的读书笔记.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mysql是怎样使用的学习笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/mysql/Mysql是怎样使用的学习笔记.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +17,7 @@
     <option name="generalSettings">
       <MavenGeneralSettings>
         <option name="localRepository" value="F:\maven\apache-maven-3.6.3\maven-repo" />
-        <option name="mavenHome" value="F:/maven/apache-maven-3.6.3" />
+        <option name="mavenHome" value="$PROJECT_DIR$/../maven/apache-maven-3.6.3" />
         <option name="userSettingsFile" value="F:\maven\apache-maven-3.6.3\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
@@ -33,23 +36,24 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/从上到下源码分析/java并发" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/从上到下源码分析/java集合" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
-      <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\从上到下源码分析\java集合" />
+      <recent name="F:\ReadStudyNote\从上到下源码分析\java并发" />
       <recent name="F:\ReadStudyNote\javaimg" />
       <recent name="F:\ReadStudyNote\algorithm\算法gif" />
       <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
-      <recent name="F:\ReadStudyNote" />
-      <recent name="F:\ReadStudyNote\algorithm" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\读书笔记\mysql" />
+      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
+      <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -124,6 +128,7 @@
       <workItem from="1650956522848" duration="2536000" />
       <workItem from="1651383039359" duration="1340000" />
       <workItem from="1651398656615" duration="3851000" />
+      <workItem from="1651471902571" duration="774000" />
     </task>
     <servers />
   </component>
