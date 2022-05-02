@@ -2445,6 +2445,48 @@ class Solution {
 
 
 
+### 55 跳跃游戏
+
+```java
+class Solution {
+    public boolean canJump(int[] nums) {
+        if(nums.length == 1) return true;
+        int range = 0;
+        for(int i = 0;i<=range;i++){
+            //维护range的值
+            range = Math.max(range,i+nums[i]);
+            if(range>=nums.length-1) return true;
+        }
+        return false;
+    }
+}
+```
+
+
+
+### 45 跳跃游戏 ||
+
+```java
+class Solution {
+    public int jump(int[] nums) {
+        if(nums.length == 1) return 0;
+        //currange是当前可以跳到的最远下标，nextrange是下一步能跳到的最远下标
+        int res = 0,currange = 0,nextrange = 0;
+        for(int i = 0;i<=currange && currange<nums.length-1;i++){
+            nextrange = Math.max(nextrange,i+nums[i]);
+            //当前实际的跳跃下标等于当前达到最远下标
+            if(i == currange){
+                res++;
+                currange = nextrange;
+            }
+        }
+        return res;
+    }
+}
+```
+
+
+
 
 
 
