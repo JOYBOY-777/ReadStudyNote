@@ -767,7 +767,9 @@ select * from t2 where t2.m2 = 3 and t2.n2<'d';
 
 因为我们要根据从驱动表中查询出来的记录到被驱动表中查询，有多少个就查询多少次,这样导致随机io，我们可以在执行连接前**申请一个固定的内存空间**，把若干条驱动表中查询的记录放在这个空间中，然后开始扫描被驱动表（根据被驱动表的扫描条件），每一条被驱动表中的记录与多条驱动表中的记录匹配
 
+例子：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/joinbuffer.jpg?raw=true)
 
 
 
