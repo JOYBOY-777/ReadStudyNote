@@ -773,11 +773,172 @@ select * from t2 where t2.m2 = 3 and t2.n2<'d';
 
 
 
+# 第14章 基于规则的优化（内含子查询优化二三事）
+
+这一章主要是讲了如何查询重写，就是把垃圾的语句变为可以高效执行的语句
 
 
 
+**条件简化（查询优化器干的事）**
+
+**移除不必要的括号**
+
+```mysql
+select * from (t1,(t2,t3)) where t1.a = t2.a and t2.b = t3.b
+查询优化器移除
+select * from t1,t2,t3 where t1.a = t2.a and t2.b = t3.b
+```
 
 
+
+**常量传递**
+
+```mysql
+a = 5 and b > a
+转化成
+a = b and b > 5
+```
+
+
+
+**移除没有用的条件**：把一些永远为真的条件优化掉
+
+```mysql
+(a < 1 and b = b) or (a = 6 or 5 != 5)
+优化
+(a < 1 and true) or (a = 6 or false)
+简化
+a < 1 or a = 6
+```
+
+在有表达式的时候也会直接把值给算出来
+
+```mysql
+a = 5 + 1那么直接就会算出来
+```
+
+
+
+**having子句和where子句的合并**
+
+如果查询语句中没有出现sum,max等函数和group by语句，那么就会把这两个语句合并起来
+
+
+
+**常数表检查**
+
+利用主键等值匹配或者唯一二级索引列等值匹配作为搜索条件来进行查询
+
+
+
+**外连接消除**
+
+左外链接和右外连接只是在驱动表的选择上不同，那么查询优化器会把**右外连接转化为左外连接**，我们在写查询语句（连接语句）的时候，外连接可以和内连接相互转换，只需要在where后指定被驱动表中的类**is not null**就行了，或者指定一个字段不为null:
+
+```mysql
+select * from t1 left join t2 on t1.m1 = t2.m2 where t2.n2 is not null
+```
+
+这个语句就是跟inner join没有什么区别
+
+
+
+```mysql
+select * from t1 left join t2 on t1.m1 = t2.m2 where t2.m2 = 2;
+相当于
+select * from t1 join t2 on t1.m1 = t2.m2 where t2.m2 = 2
+```
+
+在外连接查询中，指定的where子句中包含被驱动表中列**不为null**的条件称为**空值拒绝**，这时候内外连接就可以转化，从而查询优化器可以评估不同表的不同连接顺序的成本
+
+
+
+**子查询优化**
+
+子查询可以在一个查询语句中的各个位置出现：
+
+1. 出现在select中
+
+```mysql
+select (select m1 from t1 limit 1)
+```
+
+2. 在from语句中
+
+```mysql
+select m,n from(select m2 + 1 as m,n2 as n from t2 where m2 > 2) as t
+```
+
+这个from后面可以理解为产生了一个派生表
+
+3. 在where或on子句的表达式中
+
+```mysql
+select * from t1 where m1 in (select m2 from t2);
+```
+
+4. 在order by group by字句中都没有啥意义，虽然语法支持，但是没啥意思
+5. 子查询按照查询出来的结果集多少分为：标量子查询，行子查询，列子查询，表子查询
+
+
+
+**子查询在布尔表达式中的使用**
+
+= > <等是布尔表达式，这些后面只能跟标量子查询和行子查询
+
+```mysql
+标量
+select * from t1 where m1 < (select min(m2) from t2)
+行
+select * from t1 where (m1,n1) = (select m2,n2 from t2 limit 1);
+```
+
+
+
+在 in any some all后面的子查询
+
+1. in、not in
+
+操作数 [not] in (子查询)
+
+```mysql
+select * from t1 where (m1,n1) in(select m2,n2 from t2)
+```
+
+从t1表中找到一些记录，这些记录的m1,n1列的值在后面的子查询中查找
+
+2. any、some（这两个是一个意思）
+
+```mysql
+select * from t1 where m1 > any(select m2 from t2)
+等价于
+select * from t1 where m1 > (select min(m2) from t2)
+```
+
+意思是对于t1表中的m1列来说只要m1大于子查询中最小值就行了，就是m1的取值是大于子查询的最小值
+
+3. all
+
+```mysql
+select * from t1 where m1 > all(select m2 from t2)
+等价于
+select * from t1 where m1 > (select max(m2) from t2)
+```
+
+意思与上面相似
+
+
+
+**子查询注意事项**
+
+1. 子查询必须用小括号
+2. select字句中的子查询必须是标量子查询
+3. 可以用limit来达到行子查询后者标量子查询
+4. 对于in、any、some、all子查询来说不允许有limit
+
+
+
+**子查询在Mysql中是怎样执行的**
 
 
 
