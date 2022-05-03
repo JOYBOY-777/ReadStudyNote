@@ -2487,7 +2487,45 @@ class Solution {
 
 
 
+### 1005 k次取反后最大化的数组和
 
+```java
+class Solution {
+    public int largestSumAfterKNegations(int[] nums, int k) {
+        sort(nums);
+        for(int i = 0;i<nums.length;i++){
+            //遇到负数变为正数，把绝对值大的负数变为正数赚的越多，越好
+            if(k>0 && nums[i]<0){
+                nums[i] = -nums[i];
+                k--;
+            }
+        }
+        //k没用反复完调整最小的
+        if(k % 2 == 1) nums[nums.length-1] = -nums[nums.length-1];
+        int sum = 0;
+        for(int i = 0;i<nums.length;i++){
+            sum+=nums[i];
+        }
+        return sum;
+    }
+
+    //按照绝对值大小从大到小排序
+    public void sort(int[] nums){
+        int temp = 0;
+        for(int i = 0;i<nums.length;i++){
+            for(int j = i+1;j<nums.length;j++){
+                if(Math.abs(nums[i])<Math.abs(nums[j])){
+                    temp = nums[i];
+                    nums[i] = nums[j];
+                    nums[j] = temp;
+                }
+            }
+        }
+    }
+}
+```
+
+冒泡排序<是从大到小，>是从小到大
 
 
 
