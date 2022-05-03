@@ -702,7 +702,39 @@ select * from t1,t2 where t1.m1 > 1 and t1.m1 = t2.m2 and t2.n2 < 'd'
 
 连接的过程：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E8%BF%9E%E6%8E%A5%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B.jpg?raw=true)
 
+首先从驱动表中（t1）找到两个驱动条件，然后根据两表的过滤条件进行相应条件的带入，然后再到被驱动表中查询，最后得到相应的结果集，驱动表被访问一次就行，被驱动表要访问若干次
+
+
+
+**内连接和外连接：**
+
+内连接：对于连接的两个表，驱动表中的记录在被驱动表中找不到匹配的记录，那么这个记录就不会加入结果集
+
+外连接：对于连接的两个表，驱动表中的记录在被驱动表中找不到匹配的记录，那么这个记录也会加入结果集，匹配不到的记录用null值代替
+
+
+
+左外连接语法：
+
+```mysql
+select * from t1 left[outer] join t2 on 连接条件[where 普通过滤条件]
+```
+
+右外连接语法：
+
+```mysql
+select * from t1 right[outer] join t2 on 连接条件[where 普通过滤条件]
+```
+
+内连接：
+
+```mysql
+select * from t1 [inner | cross] join t2 on 连接条件[where 普通过滤条件]
+```
+
+在内连接中**on子句的意思其实是与where**一样的
 
 
 
