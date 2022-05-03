@@ -677,6 +677,8 @@ select * from a where key1 = 'a' or key3 = 'b';
 
 连接就是把表中的记录取出来进行依次匹配，并把匹配后的组合发给客户端
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E7%AC%9B%E5%8D%A1%E5%B0%94%E7%A7%AF.jpg?raw=true)
+
 产生笛卡尔积的连接查询：
 
 ```mysql
@@ -684,6 +686,21 @@ select * from t1,t2;
 ```
 
 
+
+**连接的过程**：
+
+过滤条件的分类：
+
+1. 涉及单表的分类：t1.m1>1
+2. 涉及两表的分类：t1.m1 = t2.m2 、t1.m1 > t2.m2 等
+
+例子：
+
+```mysql
+select * from t1,t2 where t1.m1 > 1 and t1.m1 = t2.m2 and t2.n2 < 'd'
+```
+
+连接的过程：
 
 
 
