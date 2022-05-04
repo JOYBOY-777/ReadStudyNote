@@ -2529,6 +2529,32 @@ class Solution {
 
 
 
+### 134 加油站
+
+```java
+class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int sum = 0,totalSum = 0,start = 0;
+        for(int i = 0;i<gas.length;i++){
+            //当前累加油量
+            sum += gas[i] - cost[i];
+            //总累加油量
+            totalSum += gas[i] - cost[i];
+            //当前累加油量<0
+            if(sum<0){
+                //说明从0到i的区间都不能作为出发下标
+                start = i + 1;
+                //还原初始状态
+                sum = 0;
+            } 
+        }
+        //总油量<0说明肯定走不完一圈
+        if(totalSum < 0) return -1;
+        return start;
+    }
+}
+```
+
 
 
 
