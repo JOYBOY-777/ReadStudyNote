@@ -940,7 +940,43 @@ select * from t1 where m1 > (select max(m2) from t2)
 
 **子查询在Mysql中是怎样执行的**
 
+对于不相关标量子查询，行子查询来说：
 
+```mysql
+select * from s1 where key1 = (select common_field from s2 where key3 = 'a' limit 1)
+```
+
+1. 单独执行后面的子查询，然后将子查询得到的结果当做外层查询的参数，这两个过程是单独执行的
+
+
+
+对于相关标量子查询来说：
+
+```mysql
+select * from s1 where key1 = (select common_field from s2 where s1.key3 = s2.key3 limit 1)
+```
+
+1. 首先从外层也就是s1表中获取一条记录
+2. 把这个记录带到子查询中，让子查询执行出结果
+3. 在执行外部查询
+
+
+
+**In子查询优化（不是很全面）**
+
+例子：
+
+```mysql
+select * from s1 where key1 in (select common_field from s2 where key3 = 'a')
+```
+
+首先这个in后面的子查询查询出来的结果可以称为一张**物化表**其实也就是临时表，然后在用这个外层的s1表与这个物化表做**join内连接**的操作,转换为内连接以后就可以让查询优化器选择用那个表做驱动表，选择性能浪费低的那个
+
+相当于：
+
+```mysql
+select s1.* from s1 inner join 物化表 on key1 = m_val
+```
 
 
 
