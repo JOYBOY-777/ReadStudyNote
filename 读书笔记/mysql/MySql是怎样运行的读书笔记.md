@@ -980,6 +980,12 @@ select s1.* from s1 inner join 物化表 on key1 = m_val
 
 
 
+# 查询优化的百科全书——EXPLAIN详解
+
+先放两个图，以后在完善
+
+**EXPLAIN语句输出中的各个列的作用**
+
 
 
 
