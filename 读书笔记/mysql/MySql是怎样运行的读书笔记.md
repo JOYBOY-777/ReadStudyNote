@@ -986,11 +986,13 @@ select s1.* from s1 inner join 物化表 on key1 = m_val
 
 **EXPLAIN语句输出中的各个列的作用**
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/explain1.jpg?raw=true)
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/explain2.jpg?raw=true)
 
 
 
-
-
+**select_type:**
 
 
 
