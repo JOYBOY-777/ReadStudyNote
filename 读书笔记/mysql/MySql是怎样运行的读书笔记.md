@@ -980,7 +980,7 @@ select s1.* from s1 inner join 物化表 on key1 = m_val
 
 
 
-# 查询优化的百科全书——EXPLAIN详解
+# 第15章 查询优化的百科全书——EXPLAIN详解(待细化)
 
 先放两个图，以后在完善
 
@@ -992,13 +992,21 @@ select s1.* from s1 inner join 物化表 on key1 = m_val
 
 
 
-**select_type:**
+**select_type:**这个看看你的查询怎么样，效率牛逼牛逼
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/select_type.jpg?raw=true)
+
+
+
+# 第17章 调节磁盘和CPU的矛盾——Innodb的Buffer Pool(待完成)
 
 
 
 
 
 
+
+# 第18章 从猫爷借钱说起——事务简介
 
 
 
