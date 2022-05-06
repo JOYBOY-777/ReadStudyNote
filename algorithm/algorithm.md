@@ -2557,6 +2557,35 @@ class Solution {
 
 
 
+### 135 分发糖果
+
+```java
+class Solution {
+    public int candy(int[] nums) {
+        int[] arr = new int[nums.length];
+        //分配的默认糖果
+        arr[0] = 1;
+        //从前往后遍历，看看后面是不是比前面大
+        for(int i=1;i<nums.length;i++){
+            //如果大的话就分配新的糖果
+            if(nums[i]>nums[i-1]) arr[i] = arr[i-1] + 1; 
+            //否则是默认糖果
+            else arr[i] = 1;
+        }
+        //从后往前遍历，看看前面的是不是比后面的大
+        for(int i=nums.length-2;i>=0;i--){
+            //如果大的话，那么当前的值就是在保证比他前面大的同时还比他后面大，所以比较两者大小
+            if(nums[i]>nums[i+1]) arr[i] = Math.max(arr[i],arr[i+1]+1);
+        }
+        int sum = 0;
+        for(int i = 0;i<arr.length;i++){
+            sum += arr[i];
+        }
+        return sum;
+    }
+}
+```
+
 
 
 
