@@ -2588,6 +2588,37 @@ class Solution {
 
 
 
+### 860 柠檬水找零
+
+```java
+class Solution {
+    public boolean lemonadeChange(int[] nums) {
+        //统计10块还有5块个数
+        int five = 0,ten = 0;
+        for(int i = 0;i<nums.length;i++){
+            if(nums[i] == 5) five++;
+            //遇到10块的就消耗5块一张，增加10块一张
+            else if(nums[i] == 10){
+                five--;
+                ten++;
+            } 
+            //20的话就是消耗5块一张，10块一张，没有的话就消耗三张5块
+            else if(nums[i] == 20){
+                if(ten >0 && five>0){
+                    ten--;
+                    five--;
+                }else{
+                    five -= 3;
+                }
+            }
+            //出现负数就说明没有零钱了
+            if(five < 0||ten < 0 ) return false;
+        }
+        return true;
+    }
+}
+```
+
 
 
 
