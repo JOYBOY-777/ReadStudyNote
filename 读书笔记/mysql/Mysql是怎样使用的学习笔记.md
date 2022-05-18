@@ -220,7 +220,7 @@ in参数（默认）：只能用于**读取**，对他赋值不会被调用者�
 ```mysql
 delimiter $
 create procedure p_in(
-	int agr int
+	in agr int
 )
 begin
 	select arg;
