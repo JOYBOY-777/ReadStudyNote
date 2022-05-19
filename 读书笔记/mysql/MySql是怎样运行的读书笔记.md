@@ -1173,7 +1173,13 @@ r1[x=0]w2[x=1]w2[y=1]c2r1[y=1]c1
 
 以上的这些隔离级别对应的破坏一致性的程度分别的对应关系分别是：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB.jpg?raw=true)
 
+脏写由于太逆天了，对一致性约束破坏的太严重，所以就不带他玩了
+
+
+
+设置隔离界别的语法与作用域：
 
 
 
