@@ -998,7 +998,7 @@ select s1.* from s1 inner join 物化表 on key1 = m_val
 
 
 
-# 第17章 调节磁盘和CPU的矛盾——Innodb的Buffer Pool(待完成)
+# 第17章 调节磁盘和CPU的矛盾——Innodb的Buffer Pool
 
 
 
@@ -1181,11 +1181,13 @@ r1[x=0]w2[x=1]w2[y=1]c2r1[y=1]c1
 
 设置隔离界别的语法与作用域：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E8%AF%AD%E6%B3%95.jpg?raw=true)
 
 
 
+**MVCC原理**
 
-
+**版本链**：
 
 
 
