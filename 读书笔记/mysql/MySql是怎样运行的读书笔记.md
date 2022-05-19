@@ -1010,13 +1010,17 @@ select s1.* from s1 inner join 物化表 on key1 = m_val
 innodb_buffer_poll_size = 字节数
 ```
 
-buffer pool是一片连续的内存空间，也被划分若干个16kb大小的页面，为了控制这些页面，创造出了**控制块**来控制这些页面，**每一个控制块对应一个缓冲页**
+buffer pool是一片连续的内存空间，也被划分若干个16kb大小的页面，为了控制这些页面，创造出了**控制块**来控制这些页面，**每一个控制块对应一个缓冲页**如图所示：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/buffer%20poll.jpg?raw=true)
+
+碎片就是不能够完整存放一个缓冲页大小的空间
 
 
 
+**free 链表的管理**
 
-
-
+free 链表就是把空闲的缓冲页的控制块用链表来穿起来，缓冲页需要存放数据时就从这个链表中删除即可：
 
 
 
