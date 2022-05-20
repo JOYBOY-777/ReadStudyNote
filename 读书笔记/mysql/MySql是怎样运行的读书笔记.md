@@ -1122,15 +1122,18 @@ free 链表就是把空闲的缓冲页的控制块用链表来穿起来，缓冲
 
 在mysql5.7.5版本之前只能在**服务启动**的时候设置缓冲池大小，但是为了方便快捷，在以后的版本中可以在服务运行的时候设置这个大小，但是会引发一个问题就是重新申请这个内存空间然后在复制之前的缓冲池，这也是非常消耗资源的，会向操作系统申请一大块连续的内存空间
 
-为了解决这个问题，我们就要修改分为内存空间的单位——**chunk**，一个chunk就是一个连续的内存地址，内存分布如图所示：
+为了解决这个问题，我们就要修改分为内存空间的单位——**chunk（启动时配置）**，一个chunk就是一个连续的内存地址，内存分布如图所示：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/chunk.jpg?raw=true)
+
+可以看到这个buffer pool被分别了两个实例，每个实例里面又分为了两个chunk，一个chunk就是一段连续的内存，里面有空闲的缓冲页，因为有了这个东西，我们下次在**启动时**修改buffer pool大小的时候就以这个chunk为单位申请，通过**innodb_buffer_pool_chunk_size**指定
 
 
 
+配置buffer pool要注意的事项：
 
-
-
-
-
+1. innodb_buffer_pool_size必须是innodb_buffer_pool_chunk_size*innodb_buffer_pool_instance的倍数（保证每个buffer pool实例的chunk大小相同）
+2. 如果innodb_buffer_pool_chunk_size*innodb_buffer_pool_instance>innodb_buffer_pool_size那么innodb_buffer_pool_chunk_size的大小调整为innodb_buffer_pool_size/innodb_buffer_pool_instance的值
 
 
 
