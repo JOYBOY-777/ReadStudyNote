@@ -1135,31 +1135,9 @@ free 链表就是把空闲的缓冲页的控制块用链表来穿起来，缓冲
 1. innodb_buffer_pool_size必须是innodb_buffer_pool_chunk_size*innodb_buffer_pool_instance的倍数（保证每个buffer pool实例的chunk大小相同）
 2. 如果innodb_buffer_pool_chunk_size*innodb_buffer_pool_instance>innodb_buffer_pool_size那么innodb_buffer_pool_chunk_size的大小调整为innodb_buffer_pool_size/innodb_buffer_pool_instance的值
 
+总结：
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/bufferpool%E6%80%BB%E7%BB%93.jpg?raw=true)
 
 
 
