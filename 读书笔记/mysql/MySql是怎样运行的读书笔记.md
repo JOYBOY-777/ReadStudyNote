@@ -1275,11 +1275,28 @@ begin read write;
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%A4%8D%E6%9D%82%E7%9A%84redo%E6%97%A5%E5%BF%97.jpg?raw=true)
 
-以插入一条紧凑型行格式记录为例的redo日志
+以插入一条紧凑型行格式记录为例的redo日志：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/redo%E5%A4%8D%E6%9D%82.jpg?raw=true)
+
+n_uniques:在一条记录中，需要几个字段的值才能**确保记录的唯一性**，有什么用呢？插入一条记录的时候就可以根据这个字段，对前n_uniques个字段**进行排序**
+
+* 对于聚簇索引来说：这个值为主键的列数（主键的数量）
+* 对于二级索引来说：这个值为主键的列数+索引列的列数（数量）
+
+field_len:该记录若干个字段占用存储空间的大小
+
+offset:该记录的**前一条记录**在页面中的地址，为的是维护在数据页中的单向链表中每个记录的next_record属性，就是让上一个记录中的next_record记录指向自己
+
+end_seg_len：**间接的**记录了一条记录的真实存储空间大小
+
+记住：**redo日志会把事务在执行过程中对数据库所做的所有修改都记录下来**，在系统崩溃重启后把事务做的修改恢复
 
 
 
+**以组的形式写入redo日志**
 
+由于插入操作会涉及不同的数据页（聚簇索引，二级索引的B+树），那么我们就用**组**的形式区分开来：
 
 
 
