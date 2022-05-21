@@ -1435,29 +1435,115 @@ flushed_to_disk_lsn：这个值就是表示刷新到日志的redo日志的量，
 
 * 将checkpoint_lsn与对应的**redo日志文件组的偏移量**以及此次**checkpoint的编号**写到日志文件的管理信息中执行一次checkpoint就+1
 
-记录完lsn之后，redo日志文件组中各个lsn的关系是
+记录完lsn之后，redo日志文件组中各个lsn的关系是：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/redolsn.jpg?raw=true)
 
+最后补充两张图：分别是在脏页没有刷新到磁盘和刷新到磁盘各个内存的变化
 
+之前：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E4%B9%8B%E5%89%8D.jpg?raw=true)
 
+之后：
 
-
-
-
-
-
-
-
-
-
-
-
-
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E4%B9%8B%E5%90%8E.jpg?raw=true)
 
 
 
 # 第20章 后悔了怎么办——undo日志（待完成）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
