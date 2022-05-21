@@ -1354,7 +1354,13 @@ redo日志存放在哪里呢？答案为大小为512这字节的block页中，�
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/log%20buffer.jpg?raw=true)
 
-有了这个log buffer那么就可以写入了，写入的顺序是顺序写入，从前往后写，那么到底要写到那个批偏移量处呢？答案是用全局变量buf_free 
+有了这个log buffer那么就可以写入了，写入的顺序是顺序写入，从前往后写，那么到底要写到那个批偏移量处呢？答案是用全局变量buf_free的如图：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%86%99%E5%85%A5log%20buffer.jpg?raw=true)
+
+
+
+举个例子，一个事务可能会产生多个MTR，一个MTR又可能产生单个或者一组redo日志
 
 
 
