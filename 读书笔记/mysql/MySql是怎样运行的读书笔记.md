@@ -1331,17 +1331,26 @@ end_seg_len：**间接的**记录了一条记录的真实存储空间大小
 
 **redo log block：**
 
-redo日志存放在哪里呢？答案为大小为512这字节的block页中
+redo日志存放在哪里呢？答案为大小为512这字节的block页中，如图所示：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/redo%20block.jpg?raw=true)
+
+真正的日志文件放在log block body中占用496字节，头部和尾部存放着一些管理信息
+
+* LOG_BLOCK_HDR_NO:每一个block的编号
+* LOG_BLOCK_HDR_DATA_LEN：block中使用了多少字节，初始值为12，到512满
+* LOG_BLOCK_FIRST_REC_GROUP：表示block中第一个MTR生成的redo**日志记录组**的偏移量
+
+这个日志记录组包含了一个MTR操作生成的一个或者多个redo log
+
+* LOG_BLOCK_CHECKPOINT_NO：表示checkpoint的序号
+* LOG_BLOCK_CHECKSUM：block的校验值，用于正确性校验
 
 
 
+**redo日志缓冲区**
 
-
-
-
-
-
-
+跟buffer pool同理，不能把redo log直接写到磁盘中，因为很慢，所以给他创建了缓冲区，也是一块连续的内存，默认大小为16MB，通过innodb_log_buffer_size来指定
 
 
 
