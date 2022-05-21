@@ -1364,17 +1364,28 @@ redo日志存放在哪里呢？答案为大小为512这字节的block页中，�
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E4%BA%A7%E7%94%9Fredo%E6%97%A5%E5%BF%97.jpg?raw=true)
 
-明确一下，这是两个操作不同数据的独立事务，不存在影响一致性的情况
+
+
+明确一下，这是两个操作不同数据的独立事务，不存在影响一致性的情况，那么他们就可以**交叉**写入log buffer如图：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E4%BA%A4%E5%8F%89%E5%86%99%E5%85%A5log%20buffer.jpg?raw=true)
 
 
 
+**redo日志刷盘时期**
+
+* log buffer空间不足，当这个空间小于百分之50的时候就会进行刷盘
+* 事务提交的时候，肯定在buffer pool中的页面出现了脏页，但是buffer pool可以不立即进行刷盘，但是为了确保安全必须把事务产生的redo log刷新到磁盘
+* 在buffer pool中把脏页刷新到磁盘前，会把产生这个脏页的事务生成的redo log刷新到磁盘，为了保证安全
+* 后台有线程每秒一次的速度刷新
+* 正常关闭服务的时候
+* 做checkpoint时
 
 
 
+**log sequence number（lsn）**
 
-
-
-
+只要有事务不断的提交，那么redo日志就会不断的增多，那么这个lsn就是用来记录当前已经写入的redo日志量，初始值规定为**8704**
 
 
 
