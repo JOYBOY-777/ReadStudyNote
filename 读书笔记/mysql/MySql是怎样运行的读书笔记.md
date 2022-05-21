@@ -1256,11 +1256,22 @@ begin read write;
 
 这种日志记录的是：在某个页面的某个偏移量处修改了几个字节的值
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/redo%E6%97%A5%E5%BF%97%E7%AE%80%E5%8D%95%E7%B1%BB%E5%9E%8B.jpg?raw=true)
+
+大致结构：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/redo%E6%97%A5%E5%BF%97%E7%B1%BB%E5%9E%8B.jpg?raw=true)
 
 
 
+**复杂的redo日志**
 
+如果我们建立了索引，那么对用户数据的添加等操作就会影响B+树，那么把一条记录插入到一个页面时，修改的地方会非常的多，那么用简单的redo日志格式来记录这些修改有两种解决方案：
 
+* 在一个页中有多少处修改的地方就记录多少redo日志，但是这样可能消耗的空间太大了
+* 记录在一个页中第一个被修改的数据到最后一个被修改的数据中的数据当做一条**物理redo日志中的具体数据**
+
+但是这两个解决方案还是太**浪费空间**了，所以又有几种新型的redo日志出现了：
 
 
 
