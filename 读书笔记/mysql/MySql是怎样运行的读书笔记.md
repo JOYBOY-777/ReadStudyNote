@@ -1243,11 +1243,18 @@ begin read write;
 
 这个日志就是记录了**事务对数据库**进行了那些**修改**
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/redo%E6%97%A5%E5%BF%97.jpg?raw=true)
+
+* type：这个redo日志的类型
+* spaceID：表空间号
+* page number：页号
+* redo日志的具体内容
 
 
 
+**及其简单的redo日志结构**
 
-
+这种日志记录的是：在某个页面的某个偏移量处修改了几个字节的值
 
 
 
