@@ -1273,9 +1273,9 @@ begin read write;
 
 但是这两个解决方案还是太**浪费空间**了，所以又有几种新型的redo日志出现了：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%A4%8D%E6%9D%82%E7%9A%84redo%E6%97%A5%E5%BF%97.jpg?raw=true)
 
-
-
+以插入一条紧凑型行格式记录为例的redo日志
 
 
 
