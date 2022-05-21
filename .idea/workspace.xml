@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/javaimg/Mysql是怎样运行的图片/redo日志简单类型.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/读书笔记/mysql/MySql是怎样运行的读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/mysql/MySql是怎样运行的读书笔记.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,19 +43,19 @@
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\ReadStudyNote\读书笔记\并发编程" />
-      <recent name="F:\ReadStudyNote\读书笔记\java基础" />
-      <recent name="F:\ReadStudyNote\读书笔记\mysql" />
-      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
-      <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
       <recent name="F:\ReadStudyNote\从上到下源码分析\java集合" />
       <recent name="F:\ReadStudyNote\从上到下源码分析\java并发" />
       <recent name="F:\ReadStudyNote\javaimg" />
       <recent name="F:\ReadStudyNote\algorithm\算法gif" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\读书笔记\并发编程" />
+      <recent name="F:\ReadStudyNote\读书笔记\java基础" />
+      <recent name="F:\ReadStudyNote\读书笔记\mysql" />
+      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
+      <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -140,7 +141,7 @@
       <workItem from="1652876353479" duration="2523000" />
       <workItem from="1652946433819" duration="6695000" />
       <workItem from="1653031607801" duration="5051000" />
-      <workItem from="1653108374595" duration="609000" />
+      <workItem from="1653108374595" duration="1261000" />
     </task>
     <servers />
   </component>
