@@ -1309,15 +1309,13 @@ end_seg_len：**间接的**记录了一条记录的真实存储空间大小
 
 * 原子性操作产生多条redo日志
 
-直接在产生的一次原子操作过程中产生的多条redo日志的**最后一条redo日志**的后面加上MLOG_MULTI_REC_END的日志**结尾**，如果崩溃了，就解析到以MLOG_MULTI_REC_END结尾的redo日志就行了
+直接在产生的一次原子操作过程中产生的多条redo日志的**最后一条redo日志**的后面加上MLOG_MULTI_REC_END的日志**结尾**，如果崩溃了，就解析到以MLOG_MULTI_REC_END结尾的redo日志就行了，如图：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/redo%E7%BB%93%E5%B0%BE.jpg?raw=true)
 
 * 原子性操作产生一条redo日志
 
-
-
-
-
-
+这种情况用什么来区分呢？为了节省空间，直接在type（8bit）拿出7个位表示redo日志类型，1个bit保证是不是产生单一的redo日志
 
 
 
