@@ -1419,13 +1419,23 @@ flushed_to_disk_lsn：这个值就是表示刷新到日志的redo日志的量，
 
 我们先要理解一件事就是redo日志文件的**文件组**，在磁盘上有很多名字为ib_logfile0...的文件，这些文件共同构成了文件组，它会**循环着使用**，是一个闭环如图：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E7%BB%84.jpg?raw=true)
+
+这样做会使最后写入的redo日志与开头写入的redo日志**追尾**，要记住redo日志存在的价值是什么？就是可以保证事务的持久性，就算系统崩溃也可以按照redo日志进行数据的恢复，如果**redo日志对应的脏页**已经刷新到**磁盘中**这时候，redo日志就没有用了，可以被**覆盖掉**，所以得出依据：判断某些redo日志占用的磁盘空间是否可以覆盖的依据就是**对应的脏页是否已经刷新到磁盘中**
+
+用一个全局变量**checkpoint_lsn**来表示当前系统中可以被覆盖的redo日志是多少，初始值是**8704**，如果脏页a被刷新到磁盘上，那么对应的redo日志就可以被覆盖了，我们增加checkpoint_lsn，这就叫**执行一次checkpoint**
 
 
 
+执行一次checkpoint的步骤：
 
+* 计算当前系统中可以被覆盖的redo日志对应的**lsn值最大**是多少，比他小的都可以被覆盖
 
+比如一个页a刷新到了磁盘，他对应的flush链表尾结点对应的oldest_modifiction是8916，把这个值给checkpoint_lsn，**并且<redo日志对应的lsn值都可以被覆盖**
 
+* 将checkpoint_lsn与对应的**redo日志文件组的偏移量**以及此次**checkpoint的编号**写到日志文件的管理信息中执行一次checkpoint就+1
 
+记录完lsn之后，redo日志文件组中各个lsn的关系是
 
 
 
