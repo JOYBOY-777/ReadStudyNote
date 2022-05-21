@@ -1350,9 +1350,11 @@ redo日志存放在哪里呢？答案为大小为512这字节的block页中，�
 
 **redo日志缓冲区**
 
-跟buffer pool同理，不能把redo log直接写到磁盘中，因为很慢，所以给他创建了缓冲区，也是一块连续的内存，默认大小为16MB，通过innodb_log_buffer_size来指定
+跟buffer pool同理，不能把redo log直接写到磁盘中，因为很慢，所以给他创建了缓冲区，也是一块连续的内存，默认大小为16MB，通过innodb_log_buffer_size来指定，如图：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/log%20buffer.jpg?raw=true)
 
+有了这个log buffer那么就可以写入了，写入的顺序是顺序写入，从前往后写，那么到底要写到那个批偏移量处呢？答案是用全局变量buf_free 
 
 
 
