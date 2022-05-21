@@ -1403,7 +1403,29 @@ redo日志存放在哪里呢？答案为大小为512这字节的block页中，�
 
 **flushed_to_disk_lsn**
 
-表示刷新到磁盘中redo日志的量，初始化大小为8704，怎么找到那些redo日志被刷新到磁盘的位置呢？用**buf_next_to_write**表示
+表示刷新到磁盘中redo日志的量，初始化大小为8704，怎么找到那些redo日志被刷新到磁盘的位置呢？用**buf_next_to_write**表示，如下图所示：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/19-28.jpg?raw=true)
+
+如果已经有MTR增加，但是**没有刷新redo日志到磁盘**的情况：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/19.29.jpg?raw=true)
+
+flushed_to_disk_lsn：这个值就是表示刷新到日志的redo日志的量，只有把redo日志刷新到磁盘了这个值才能增加，**默认值是8704**，这个值也可以运用到Buffer pool的flush链表中，flush链表中的脏页按照第一次修改发生的时间顺序进行排序，按照**old_modification**代表的lsn值进行排序，多次更新的在脏页**不会**重复插入到flush链表中,但是会更新为newest_modification
+
+
+
+**checkpoint:**
+
+我们先要理解一件事就是redo日志文件的**文件组**，在磁盘上有很多名字为ib_logfile0...的文件，这些文件共同构成了文件组，它会**循环着使用**，是一个闭环如图：
+
+
+
+
+
+
+
+
 
 
 
