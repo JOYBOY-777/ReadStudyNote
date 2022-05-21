@@ -1395,11 +1395,15 @@ redo日志存放在哪里呢？答案为大小为512这字节的block页中，�
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/lsn%E5%86%99%E5%85%A5.jpg?raw=true)
 
+当MTR比较大时，会出现以下状态：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%A4%A7MTR%E5%86%99%E5%85%A5redo%20log.jpg?raw=true)
 
 
 
+**flushed_to_disk_lsn**
 
-
+表示刷新到磁盘中redo日志的量，初始化大小为8704，怎么找到那些redo日志被刷新到磁盘的位置呢？用**buf_next_to_write**表示
 
 
 
