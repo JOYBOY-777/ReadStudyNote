@@ -1360,9 +1360,11 @@ redo日志存放在哪里呢？答案为大小为512这字节的block页中，�
 
 
 
-举个例子，一个事务可能会产生多个MTR，一个MTR又可能产生单个或者一组redo日志
+举个例子，一个事务可能会产生多个MTR，一个MTR又可能产生单个或者一组redo日志如图：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E4%BA%A7%E7%94%9Fredo%E6%97%A5%E5%BF%97.jpg?raw=true)
 
+明确一下，这是两个操作不同数据的独立事务，不存在影响一致性的情况
 
 
 
