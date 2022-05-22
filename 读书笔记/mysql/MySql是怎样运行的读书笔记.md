@@ -1523,13 +1523,19 @@ insert into gun_demo(id,key1,col) values(1,'AWM','狙击枪'),(2,'m416','步枪'
 
 这个roll_pointer也十分简单就是指向**记录对应的undo日志**：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/roll%20pointer.jpg?raw=true)
+
+可见就是一个指针，指向undo日志
 
 
 
+**delete操作对应的undo日志：**
 
+当我们删除一条记录的时候，其实就是把当前的行记录的标志位deleted_flag设置为1
 
+一个正常的删除操作的流程：
 
-
+* 删除事务没有进行的时候：垃圾链表还有行记录的单向链表都没有变化
 
 
 
