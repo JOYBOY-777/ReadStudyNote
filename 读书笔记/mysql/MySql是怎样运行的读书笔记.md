@@ -1535,11 +1535,21 @@ insert into gun_demo(id,key1,col) values(1,'AWM','狙击枪'),(2,'m416','步枪'
 
 一个正常的删除操作的流程：
 
-* 删除事务没有进行的时候：垃圾链表还有行记录的单向链表都没有变化
+* 删除事务没有进行的时候：垃圾链表还有行记录的单向链表都没有变化：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E6%AD%A3%E5%B8%B8%E7%8A%B6%E6%80%81.jpg?raw=true)
+
+* 当一个删除的事务开启的时候，注意这个过程中并没有提交，只是把记录的删除标志位设置为1，但是没有加入垃圾链表中，这个过程是**半删除**状态，为了MVCC保证
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%8D%8A%E5%88%A0%E9%99%A4%E7%8A%B6%E6%80%81.jpg?raw=true)
+
+* 当一个删除的事务提交后：会有专门的线程来删除，并且把这个记录添加到垃圾链表，并放到头结点
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%88%A0%E9%99%A4%E7%8A%B6%E6%80%81.jpg?raw=true)
 
 
 
-
+那么可以看到，如果事务提交了，那么就不需要回滚了，所以回滚的操作只是针对于这个**delete mark**的中间状态来说明的，那么这个undo日志的模型大概是：
 
 
 
