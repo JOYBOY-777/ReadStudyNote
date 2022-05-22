@@ -1588,7 +1588,20 @@ delete from gun_demo where id = 1;
 
 对于以上了两种类型的话，产生的undo日志的类型为：**TRX_UNDO_UPD_EXIST_REC**的日志
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/update%20undo.jpg?raw=true)
 
+值的注意的是：
+
+* 这个n_update的意思是你的一条update语句到底有多少个列受到了影响，下面的部分则是记录的更新之前的字段的位置，大小，真实值
+* 如果更新的列中包含了索引列的话，那么也要把更新前的索引列信息写上面
+
+举个例子：
+
+```mysql
+update gun_demo set key1 = 'm249',col = '机枪' where id = 2;
+```
+
+那么这个语句对应的undo日志就是：
 
 
 
