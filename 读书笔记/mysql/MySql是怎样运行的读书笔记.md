@@ -1543,17 +1543,17 @@ insert into gun_demo(id,key1,col) values(1,'AWM','狙击枪'),(2,'m416','步枪'
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%8D%8A%E5%88%A0%E9%99%A4%E7%8A%B6%E6%80%81.jpg?raw=true)
 
-* 当一个删除的事务提交后：会有专门的线程来删除，并且把这个记录添加到垃圾链表，并放到头结点
+* 当一个删除的事务提交后：会有专门的线程来删除，并且把这个记录添加到垃圾链表，并放到头结点,就是对这个记录进行**真正意义上的删除**
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%88%A0%E9%99%A4%E7%8A%B6%E6%80%81.jpg?raw=true)
 
 
 
-那么可以看到，如果事务提交了，那么就不需要回滚了，所以回滚的操作只是针对于这个**delete mark**的中间状态来说明的，那么这个undo日志的模型大概是：
+那么可以看到，如果事务提交了，那么就不需要回滚了，所以回滚的操作只是针对于这个**delete mark**的中间状态来说明的，那么这个undo日志(**TRX_UNDO_DEL_MARK_REC**)的模型大概是：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/delete%20undo.jpg?raw=true)
 
-
-
+这个里面提出了一个叫**版本链的东西**，比如我在**一个事务中**先插入了一行记录，然后再删除他，那么首先添加了一行记录后，对应的记录行上面就会产生对应的trx_id还有roll_pointer(注意这两个是针对于**添加操作生成的**)，关键的来了：在进行**半删除**(delete mark)**之前**会把**由于Insert产生的trx_id和roll_pointer这两个添加到这个undo日志对应的属性中**，这样做的目的是能**通过delete的undo日志找到insert的undo日志**
 
 
 
