@@ -1553,13 +1553,33 @@ insert into gun_demo(id,key1,col) values(1,'AWM','狙击枪'),(2,'m416','步枪'
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/delete%20undo.jpg?raw=true)
 
-这个里面提出了一个叫**版本链的东西**，比如我在**一个事务中**先插入了一行记录，然后再删除他，那么首先添加了一行记录后，对应的记录行上面就会产生对应的trx_id还有roll_pointer(注意这两个是针对于**添加操作生成的**)，关键的来了：在进行**半删除**(delete mark)**之前**会把**由于Insert产生的trx_id和roll_pointer这两个添加到这个undo日志对应的属性中**，这样做的目的是能**通过delete的undo日志找到insert的undo日志**
+这个里面提出了一个叫**版本链的东西**，比如我在**一个事务中**先插入了一行记录，然后再删除他，那么首先添加了一行记录后，对应的记录行上面就会产生对应的trx_id还有roll_pointer(注意这两个是针对于**添加操作生成的**)，关键的来了：在进行**半删除**(delete mark)**之前**会把**由于Insert产生的trx_id和roll_pointer这两个添加到这个undo日志对应的属性中**，这样做的目的是能**通过delete的undo日志找到insert的undo日志**，于是就产生了一个跟链子一样的东西：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E7%89%88%E6%9C%AC%E9%93%BE.jpg?raw=true)
+
+举个例子：
+
+```mysql
+insert into gun_demo(id,key1,col) values(1,'AWM','狙击枪'),(2,'m416','步枪');
+delete from gun_demo where id = 1;
+```
+
+那么会生成一个delect mark对应的undo日志：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/delete%20undo%20im.jpg?raw=true)
+
+注意的点：
+
+* 这个删除的操作执行了那么就会出现第三条undo日志，编号为2（从0开始）
+* 因为这个删除的语句占用了两个索引列分别是聚簇索引id，还有二级索引key1，分别统计他们列在**记录行的位置**，很显然主键是0，用户记录是3，然后是**占用空间的大小和真实值**，最后这部分空间的大小加上上部分的大小占用字节数的和，填写到上一部分中就是13
 
 
 
+**update操作对应的undo日志**
 
+在unpate的时候有两种处理方式，分别是**更新主键**还有**不更新主键**
 
-
+* 不更新主键：
 
 
 
