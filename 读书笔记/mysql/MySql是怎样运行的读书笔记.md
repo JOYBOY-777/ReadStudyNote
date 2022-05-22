@@ -1511,11 +1511,17 @@ flushed_to_disk_lsn：这个值就是表示刷新到日志的redo日志的量，
 insert into gun_demo(id,key1,col) values(1,'AWM','狙击枪'),(2,'m416','步枪');
 ```
 
-那么因为插入的是两条记录，那么对应的是两个事务，产生的是两个undo日志：
+那么因为**一个事务插入的两条记录**，肯定对应两个undo日志
 
-第一条
+第一条：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E7%AC%AC%E4%B8%80%E6%9D%A1undo.jpg?raw=true)
 
+第二条：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E7%AC%AC%E4%BA%8C%E6%9D%A1undo.jpg?raw=true)
+
+这个roll_pointer也十分简单就是指向**记录对应的undo日志**：
 
 
 
