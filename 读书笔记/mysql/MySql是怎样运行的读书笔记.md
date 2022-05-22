@@ -1495,13 +1495,25 @@ flushed_to_disk_lsn：这个值就是表示刷新到日志的redo日志的量，
 
 * insert操作对应的undo日志：
 
-要想回滚insert操作那么就记录主键id就行了，内存中大致的结构是（TRX_UNDO_INSERT_REC）
+要想回滚insert操作那么就记录主键信息就行了，内存中大致的结构是（TRX_UNDO_INSERT_REC）
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/insert%E5%AF%B9%E5%BA%94%E7%9A%84undo.jpg?raw=true)
 
+注意：
 
+* undo no：从0开始递增，每生成一条undo日志，这个值就增1，前提是**没有提交事务**的情况下
+* 有可能一个事务中会夹杂着多张表，那么就会有多个主键，不论是一列还是多个列，每个主键的存储空间大小(len),和真实值(value)就会被记录上
+* 只需要针对**聚簇索引记录**来记录一条undo日志
 
+当我们插入两条记录时：
 
+```mysql
+insert into gun_demo(id,key1,col) values(1,'AWM','狙击枪'),(2,'m416','步枪');
+```
 
+那么因为插入的是两条记录，那么对应的是两个事务，产生的是两个undo日志：
+
+第一条
 
 
 
