@@ -1483,9 +1483,19 @@ flushed_to_disk_lsn：这个值就是表示刷新到日志的redo日志的量，
 
 
 
+**一条聚簇索引记录在页面中的真实结构**
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E7%9C%9F%E5%AE%9E%E8%AE%B0%E5%BD%95.jpg?raw=true)
+
+这个trx_id就是那个事务对这个聚簇索引记录进行了改动，那么记录的就是对应的事务id
 
 
 
+**undo日志的格式**
+
+* insert操作对应的undo日志：
+
+要想回滚insert操作那么就记录主键id就行了，内存中大致的结构是（TRX_UNDO_INSERT_REC）
 
 
 
