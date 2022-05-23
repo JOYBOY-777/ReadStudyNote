@@ -1700,11 +1700,16 @@ Uudo Page Header:
 
 作为undo日志链表的第一个节点是很特殊的，他多了一个Undo log Segment Header的部分：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9undo.jpg?raw=true)
 
+这个多出来的具体部分细分是：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9%E7%BB%93%E6%9E%84.jpg?raw=true)
 
-
-
+* TRX_UNDO_STATE:表示本页链表处于什么状态
+* TRX_UNDO_LAST_LOG:本页链表中最后一个Undo log header位置
+* TRX_UNDO_FSEG_HEADER:通过这个属性可以找到改段对应的inode entry
+* TRX_UNDO_PAGE_LIST:Undo页面链表的基节点
 
 
 
