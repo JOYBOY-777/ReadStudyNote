@@ -1628,13 +1628,23 @@ update gun_demo set key1 = 'm249',col = '机枪' where id = 2;
 
 主要讲的是这些undo日志会被**写到什么地方**，还有需要注意的问题，那么写入redo日志的过程中需要用到多个链表：
 
-每个链表的节点示意图：
+每个链表的节点示意图：前面两个组合指向的是前一个节点，后面两个指向后一个节点
 
-链表头结点的示意图：
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E9%93%BE%E8%A1%A8%E8%8A%82%E7%82%B9.jpg?raw=true)
+
+链表头结点的示意图：List Length表示链表中有几个节点，下面两个指向的是**链表头结点**，后面指向的是**链表尾结点**
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E9%93%BE%E8%A1%A8%E5%9F%BA%E8%8A%82%E7%82%B9.jpg?raw=true)
 
 整个链表的大致示意图：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E9%93%BE%E8%A1%A8%E6%95%B4%E4%BD%93.jpg?raw=true)
 
+
+
+**FIL_PAGE_UNDO_LOG** 
+
+答案来了，实际上存储到**表空间**中，表空间中有一个FIL_PAGE_UNDO_LOG的页面，大小为16kb，具体的结构如图：
 
 
 
