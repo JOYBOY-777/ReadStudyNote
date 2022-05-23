@@ -1707,11 +1707,18 @@ Uudo Page Header:
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9%E7%BB%93%E6%9E%84.jpg?raw=true)
 
 * TRX_UNDO_STATE:表示本页链表处于什么状态
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E9%93%BE%E8%A1%A8%E7%8A%B6%E6%80%81.jpg?raw=true)
+
 * TRX_UNDO_LAST_LOG:本页链表中最后一个Undo log header位置
 * TRX_UNDO_FSEG_HEADER:通过这个属性可以找到改段对应的inode entry
-* TRX_UNDO_PAGE_LIST:Undo页面链表的基节点
+* TRX_UNDO_PAGE_LIST:Undo页面链表的**基节点**
 
 
+
+**Undo Log Header：**
+
+实际上，这个第一个页面的内容还要加点东西:就是Undo Log Header，详细示意图如下
 
 
 
