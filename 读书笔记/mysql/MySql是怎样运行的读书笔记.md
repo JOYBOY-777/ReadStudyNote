@@ -1750,13 +1750,12 @@ Uudo Page Header:
 针对两种不同的Undo链表重用的方式：
 
 1. insert undo链表在提交后基本就没有用了
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/insert%E9%87%8D%E7%94%A8.jpg?raw=true)
+
 2. undate undo不能覆盖老的部分，因为MVCC
 
-
-
-
-
-
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/unpate%E9%87%8D%E7%94%A8.jpg?raw=true)
 
 
 
@@ -1781,13 +1780,26 @@ Uudo Page Header:
 
 **从回滚段中申请undo页面链表**
 
-在最初阶段，对于“会议室页”Rollback Segment Header来说，最初阶段他并**没有任何班长编号（undo slot）**，所以就是空的：FIL_NULL,但是执行语句后就会有事务发生，那么就要记录undo日志，分配undo页面链表，于是就要从
+在最初阶段，对于“会议室页”Rollback Segment Header来说，最初阶段他并**没有任何班长编号（undo slot）**，所以就是空的：FIL_NULL,但是执行语句后就会有事务发生，那么就要记录undo日志，分配undo页面链表，于是就开始找(遍历)这个班长编号，那么会出现两种情况：
+
+* 如果发现班长编号是空的，那么就从段中申请一个页面（创建出一个班长），来领取这个编号，说明由这个事务产生的undo log就由这个班长负责了
+* 如果不是空的，说明这个班长已经领取了编号，所以只能往后遍历，遇到没有没有被领取的编号
+
+一个会议室(Rollback Segment Header)最多能容纳1024个班长编号(undo slot)如果满了，说明新事物无法获得新的undo页面链表了，就给用户端报错
+
+当一个事务提交的时候，这个班长编号有两种命运：
+
+1. 如果班长编号指向的undo页面符合**被重用**的标准，那么这个undo页面的类型就变成可缓存的，之后这个班长编号会被加入到一个链表中，inset类型的undo链表被加入到insert undo cached链表中，undate类型的undo链表被加入到uodate undo cached链表中
+2. 不符合重用标准
+
+* 如果编号对应的是insert类型的页面，那么这个页面的state属性被置为TRX_UNDO_TO_FREE，然后这个班长undo页面对应的段会被释放，班长编号**置为空**
+* 对应的是update这个页面的state会被置为TRX_UNDO_TO_PURGE，然后把班长编号置为fil_null,然后把本次事务产生的undo日志放到History链表中，不会直接释放因为得进行MVCC
 
 
 
+**多个回滚段**
 
-
-
+一个回滚段太少了，一次只能容纳1024个班长，多弄几个会议室就行了，在哪里弄？在系统表空间第五号页面里弄就行了，如图：
 
 
 
