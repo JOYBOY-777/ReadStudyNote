@@ -1740,11 +1740,92 @@ Uudo Page Header:
 
 
 
+**重用undo页面**
+
+当我们执行事务，但是这个事务就修改了几条记录，那么undo页面链表只产生了少量的undo日志，当我们每次开启一个事务就要创建一个undo链表就太浪费了，那么**当我们的事务提交后**，能不能复用这个已经提交的事务的undo链表呢？其实是可以的
+
+* 该链表只包含一个undo页面
+* Undo页面使用不到1/4
+
+针对两种不同的Undo链表重用的方式：
+
+1. insert undo链表在提交后基本就没有用了
+2. undate undo不能覆盖老的部分，因为MVCC
+
+
+
+
+
+
+
+
+
 **回滚段** 
 
 一个事务最多可以有4个undo链表，在同一时刻不同事物拥有的undo链表是不一样的，那么为了**管理这些链表**，设计了一个叫做**Rollback Segment Header**,这个里面存放的是**各个Undo页面链表头页面页号**，这个页号叫undo slot
 
-类比：undo页面链表是一个班，first undo page是班长，后面的页面是同学，年级里面给班长开会就是Rollback Segment Header，那么它的结构是：
+类比：undo页面链表是一个班，first undo page是班长undo slot是班长编号，后面的页面是同学，年级里面给班长开会就是Rollback Segment Header，那么它的结构是：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/rsh%E9%A1%B5%E9%9D%A2.jpg?raw=true)
+
+每个“会议室”页面有对应着一个**段**，这个段就是回滚段，
+
+从上到下的解释是：
+
+1. 回滚段中管理的所有Undo页面中页面**数量之和的最大值**
+2. History链表占用的页面数量
+3. History链表的基节点
+4. 回滚段对应的10字节大小的Segment Header结构，可以找回这个回滚段对应的Inode Entry
+5. undo slot集合
+
+
+**从回滚段中申请undo页面链表**
+
+在最初阶段，对于“会议室页”Rollback Segment Header来说，最初阶段他并**没有任何班长编号（undo slot）**，所以就是空的：FIL_NULL,但是执行语句后就会有事务发生，那么就要记录undo日志，分配undo页面链表，于是就要从
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
