@@ -1734,11 +1734,17 @@ Uudo Page Header:
 
 最后一个属性是：一个名为history链表的节点
 
-总结就是在真正的写入undo日之前，第一个页面会填充三个部分，剩下的页面会填充一个部分
+总结就是在真正的写入undo日之前，第一个页面会填充三个部分，剩下的页面会填充一个部分：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%A1%AB%E5%85%85.jpg?raw=true)
 
 
 
+**回滚段** 
 
+一个事务最多可以有4个undo链表，在同一时刻不同事物拥有的undo链表是不一样的，那么为了**管理这些链表**，设计了一个叫做**Rollback Segment Header**,这个里面存放的是**各个Undo页面链表头页面页号**，这个页号叫undo slot
+
+类比：undo页面链表是一个班，first undo page是班长，后面的页面是同学，年级里面给班长开会就是Rollback Segment Header，那么它的结构是：
 
 
 

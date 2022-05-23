@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/javaimg/Mysql是怎样运行的图片/追加部分.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/javaimg/Mysql是怎样运行的图片/rsh页面.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/读书笔记/mysql/MySql是怎样运行的读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/mysql/MySql是怎样运行的读书笔记.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -143,7 +143,7 @@
       <workItem from="1653031607801" duration="5051000" />
       <workItem from="1653108374595" duration="9825000" />
       <workItem from="1653191086280" duration="7745000" />
-      <workItem from="1653286138494" duration="5071000" />
+      <workItem from="1653286138494" duration="6349000" />
     </task>
     <servers />
   </component>
