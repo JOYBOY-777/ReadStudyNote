@@ -1678,9 +1678,9 @@ Uudo Page Header:
 
 由于在一个事务的执行过程中可能会产生很多的undo日志，并且在一个页面中是放不下的，那么就用链表连接起来：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/undo%E9%A1%B5%E9%9D%A2%E9%93%BE%E8%A1%A8.jpg?raw=true)
 
-
-
+由于这个undo页中只能存储一种类型的undo日志，所以我们**还要为每一种类型的页面都创建出一个链表**，并且还规定，**临时表**产生的undo日志和**用户表**产生的undo日志是分开来的，那么一共就有4个链表
 
 
 
