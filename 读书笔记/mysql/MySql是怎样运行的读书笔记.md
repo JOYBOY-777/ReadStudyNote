@@ -1646,19 +1646,37 @@ update gun_demo set key1 = 'm249',col = '机枪' where id = 2;
 
 答案来了，实际上存储到**表空间**中，表空间中有一个FIL_PAGE_UNDO_LOG的页面，大小为16kb，具体的结构如图：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/undo%E9%A1%B5%E9%80%9A%E7%94%A8%E7%BB%93%E6%9E%84.jpg?raw=true)
+
+Uudo Page Header:
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/undo%E9%A1%B5header%E7%BB%93%E6%9E%84.jpg?raw=true)
+
+属性的意思如下：
+
+* **TRX_UNDO_PAGE_TYPE**：存储什么类型的undo日志，一般undo日志被分为两大类：
+
+1. TRX_UNDO_INSERT:
+
+   由于insert操作，或者是在unpate时有**更新主键**的情况下，具体类型为：TRX_UNDO_INSERT_REC
+
+2. TRX_UNDO_UPDATE:
+
+   由于删除更新产生的undo日志
+
+* TRX_UNDO_PAGE_START：在当前页面中从什么位置开始存储Undo日志，就是第一条undo日志的位置
+* TRX_UNDO_PAGE_FREE：就是页面中最后一条undo日志的位置
+* TRX_UNDO_PAGE_NODE：代表一个**链表节点**结构
 
 
 
+**Undo页面链表**：
 
+实际上由于事务产生的Undo日志存放在专门的undo页中，并且**在undo页中的Header部分通过TRX_UNDO_PAGE_NODE结构连接**
 
+**单个事务的Undo页面链表**
 
-
-
-
-
-
-
-
+由于在一个事务的执行过程中可能会产生很多的undo日志，并且在一个页面中是放不下的，那么就用链表连接起来：
 
 
 
