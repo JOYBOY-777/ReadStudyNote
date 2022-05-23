@@ -1720,6 +1720,32 @@ Uudo Page Header:
 
 实际上，这个第一个页面的内容还要加点东西:就是Undo Log Header，详细示意图如下
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E8%BF%BD%E5%8A%A0%E9%83%A8%E5%88%86.jpg?raw=true)
+
+这个undo log header的具体部分以及解释：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E8%BF%BD%E5%8A%A0%E4%BA%8C.jpg?raw=true)
+
+解释：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E8%BF%BD%E5%8A%A0%E4%B8%89.jpg?raw=true)
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E8%BF%BD%E5%8A%A04.jpg?raw=true)
+
+最后一个属性是：一个名为history链表的节点
+
+总结就是在真正的写入undo日之前，第一个页面会填充三个部分，剩下的页面会填充一个部分
+
+
+
+
+
+
+
+
+
+
+
 
 
 
