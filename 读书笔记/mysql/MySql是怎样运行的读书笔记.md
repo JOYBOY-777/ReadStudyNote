@@ -1692,9 +1692,13 @@ Uudo Page Header:
 
 如果有两个事务为1和2，事务1对**普通表**执行删除操作，对**临时表**进行添加和修改操作，事务2对普通表进行添加，修改，删除操作，那么在内存中，会有5个undo链表产生：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/5%E4%B8%AAundo%E9%93%BE%E8%A1%A8.jpg?raw=true)
 
 
 
+**Undo**日志具体的写入过程
+
+作为undo日志链表的第一个节点是很特殊的，他多了一个Undo log Segment Header的部分：
 
 
 
