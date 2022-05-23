@@ -1680,9 +1680,17 @@ Uudo Page Header:
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/undo%E9%A1%B5%E9%9D%A2%E9%93%BE%E8%A1%A8.jpg?raw=true)
 
-由于这个undo页中只能存储一种类型的undo日志，所以我们**还要为每一种类型的页面都创建出一个链表**，并且还规定，**临时表**产生的undo日志和**用户表**产生的undo日志是分开来的，那么一共就有4个链表
+由于这个undo页中只能存储一种类型的undo日志，所以我们**还要为每一种类型的页面都创建出一个链表**，并且还规定，**临时表**产生的undo日志和**用户表**产生的undo日志是分开来的，那么一共就有4个链表：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/4%E4%B8%AAundo%E6%97%A5%E5%BF%97.jpg?raw=true)
+
+按需分配，根据你的事务来说明
 
 
+
+**多个事务中的Undo页面链表**
+
+如果有两个事务为1和2，事务1对**普通表**执行删除操作，对**临时表**进行添加和修改操作，事务2对普通表进行添加，修改，删除操作，那么在内存中，会有5个undo链表产生：
 
 
 
