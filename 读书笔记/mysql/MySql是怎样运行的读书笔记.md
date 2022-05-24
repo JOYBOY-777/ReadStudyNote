@@ -1930,6 +1930,12 @@ r1[x=0]w2[x=1]w2[y=1]c2r1[y=1]c1
 * trx_id:就是一个事务在对**聚簇索引记录**进行影响的时候，都会把这个事务的id赋给这个属性，就是那个事务把我搞成这样的
 * roll_pointer:指向包含旧版本数据的undo日志
 
+一条插入语句大概对应的图：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/insert%E6%8F%92%E5%85%A5.jpg?raw=true)
+
+如果有两个事务id分别为100,200的事务对一个数据进行update操作的话大致的流程图为：
+
 
 
 
