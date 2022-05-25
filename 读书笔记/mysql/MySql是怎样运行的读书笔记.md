@@ -1993,9 +1993,45 @@ r1[x=0]w2[x=1]w2[y=1]c2r1[y=1]c1
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/100%20200.jpg?raw=true)
 
-由于反复的对number值为1的行记录做修改，那么肯定都形成了对应的版本链
+由于反复的对number值为1的行记录做修改，那么肯定都形成了对应的版本链：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/insert%20%E7%89%88%E6%9C%AC%E9%93%BE.jpg?raw=true)
 
+现在有另外一个事务，使用read committed隔离级别，这是一个**只读事务**，他读取事务100,200未提交的事务：
+
+```mysql
+begin;
+#事务100,200没有提交
+select * from hero where number = 1;#读到的是刘备，因为在read committed的事务隔离级别下发生不了脏读
+```
+
+这个select的执行过程：
+
+1. 执行select语句时生成一个ReadView，这个ReadView里面的活跃的事务Id也就是m_ids列表的内容是：[100,200],min_trx_id:是100，max_trx_id:为201，creator_trx_id为0（因为没有对记录行进行实质性的修改，默认分配的就是0）
+2. 然后开始去版本链中寻找可见的记录：最新的记录是张飞但是这个版本记录的trx_id为100，这个炸弹在我的手牌中，不能访问，然后遍历下一个版本链
+3. 这个版本的trx_id关羽这个炸弹也在我的手牌中，也不可见，之后继续遍历
+4. 直到下一个版本刘备的trx_id小于我最小的手牌，比我最小的牌还小，那么我就可以访问了
+
+然后我们把事务Id为100的事务进行提交：
+
+```mysql
+#事务Id为100
+begin;
+update hero name = '关羽' where number = 1;
+update hero name = '张飞' where number = 1;
+commit;
+```
+
+然后调用事务id为200的事务更新hero表中number为1的记录，不同的事务修改相同的记录
+
+```mysql
+begin;
+#更新一些其他表的记录
+update hero set name = '赵云' where number = 1;
+update hero set name = '诸葛亮' where number = 1;
+```
+
+这时number 1对应的版本链是：
 
 
 
