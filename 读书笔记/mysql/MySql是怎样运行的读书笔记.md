@@ -1880,7 +1880,7 @@ w1[x=1]r2[x=1]r2[y=0]c2w1[y=1]c1
 
 
 
-* 不可重复度：一个事务修改了另一个**未提交**事务**读取**的数据
+* 不可重复度：一个事务修改了另一个**未提交**事务**读取**的数据，**在同一个事务的多次查询中，查询的结果不一样**
 
 ```mysql
 r1[x=0]w2[x=1]w2[y=1]c2r1[y=1]c1
@@ -2048,7 +2048,7 @@ select * from hero where number = 1;#读到的是张飞
 这个select2查询执行的过程是：
 
 1. 执行这个查询的时候会简单生成一个ReadView，他之中的属性是：m_ids列表包含200，因为100提交了，min_trx_id是200，max_trx_id是201，creater_trx_id是0
-2. 在版本练中查找，会发现诸葛亮和赵云的trx_id都不行，这两个炸弹都在我的手牌中，之后根据roll_pointer查找下一个版本
+2. 在版本链中查找，会发现诸葛亮和赵云的trx_id都不行，这两个炸弹都在我的手牌中，之后根据roll_pointer查找下一个版本
 3. 发现张飞的trx_id小于我的最小手牌，那么他就可以访问
 
 总结就是：**使用READ COMMITTED**隔离级别的事务在**每次查询开始时**都会生成一个独立的ReadView
@@ -2059,11 +2059,68 @@ select * from hero where number = 1;#读到的是张飞
 
 这个就比较的懒，**就在第一次执行查询语句**的时候生成一个ReadView
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E4%B8%80%E6%A8%A1%E4%B8%80%E6%A0%B7.jpg?raw=true)
 
+然后用可重复读的隔离级别开始执行：
 
+```mysql
+begin;
+#100 200未提交，select 1
+select * from hero where number = 1;#得到的是刘备
+```
 
+这个select1的执行过程是：
 
+1. 在这个select1执行的时候会生成一个ReadView，他的m_ids列表的内容是[100,200],min_trx_id是100，max_trx_id是201，creator_trx_id是0
+2. 然后从版本链中挑选可见的记录，由于前两条的trx_id(炸弹)都在我的手牌中，那么我就访问不了
+3. 只有第三条记录的trx_id为80，比我手牌最小的那种还小，我可以访问，就是刘备这个记录
 
+之后把事务Id为200的事务进行提交：
+
+```mysql
+#事务Id为100
+begin;
+update hero name = '关羽' where number = 1;
+update hero name = '张飞' where number = 1;
+commit;
+```
+
+然后调用事务id为200的事务更新hero表中number为1的记录，不同的事务修改相同的记录
+
+```mysql
+begin;
+#更新一些其他表的记录
+update hero set name = '赵云' where number = 1;
+update hero set name = '诸葛亮' where number = 1;
+```
+
+形成的版本链是：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/200%E4%BA%8B%E5%8A%A1%E4%BF%AE%E6%94%B9.jpg?raw=true)
+
+然后开启一个读事务进行读取：
+
+```mysql
+begin;
+#事务100,200均未提交，select1
+select * from hero where number = 1;#读到的还是刘备
+#事务200未提交,select2
+select * from hero where number = 1;#读到的还是刘备
+```
+
+select2的步骤是：
+
+1. 因为只生成一个ReadView那么就复用之前的就行了，他的m_ids列表的内容是[100,200],min_trx_id是100，max_trx_id是201，creator_trx_id是0
+2. 这样一下可以发现，前四条的这（四个trx_id）四个炸弹都在我的手牌中，那么就都不能访问
+3. 就最后一个可以访问
+
+ 以上了例子就表明了一个事：**在同一事务查询下**，也可能出现数据不一致的情况，这就是在读未提交情况下出现的**不可重复读**的情况，由于**可重复读**和**读未提交**这两种隔离级别针对查询出现的**readview**时机的不同来避免不可重复情况的发生
+
+在执行DELETE语句和更新键值的UPDATE情况下，不会吧聚簇索引对应的记录**完全删除**，而是进行**半删除**，举个例子就是，有两个事务T1,T2并发执行，隔离级别为可重复读，如果T1根据条件查询了出某些记录，T2删除，这时候T1又重新查，如果T2把他删了，那么T1就不可能查到了，这就是软删除的好处
+
+**MVCC只是针对**普通的查询时才生效，非普通查询不生效！！
+
+在当前系统中，如果最早生成的ReadView**不在访问undo日志**以及**打了删除标记的记录**，就可以通过**purge**操作将他们删除
 
 
 
