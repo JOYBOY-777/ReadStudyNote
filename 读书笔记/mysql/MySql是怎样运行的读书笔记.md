@@ -2033,47 +2033,31 @@ update hero set name = '诸葛亮' where number = 1;
 
 这时number 1对应的版本链是：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/200%E4%BA%8B%E5%8A%A1%E4%BF%AE%E6%94%B9.jpg?raw=true)
 
+然后在开一个读事务进行读取：
 
+```mysql
+begin;
+#事务100,200均未提交，select1
+select * from hero where number = 1;#读到的还是刘备
+#事务200未提交,select2
+select * from hero where number = 1;#读到的是张飞
+```
 
+这个select2查询执行的过程是：
 
+1. 执行这个查询的时候会简单生成一个ReadView，他之中的属性是：m_ids列表包含200，因为100提交了，min_trx_id是200，max_trx_id是201，creater_trx_id是0
+2. 在版本练中查找，会发现诸葛亮和赵云的trx_id都不行，这两个炸弹都在我的手牌中，之后根据roll_pointer查找下一个版本
+3. 发现张飞的trx_id小于我的最小手牌，那么他就可以访问
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+总结就是：**使用READ COMMITTED**隔离级别的事务在**每次查询开始时**都会生成一个独立的ReadView
 
 
 
 * 在**可重复读**事务隔离级别下——**第一次读取数据时生成一个ReadView**
 
-
+这个就比较的懒，**就在第一次执行查询语句**的时候生成一个ReadView
 
 
 
