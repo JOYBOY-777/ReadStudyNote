@@ -2623,8 +2623,25 @@ class Solution {
 
 ### 406 根据身高重建队列
 
-```java
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/algorithm/%E7%AE%97%E6%B3%95%E9%A2%98%E8%A7%A3/406%E7%9A%84%E9%A2%98%E8%A7%A3.png?raw=true)
 
+```java
+class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        //按照身高从大到小排列，身高相同的按照k从小到大排序
+        Arrays.sort(people,(a,b)->{
+            if(a[0]==b[0]) return a[1]-b[1];
+            return b[0]-a[0]; 
+        });
+        List<int[]> list = new ArrayList();
+        //遍历二维数组中的每个数组，按照有几个人比前面的高来进行插入
+        for(int[] p:people){
+            list.add(p[1],p);
+        }
+        //最后把list变为数组
+        return list.toArray(new int[people.length][]);
+    }
+}
 ```
 
 
