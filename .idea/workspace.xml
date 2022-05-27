@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="" />
+    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/javaimg/Mysql是怎样运行的图片/获取锁失败.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/读书笔记/mysql/MySql是怎样运行的读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/mysql/MySql是怎样运行的读书笔记.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +17,7 @@
     <option name="generalSettings">
       <MavenGeneralSettings>
         <option name="localRepository" value="F:\maven\apache-maven-3.6.3\maven-repo" />
-        <option name="mavenHome" value="F:/maven/apache-maven-3.6.3" />
+        <option name="mavenHome" value="$PROJECT_DIR$/../maven/apache-maven-3.6.3" />
         <option name="userSettingsFile" value="F:\maven\apache-maven-3.6.3\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
@@ -33,26 +36,26 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/algorithm/算法题解" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/javaimg/Mysql是怎样运行的图片" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\ReadStudyNote\algorithm\算法题解" />
-      <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
-      <recent name="F:\ReadStudyNote\从上到下源码分析\java集合" />
-      <recent name="F:\ReadStudyNote\从上到下源码分析\java并发" />
-      <recent name="F:\ReadStudyNote\javaimg" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\ReadStudyNote\读书笔记\并发编程" />
       <recent name="F:\ReadStudyNote\读书笔记\java基础" />
       <recent name="F:\ReadStudyNote\读书笔记\mysql" />
       <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
       <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
+      <recent name="F:\ReadStudyNote\algorithm\算法题解" />
+      <recent name="F:\ReadStudyNote\从上到下源码分析\java集合" />
+      <recent name="F:\ReadStudyNote\从上到下源码分析\java并发" />
+      <recent name="F:\ReadStudyNote\javaimg" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -144,6 +147,7 @@
       <workItem from="1653371283508" duration="6106000" />
       <workItem from="1653460843603" duration="4282000" />
       <workItem from="1653553804242" duration="772000" />
+      <workItem from="1653631487306" duration="1251000" />
     </task>
     <servers />
   </component>
