@@ -2126,6 +2126,8 @@ select2的步骤是：
 
 # 第22章 工作面试老大难——锁
 
+锁都是事务带来的，并且与后序的事务围绕这个锁进行周旋
+
 我们都知道，并发事务会产生一致性的问题，那么并发事务基本上可以分为三大类：
 
 1. 读读并发事务，因为读取操作不会对记录有任何的影响，所以这种情况允许发生
@@ -2296,11 +2298,11 @@ Mysql给锁分为了两个类：
 
      ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/S%E9%97%B4%E9%9A%99.jpg?raw=true)
 
-   * **Next-Key-Lock(next-key锁):**相当于是正经记录锁和间隙锁的合体，既能保护这条记录又可以防止前面插入记录
+   * **Next-Key-Lock(next-key锁):**相当于是正经记录锁和间隙锁的合体，既能**保护这条记录**又可以**防止**前面插入记录：
 
+     ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/nextkey%E9%94%81.jpg?raw=true)
 
-
-
+   * **Insert Intention Lock(插入意向锁)** ：如果一个事务发现插入字段中有间隙锁等，那么这个事务就会进行等待插入，但是在这个**等待的过程**中也需要生成一个锁的结构，表明**有事务想在某个间隙中插入新记录，但是现在正在等待**，
 
 
 
