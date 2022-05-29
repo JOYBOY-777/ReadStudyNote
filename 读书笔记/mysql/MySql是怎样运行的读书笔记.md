@@ -2345,9 +2345,13 @@ Mysql给锁分为了两个类：
 
      ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/lock_mode.jpg?raw=true)
 
-   * lock_type(锁类型):
+   * lock_type(锁类型):占用5~8bit
 
+     ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/lock_type.jpg?raw=true)
 
+   * rec_lock_type:
+
+     ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/rec.jpg?raw=true)
 
 
 
