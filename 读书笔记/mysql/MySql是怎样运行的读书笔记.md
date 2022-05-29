@@ -2353,6 +2353,32 @@ Mysql给锁分为了两个类：
 
      ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/rec.jpg?raw=true)
 
+   * 其他信息：设计了各种的hash表和链表来管理系统运行过程中产生的各种锁结构
+   * 一堆bit位：一个bit位映射到页内的一条记录
+
+
+
+举个例子就是有T1和T2这两个事务想对hero表中的记录加锁，这个表中的记录存放在表空间为67，页号为3的页面上，那么就会产生以下生成锁结构的步骤：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E4%BA%8B%E5%8A%A1%E9%94%81%E7%BB%93%E6%9E%84.jpg?raw=true)
+
+T1对记录为15添加正经记录锁
+
+1. 事务T1进行加锁，那么锁结构中的**锁所在的事务信息就是**T1，当然这是个指针
+2. 因为是对**聚簇索引**加的锁，所以索引的信息就是**PRIMARY**索引
+3. 因为是行级锁，所以要记录行锁的信息：
+   * Space ID：67表空间号
+   * Page Number:页号为3
+   * n_bits:表示使用了多少bit，由一个公式得出：n_bits = (1 + (n_recs + LOCK_PAGE_BITMAP_MARGIN) / 8)) * 8,    n_recs表示数据量 后面的那个参数是64固定值
+4. type_mode：是由3部分组成：
+   * lock_mode:这是对记录加S锁，值为LOCK_S
+   * lock_type:是行级锁，值为：LOCK_REC
+   * rec_lock_type：这是对记录加正经记录锁，类型为LOCK_REC_NOT_GAP，这个事务获取到了锁那么LOCK_WAIT就是0，经过计算对应的bit位的值加起来就是2+32+1024+0 =  1058，获取到锁加0，获取不到就加256
+
+
+
+T2对number值为3.8.5的记录加X型的next_key锁
+
 
 
 
