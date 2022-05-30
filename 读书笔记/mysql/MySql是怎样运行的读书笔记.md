@@ -2374,6 +2374,8 @@ T1对记录为15添加正经记录锁
    * lock_mode:这是对记录加S锁，值为LOCK_S
    * lock_type:是行级锁，值为：LOCK_REC
    * rec_lock_type：这是对记录加正经记录锁，类型为LOCK_REC_NOT_GAP，这个事务获取到了锁那么LOCK_WAIT就是0，经过计算对应的bit位的值加起来就是2+32+1024+0 =  1058，获取到锁加0，获取不到就加256
+   
+   那么事务T1为number值为15的记录加锁时，
 
 
 
