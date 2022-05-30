@@ -2365,21 +2365,86 @@ Mysql给锁分为了两个类：
 T1对记录为15添加正经记录锁
 
 1. 事务T1进行加锁，那么锁结构中的**锁所在的事务信息就是**T1，当然这是个指针
+
 2. 因为是对**聚簇索引**加的锁，所以索引的信息就是**PRIMARY**索引
+
 3. 因为是行级锁，所以要记录行锁的信息：
    * Space ID：67表空间号
    * Page Number:页号为3
    * n_bits:表示使用了多少bit，由一个公式得出：n_bits = (1 + (n_recs + LOCK_PAGE_BITMAP_MARGIN) / 8)) * 8,    n_recs表示数据量 后面的那个参数是64固定值
+   
 4. type_mode：是由3部分组成：
    * lock_mode:这是对记录加S锁，值为LOCK_S
    * lock_type:是行级锁，值为：LOCK_REC
    * rec_lock_type：这是对记录加正经记录锁，类型为LOCK_REC_NOT_GAP，这个事务获取到了锁那么LOCK_WAIT就是0，经过计算对应的bit位的值加起来就是2+32+1024+0 =  1058，获取到锁加0，获取不到就加256
    
-   那么事务T1为number值为15的记录加锁时，
+   那么事务T1为**number值为15**的记录加锁时，生成的锁结构是：
+   
+   ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/T1%20number.jpg?raw=true)
 
 
 
-T2对number值为3.8.5的记录加X型的next_key锁
+T2对number值为3.8.15的记录加X型的next_key锁，由于3,8这两条记录没有别的事务加锁，那么他们就当然可以回去到锁，也就是在内存中生成的锁结构中**is_waiting的属性为fasle(这个属性为fasle就代表事务已经获取到锁了)**，但是对于15的记录来说，他已经有S锁了，那么现在这个事务如果想在获取对应的X锁那么只能等那个事务把S锁给释放了，所以现在这个事务只能**阻塞**，也就是对应的**is_waiting属性为True**，于是就会生成两个对应的锁结构，那么他们**相同**的地方是：
+
+1. 事务T2进行加锁，那么锁所在的事务信息就是T2
+
+2. 然后索引信息指的就是主键信息
+
+3. 因为是行级锁，那么要记录三个重要的信息：
+
+   * space ID：67，表空间号
+   * Page Number:页号3
+   * n_bits:72这里就直接说了
+   
+4. type_mode:
+
+   * lock_mode:因为是X锁所以值为LOCK_X
+
+   * lock_type:是行级锁，值为LOCK_REC
+
+   * rec_lock_type:具体的类型是next_key，所以就是LOCK_ORDINARY
+
+
+
+不同的地方就是：这两种生成的Type_mode值不一样：
+
+	1.  一个获取到了锁：type_mode = lock_x | lock_rec | lock_ordinary | Lock_wait 值为：3+32+0+0 = 35(为什么是0呢？因为已经获取到了锁)
+ 	2.  一个没有获取到锁：type_mode = lock_x | lock_rec | lock_ordinary | Lock_wait 值为:3+32+0+256 = 291
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
