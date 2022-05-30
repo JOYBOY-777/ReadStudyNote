@@ -2408,18 +2408,34 @@ T2对number值为3.8.15的记录加X型的next_key锁，由于3,8这两条记录
 
 不同的地方就是：这两种生成的Type_mode值不一样：
 
-	1.  一个获取到了锁：type_mode = lock_x | lock_rec | lock_ordinary | Lock_wait 值为：3+32+0+0 = 35(为什么是0呢？因为已经获取到了锁)
- 	2.  一个没有获取到锁：type_mode = lock_x | lock_rec | lock_ordinary | Lock_wait 值为:3+32+0+256 = 291
+ 1. 一个获取到了锁：type_mode = lock_x | lock_rec | lock_ordinary | Lock_wait 值为：3+32+0+0 = 35(为什么是0呢？因为已经获取到了锁)	
 
-   
+    ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/T2%203%208.jpg?raw=true)
+
+ 2. 一个没有获取到锁：type_mode = lock_x | lock_rec | lock_ordinary | Lock_wait 值为:3+32+0+256 = 291
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/T2%2015.jpg?raw=true)
+
+  
+
+**语句加锁分析：**
+
+我们把语句大致分为四类分别是：
+
+* 普通的select语句
+* 锁定读语句
+* 半一致性读
+* INSERT语句
 
 
 
+**普通的select语句**：
 
+在不同的隔离级别下，最普通的select语句有不同的表现：
 
-
-
-
+* 在**读未提交**隔离级别下是**不加锁的**直接读取版本链中的最新版本，当然了这个也是最低级的会出现很多的问题，比如：脏读，不可重复读，幻读等问题
+* 在**读已提交**隔离级别下是**不加锁的**，然后他每一次读取都会生成一个对应的**ReadView**,这样只是避免了脏读，但是没有避免不可重复读，幻读现象
+* 在**可重复读**隔离级别下**不加锁**，只是在第一次读取的时候生成一个**ReadView**,这样**只有幻读**可能发生
 
 
 
