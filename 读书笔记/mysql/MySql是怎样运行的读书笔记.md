@@ -1,4 +1,4 @@
-# Mysql脑图
+Mysql脑图
 
 Mysql基础：https://www.processon.com/view/link/61717706f346fb564e2abb9a
 
@@ -2442,11 +2442,14 @@ T2对number值为3.8.15的记录加X型的next_key锁，由于3,8这两条记录
   在可重复读隔离级别下，innodb存储引擎会**最大程度的解决幻读**的问题，那么这个就分为了两种情况：
   
   * T1先读取，然后T2添加后提交，之后T1在读，这种情况下，innodb存储引擎会使用间隙锁,mvcc等手段尽量解决幻读的问题
+  
+    ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E6%B2%A1%E6%9C%89%E5%87%BA%E7%8E%B0%E5%B9%BB%E8%AF%BB.png?raw=true)
+  
   * T1先读取，然后T2添加后提交，之后T1先修改T2提交的数据，之后T1读，这种情况下幻读就发生了
   
+    ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/%E5%B7%B2%E7%BB%8F%E5%87%BA%E7%8E%B0%E5%B9%BB%E8%AF%BB.png?raw=true)
   
-
-
+  
 
 
 
