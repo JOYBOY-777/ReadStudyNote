@@ -2685,15 +2685,15 @@ select * from force index(idx_name) where name >'c曹操' and name <= 'x荀彧' 
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/22-24.jpg?raw=true)
 
-对于孙权来说因为是前两个隔离级别，所以孙权不满足条件就释放了，但是对于也同样不满足的诸葛亮就直接跳过了返回了查询完毕的信息，那么这个锁就不释放
+对于孙权来说因为是前两个隔离级别，所以孙权不满足条件就释放了，但是对于也同样不满足的诸葛亮就直接跳过了返回了查询完毕的信息，那么这两个锁(在聚簇索引和二级索引上的锁)就不释放
 
 
 
 **后两个隔离界别**加锁过程:
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/22-25.jpg?raw=true)
 
-
-
+由于是后两个隔离级别，那么就算孙权不满足条件也不会释放，加了就是加了不释放，诸葛亮由于直接跳过了也不释放，注意**只要你的记录不符合索引下推那么就不释放锁，无论你的隔离级别是什么**
 
 
 
