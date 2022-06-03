@@ -2681,6 +2681,16 @@ select * from force index(idx_name) where name >'c曹操' and name <= 'x荀彧' 
 5. 跳
 6. server层接收到信息，查询结束
 
+整体如图所示：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/22-24.jpg?raw=true)
+
+对于孙权来说因为是前两个隔离级别，所以孙权不满足条件就释放了，但是对于也同样不满足的诸葛亮就直接跳过了返回了查询完毕的信息，那么这个锁就不释放
+
+
+
+**后两个隔离界别**加锁过程:
+
 
 
 
