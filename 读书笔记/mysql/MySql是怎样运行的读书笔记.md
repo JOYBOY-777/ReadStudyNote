@@ -2701,6 +2701,8 @@ select * from force index(idx_name) where name >'c曹操' and name <= 'x荀彧' 
 
 举个栗子：扫描区间是(1,15]
 
+对于update语句来说：加锁方式是加X锁，所有被更新二级索引记录在更新之前都需要加上X型正经记录锁
+
 ```mysql
 update hero set name = 'cao曹操' where number >1 and number <= 15 and country = '魏';
 ```
@@ -2713,9 +2715,9 @@ update hero set name = 'cao曹操' where number >1 and number <= 15 and country 
 
 对于**后两个**隔离级别来说：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/22-27.jpg?raw=true)
 
-
-
+只要读取就给加锁，不满足条件还不释放，delete情况与update情况差不多
 
 
 
