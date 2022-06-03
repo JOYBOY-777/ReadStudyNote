@@ -2518,13 +2518,15 @@ T2对number值为3.8.15的记录加X型的next_key锁，由于3,8这两条记录
 
 
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/hero.jpg?raw=true)
+
 下面举一个具体的例子来进行这个加锁过程的说明：
 
 ```mysql
 select * from hero where number > 1 and number <= 15 and country = '魏' lock in share mode
 ```
 
-由上面可知，这个语句形成的扫描区间是：(1,15]，那么我们即将展示在前两个隔离级别中对number 值为3聚簇索引记录的加锁过程：
+由上面可知，这个语句形成的扫描区间是：(1,15]，那么我们即将展示在**前两个隔离级别中**对number 值为3聚簇索引记录的加锁过程：
 
 1. 在这个扫描区间中找到number值为3的聚簇索引记录
 2. 因为是前两种的隔离级别，那么只是加上**S型正经记录锁就行了**
@@ -2550,13 +2552,29 @@ select * from hero where number > 1 and number <= 15 and country = '魏' lock in
 
 对number值为15的聚簇索引记录级锁的流程
 
+2. 给number值为15的聚簇索引加上S正经记录锁
+3. 没有索引下推
+4. 没有回表
+5. 符合形成的搜索条件
+6. server层继续判断其他搜索条件，发现符合，发送到客户端，**不释放**该记录上的锁
+7. 获取下一条记录，也就是20的
 
 
 
+对number值为20的聚簇索引记录级锁的流程
+
+2. 在这个记录上加S正经记录锁
+3. 没有索引下推
+4. 没有回表
+5. 20超出搜索条件，**释放该记录上的锁**，给server层返回一个查询完毕的信息
+6. server层收到信息，结束查询
 
 
 
+展示在**后两个隔离级别中**的加锁过程，还是number为3的记录
 
+1. 读取在**扫描区间中**的第一条记录，也就是number值为3的记录
+2. 给这条记录加上S型的next-key锁
 
 
 
