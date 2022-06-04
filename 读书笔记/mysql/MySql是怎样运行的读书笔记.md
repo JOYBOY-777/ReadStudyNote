@@ -2741,7 +2741,7 @@ select * from hero where name = 'c曹操' for undate
 
 前面都一样，但是发现后面一个不符合单点扫描的条件的时候，这次会加上一个**间隙锁**，如图：
 
-
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/22-29.jpg?raw=true)
 
 
 
