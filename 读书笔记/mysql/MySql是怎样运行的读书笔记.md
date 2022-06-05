@@ -2763,9 +2763,17 @@ select * from hero where name > 'd' and name < '1' for update;
 select * from hero where number >= 8 for update;
 ```
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/22-32.jpg?raw=true)
 
 
 
+无论哪个隔离级别的话，只要是唯一性搜索的话（就是可以确定**唯一的**一条记录）并且这个记录**不存在半删除**
+
+的情况，那么就给这个记录加**正经记录锁**
+
+```mysql
+select * from hero where number = 8 for update
+```
 
 
 
