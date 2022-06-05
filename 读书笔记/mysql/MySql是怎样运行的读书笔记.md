@@ -2775,9 +2775,19 @@ select * from hero where number >= 8 for update;
 select * from hero where number = 8 for update
 ```
 
+如图：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/22-33.jpg?raw=true)
 
 
 
+如果对记录**从右到左**进行扫描的话，会给**匹配到的第一条记录加上间隙锁gap锁**
+
+```mysql
+select * from hero force index(idx_name) where name > 'c曹操' and name <= 'x荀彧' and country != '吴' order by name DESC for update;
+```
+
+由于有后面的限制条件：order by name DESC，所以在扫描的时候直接定位到**最右面**的那条记录，然后给他下一条记录加上一个**间隙锁gap锁**,目的是为了避免在下一条记录之前插入名字相同的记录
 
 
 
