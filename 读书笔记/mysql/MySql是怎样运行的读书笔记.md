@@ -2745,7 +2745,13 @@ select * from hero where name = 'c曹操' for undate
 
 
 
+当隔离级别是后两个，**不是精确匹配**对于在相应的扫描区间查找，**找不到**相应的记录的话，为扫描区间的后面一条记录加**next-key**锁
 
+```mysql
+select * from hero where name > 'd' and name < '1' for update;
+```
+
+可以确定的是扫描区间为：('d','1'),但是找不到，那么只能给'1'的记录加next-key锁了
 
 
 
