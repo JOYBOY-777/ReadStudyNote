@@ -2787,7 +2787,28 @@ select * from hero where number = 8 for update
 select * from hero force index(idx_name) where name > 'c曹操' and name <= 'x荀彧' and country != '吴' order by name DESC for update;
 ```
 
-由于有后面的限制条件：order by name DESC，所以在扫描的时候直接定位到**最右面**的那条记录，然后给他下一条记录加上一个**间隙锁gap锁**,目的是为了避免在下一条记录之前插入名字相同的记录
+由于有后面的限制条件：order by name DESC，所以在扫描的时候直接定位到**最右面**的那条记录，然后给他下一条记录加上一个**间隙锁gap锁**,目的是为了避免在下一条记录之前插入**名字相同**的记录：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/22-34.jpg?raw=true)
+
+
+
+**半一致性读语句**
+
+在**前两个**隔离级别并且执行update语句的时候采用这种方式读取，就是当update读取**已经别其他事务加了X锁的记录的时候**，Innodb会将该记录的**最新版本**读取出来，然后在带入update语句中的**搜索条件**进行判定，不匹配的话不加锁，跳到下一条记录，匹配的话加锁，我理解就是减少了非必要条件的加锁，别动不动就加锁，比如：
+
+```mysql
+##T1对Number值为8的记录加X锁
+select * from hero where number = 8 for update
+##T2
+update hero set name = 'cao曹操' where number >= 8 and number <20 and country != '魏‘;
+```
+
+存储引擎会获取number值为8的聚簇索引记录**最新提交的版本**，并返回给server层，但是该版本的值不符合匹配的条件，就不加锁了
+
+
+
+**insert**
 
 
 
