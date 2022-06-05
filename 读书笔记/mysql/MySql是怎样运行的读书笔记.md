@@ -2745,13 +2745,23 @@ select * from hero where name = 'c曹操' for undate
 
 
 
-当隔离级别是后两个，**不是精确匹配**对于在相应的扫描区间查找，**找不到**相应的记录的话，为扫描区间的后面一条记录加**next-key**锁
+当隔离级别是**后两个**，**不是精确匹配**对于在相应的扫描区间查找，**找不到**相应的记录的话，为扫描区间的后面一条记录加**next-key**锁
 
 ```mysql
 select * from hero where name > 'd' and name < '1' for update;
 ```
 
-可以确定的是扫描区间为：('d','1'),但是找不到，那么只能给'1'的记录加next-key锁了
+可以确定的是扫描区间为：('d','1'),但是找不到，那么只能给'1'的记录加next-key锁了，如图：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/Mysql%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%E5%9B%BE%E7%89%87/22-31.jpg?raw=true)
+
+
+
+当隔离级别是**后两个**，如果扫描的是聚簇索引的话，并且扫描区间是**左闭区间**的话，并且表中正好有这个闭合的值的话，那么就会给这个记录加上**正经记录锁**，然后后面的加上next-key锁
+
+```mysql
+select * from hero where number >= 8 for update;
+```
 
 
 
