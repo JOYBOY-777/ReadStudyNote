@@ -2810,7 +2810,23 @@ update hero set name = 'cao曹操' where number >= 8 and number <20 and country 
 
 **insert**
 
+**主键重复**：当我们在表中插入数据的时候，如果反复的插入主键的话，innodb就会报错，如下：
 
+```mysql
+insert into hero values(20,'g关羽','蜀');
+```
+
+很显然主键为20的记录已经存在了，那么在**生成报错信息前**，会对**聚簇索引中**number值为20的记录加锁，加的是S锁：
+
+在前两个隔离级别中：加的是S型的正经记录锁
+
+在后两个隔离级别中：加的是S型的next-key锁
+
+
+
+**唯一二级索引列重复**
+
+这种情况也是给**二级索引**加上S锁，无论是那个隔离级别，加上的都是next-key锁
 
 
 
