@@ -84,7 +84,9 @@ public class StackAreaDemo {
 
 在这个例子中，main方法调用了anotherFun()，然后anotherFun()又调用了anotherFun()2，这时候在**栈内存中**的大致结构就是：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/1-4.jpg?raw=true)
 
+可见：在线程进入main方法的时候jvm就已经给这个线程分配好了**栈帧**，进入main方法后里面存储的他的局部变量等信息，然后进入anotherFun()方法，每进入一个方法都分配对应的栈帧，然后存储变量，anotherFun()2方法也是，进入了三个方法，分配了三个栈帧，并**压入栈内存**，然后在方法结束后再**反过来释放**栈帧逐个从栈内存中**弹出**
 
 
 
