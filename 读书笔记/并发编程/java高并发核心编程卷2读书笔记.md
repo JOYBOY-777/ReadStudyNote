@@ -211,10 +211,13 @@ public class EmptyThreadDemo {
 public class CreateDemo {
     public static final int MAX_TURN = 5;
     static int threadNo = 1;
+    //继承thread类
     static class DemoThread extends Thread {
+        //给线程添加名字
         public DemoThread() {
             super("Mall-" + threadNo++);
         }
+        //重写run方法，实现用户自定义线程入口，每个线程获取自己名字5次
         public void run() {
             for (int i = 1; i < MAX_TURN; i++) {
                 Print.cfo(getName() + ", 轮次：" + i);
@@ -222,11 +225,10 @@ public class CreateDemo {
             Print.cfo(getName() + " 运行结束.");
         }
     }
-
     public static void main(String args[]) throws InterruptedException {
         //有点设计模式的味道，品味尼恩的代码
         Thread thread = null;
-        //方法一：使用Thread子类创建和启动线程
+        //方法一：使用Thread子类创建和启动线程，开启两个线程
         for (int i = 0; i < 2; i++) {
             thread = new DemoThread();
             thread.start();
@@ -236,9 +238,15 @@ public class CreateDemo {
 }
 ```
 
+打印结果：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/%E7%BB%A7%E6%89%BFthread%E4%BE%8B%E5%AD%90.png?raw=true)
+
+从上面的例子看出开启两个线程，每个线程打印自己的名字五次，当然是通过继承thread并重写run方法来自定义的程序逻辑
 
 
 
+**线程创建方法二：实现Runnable接口创建线程目标类**
 
 
 
