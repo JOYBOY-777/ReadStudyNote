@@ -173,11 +173,68 @@ public void run()
 
 
 
+**获取当前线程**
+
+```java
+public static native Thread currentThread();
+```
+
+通过Thread.currentThread()获取当前线程
 
 
 
+**创建一个空的线程**
+
+```java
+public class EmptyThreadDemo {
+    public static void main(String args[]) throws InterruptedException {
+        //使用Thread类创建和启动线程
+        Thread thread = new Thread();
+        Print.cfo("线程名称：" + thread.getName());
+        Print.cfo("线程ID：" + thread.getId());
+        Print.cfo("线程状态：" + thread.getState());
+        Print.cfo("线程优先级：" + thread.getPriority());
+        thread.start();
+        Print.cfo("线程状态：" + thread.getState());
+        ThreadUtil.sleepMilliSeconds(10);
+    }
+}
+```
+
+因为这个空的线程什么也没有，所以关键的target属性就是空的
 
 
+
+**线程创建方法一：继承Thread类创建线程**
+
+```java
+public class CreateDemo {
+    public static final int MAX_TURN = 5;
+    static int threadNo = 1;
+    static class DemoThread extends Thread {
+        public DemoThread() {
+            super("Mall-" + threadNo++);
+        }
+        public void run() {
+            for (int i = 1; i < MAX_TURN; i++) {
+                Print.cfo(getName() + ", 轮次：" + i);
+            }
+            Print.cfo(getName() + " 运行结束.");
+        }
+    }
+
+    public static void main(String args[]) throws InterruptedException {
+        //有点设计模式的味道，品味尼恩的代码
+        Thread thread = null;
+        //方法一：使用Thread子类创建和启动线程
+        for (int i = 0; i < 2; i++) {
+            thread = new DemoThread();
+            thread.start();
+        }
+        Print.cfo(getCurThreadName() + " 运行结束.");
+    }
+}
+```
 
 
 
