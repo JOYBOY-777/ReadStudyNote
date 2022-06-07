@@ -2628,7 +2628,7 @@ class Solution {
 ```java
 class Solution {
     public int[][] reconstructQueue(int[][] people) {
-        //按照身高从大到小排列，身高相同的按照k从小到大排序
+        //按照身高从大到小排列，身高相同的按照k从小到大排序，这个ab就理解为二维数组中的两个不同的小数组就行
         Arrays.sort(people,(a,b)->{
             if(a[0]==b[0]) return a[1]-b[1];
             return b[0]-a[0]; 
@@ -2640,6 +2640,43 @@ class Solution {
         }
         //最后把list变为数组
         return list.toArray(new int[people.length][]);
+    }
+}
+```
+
+针对二维数组来说：
+
+```java
+public class h {
+    public static void main(String[] args) {
+        int[][] arr = new int[][]{{1,2,3},{4,5,6},{7,8}};
+        System.out.println(arr[0][0]);
+        System.out.println(arr[0][1]);
+        System.out.println(arr[1][0]);
+        System.out.println(arr[1][1]);
+        System.out.println(arr[2][1]);
+    }
+}
+比如：a[0][0]就代表第一个大数组中的第一个小部分，然后a[2][0]代表第三个大数组的第一个小部分，其他的以此类推就行了
+```
+
+
+
+### 452 用最少数量的箭引爆气球
+
+```java
+class Solution {
+    public int findMinArrowShots(int[][] points) {
+        //根据每组气球的第一个值从小到大排序
+        Arrays.sort(points,(o1,o2)->Integer.compare(o1[0],o2[0]));
+        int count = 1;
+        for(int i = 1;i<points.length;i++){
+            //两排气球没有交集的话直接需要一支箭，后一排气球的头大于前一排气球的尾
+            if(points[i][0]>points[i-1][1]) count++;
+            //两排气球有交集的话，更新最右边界来把他前面的气球都射掉，因为之前的最小值已经不能不他后面的气球射掉了
+            else points[i][1] = Math.min(points[i-1][1],points[i][1]);
+        }
+        return count;
     }
 }
 ```
