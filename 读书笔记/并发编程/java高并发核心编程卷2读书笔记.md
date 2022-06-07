@@ -41,8 +41,6 @@
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/1-3.jpg?raw=true)
 
-
-
 * 线程描述信息：
   * 线程ID:线程的唯一标识
   * 线程名称：线程的名字，没有指定的话，jvm会自动分配
@@ -53,6 +51,38 @@
 * 栈内存：是代码中**局部变量**的存储空间，是线程独立拥有的，线程之间不共享，默认大小是1MB，并且不受**垃圾回收器管理**
 
 
+
+在java中执行程序流程的重要**单位**是**方法**，**栈**内存的分配单位是**栈帧**，方法的每一次执行都要为其分配一个栈帧，栈帧保存方法的**局部变量**，**方法的返回地址等信息**，当线程进入方法的时候，JVM就会为这个方法分配一个栈帧并且把他压入到**栈内存**中，当方法执行完毕之后，这个栈帧就从栈内存中弹出，里面的变量之类的内存空间就会被**回收**
+
+举个栗子就是：
+
+```java
+public class StackAreaDemo {
+    public static void main(String args[]) throws InterruptedException {
+        Print.cfo("当前线程名称：" + Thread.currentThread().getName());
+        Print.cfo("当前线程ID：" + Thread.currentThread().getId());
+        Print.cfo("当前线程状态：" + Thread.currentThread().getState());
+        Print.cfo("当前线程优先级：" + Thread.currentThread().getPriority());
+        int a = 1, b = 1;
+        int c = a / b;
+        anotherFun();
+        Thread.sleep(10000000);
+    }
+
+    private static void anotherFun() {
+        int a = 1, b = 1;
+        int c = a / b;
+        anotherFun2();
+    }
+
+    private static void anotherFun2() {
+        int a = 1, b = 1;
+        int c = a / b;
+    }
+}
+```
+
+在这个例子中，main方法调用了anotherFun()，然后anotherFun()又调用了anotherFun()2，这时候在**栈内存中**的大致结构就是：
 
 
 
