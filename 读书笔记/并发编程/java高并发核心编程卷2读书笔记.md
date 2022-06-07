@@ -88,15 +88,88 @@ public class StackAreaDemo {
 
 可见：在线程进入main方法的时候jvm就已经给这个线程分配好了**栈帧**，进入main方法后里面存储的他的局部变量等信息，然后进入anotherFun()方法，每进入一个方法都分配对应的栈帧，然后存储变量，anotherFun()2方法也是，进入了三个方法，分配了三个栈帧，并**压入栈内存**，然后在方法结束后再**反过来释放**栈帧逐个从栈内存中**弹出**
 
+总结：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB.jpg?raw=true)
 
 
 
+**创建线程的四种方法**
+
+**Thread类详解**
+
+在thread类中比较重要的属性和方法有：
+
+```java
+//线程的id
+private final long tid;
+//线程的名字
+private volatile String name;
+//通过这个构造方法给线程命名
+public Thread(String name)
+//线程的优先级
+private int priority;
+//是否为守护线程
+private boolean daemon = false;
+```
 
 
 
+在线程的优先级中最小为1，最大为10，默认是5：
+
+```java
+//最小
+public static final int MIN_PRIORITY = 1;
+//默认
+public static final int NORM_PRIORITY = 5;
+//最大
+public static final int MAX_PRIORITY = 10;
+```
 
 
 
+**线程的状态**：
+
+```java
+private volatile int threadStatus = 0;
+public enum State {
+    	//新建状态
+        NEW,
+    	//就绪、运行
+        RUNNABLE,
+    	//阻塞
+        BLOCKED,
+    	//等待
+        WAITING,
+    	//计时等待
+        TIMED_WAITING,
+    	//结束
+        TERMINATED;
+    }
+```
+
+注意在java的线程状态中，就绪还有运行都用一个**runnable**来表示
+
+* 就绪状态：线程具备运行条件，**正在等待获取CPU时间片**
+* 运行状态：线程**已经获取CPU时间片**，它正在执行代码逻辑
+
+
+
+**线程的启动和运行**
+
+```java
+//启动线程
+public synchronized void start()
+```
+
+当线程的实例调用start方法后，JVM开启一个**新线程**来执行用户定义的**线程代码逻辑**，就是开启，启动一个新的线程
+
+```java
+//用户定义的线程逻辑入口方法
+public void run()
+```
+
+当线程获得了CPU的时间片之后，让线程来执行用户代码逻辑的方法入口
 
 
 

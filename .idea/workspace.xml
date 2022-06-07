@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/javaimg/java高并发核心编程卷二图片/1-4.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/读书笔记/并发编程/java高并发核心编程卷2读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/并发编程/java高并发核心编程卷2读书笔记.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,19 +42,19 @@
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\javaimg\java高并发核心编程卷二图片" />
+      <recent name="F:\ReadStudyNote\algorithm\算法题解" />
+      <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
+      <recent name="F:\ReadStudyNote\从上到下源码分析\java集合" />
+      <recent name="F:\ReadStudyNote\从上到下源码分析\java并发" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\ReadStudyNote\读书笔记\并发编程" />
       <recent name="F:\ReadStudyNote\读书笔记\java基础" />
       <recent name="F:\ReadStudyNote\读书笔记\mysql" />
       <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
       <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\ReadStudyNote\algorithm\算法题解" />
-      <recent name="F:\ReadStudyNote\javaimg\java高并发核心编程卷二图片" />
-      <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
-      <recent name="F:\ReadStudyNote\从上到下源码分析\java集合" />
-      <recent name="F:\ReadStudyNote\从上到下源码分析\java并发" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -163,7 +162,7 @@
       <workItem from="1654521470996" duration="2238000" />
       <workItem from="1654590476119" duration="1323000" />
       <workItem from="1654606093868" duration="641000" />
-      <workItem from="1654607498211" duration="302000" />
+      <workItem from="1654607498211" duration="1517000" />
     </task>
     <servers />
   </component>
