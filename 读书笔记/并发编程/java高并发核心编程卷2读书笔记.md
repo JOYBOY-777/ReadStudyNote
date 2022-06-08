@@ -248,9 +248,135 @@ public class CreateDemo {
 
 **线程创建方法二：实现Runnable接口创建线程目标类**
 
+在说明这种手段进行线程的创建时，首先得了解一下Run方法的实现以及周边的代码：
+
+```java
+//Runnable接口
+public interface Runnable {
+    public abstract void run();
+}
+//这种方式创建线程需要的构造器
+public Thread(Runnable target) {
+    init(null, target, "Thread-" + nextThreadNum(), 0);
+}
+//run方法
+@Override
+    public void run() {
+        if (target != null) {
+            target.run();
+        }
+    }
+```
+
+当我们使用：就可以把target赋值
+
+* public Thread(Runnable target);
+* public Thread(Runnable target,String name);
+
+通过这两种方法就可以传入target实例，然后通过这个实例就可以达到让线程运行我们自定义的run方法的逻辑了，当Runnable实例传入Thread实例的target属性后，run()的实现版本将被**异步调用**
+
+例子：
+
+```java
+public class CreateDemo2 {
+    public static final int MAX_TURN = 5;
+    static int threadNo = 1;
+    static class RunTarget implements Runnable  //① 实现Runnable接口
+    {
+        public void run()  //② 在这些写业务逻辑
+        {
+            for (int j = 1; j < MAX_TURN; j++) {
+                Print.cfo(getCurThreadName() + ", 轮次：" + j);
+            }
+
+            Print.cfo(getCurThreadName() + " 运行结束.");
+        }
+    }
+    public static void main(String args[]) throws InterruptedException {
+        Thread thread = null;
+        //方法2.1：使用实现Runnable的实现类创建和启动线程
+        for (int i = 0; i < 2; i++) {
+            Runnable target = new RunTarget();
+            thread = new Thread(target, "RunnableThread" + threadNo++);
+            thread.start();
+        }
+        //方法2.2：使用实现Runnable的匿名类创建和启动线程
+        for (int i = 0; i < 2; i++) {
+            thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int j = 1; j < MAX_TURN; j++) {
+                        Print.cfo(getCurThreadName() + ", 轮次：" + j);
+                    }
+                    Print.cfo(getCurThreadName() + " 运行结束.");
+                }
+            }, "RunnableThread" + threadNo++);
+            thread.start();
+        }
+        //方法2.3：使用实现lambor表达式创建和启动线程
+        for (int i = 0; i < 2; i++) {
+            thread = new Thread(() ->
+            {
+                for (int j = 1; j < MAX_TURN; j++) {
+                    Print.cfo(getCurThreadName() + ", 轮次：" + j);
+                }
+                Print.cfo(getCurThreadName() + " 运行结束.");
+            }, "RunnableThread" + threadNo++);
+            thread.start();
+        }
+        Print.cfo(getCurThreadName() + " 运行结束.");
+    }
+}
+```
+
+以上三种形式的代码都可以创建线程，只不过利用了语法糖
+
+那么通过这种方式创建线程的优缺点是什么呢？
+
+缺点：
+
+* 创建的不是线程类
+* 由于不是继承的关系，所以不能直接用Thread里面快捷的方法，比如getName()
+
+优点：
+
+* 不会受限于单继承
+* 逻辑和数据的更好分离
+
+为了透彻的体现出这个观点，书中给到了一个例子：
+
+就是分别用这两种方式创建好了线程，然后启动：
+
+```java
+   public static void main(String args[]) throws InterruptedException {
+        Print.hint("商店版本的销售");
+        for (int i = 1; i <= 2; i++) {
+            Thread thread = null;
+            thread = new StoreGoods("店员-" + i);
+            thread.start();
+        }
+        Thread.sleep(1000);
+        Print.hint("商场的商品销售");
+        MallGoods mallGoods = new MallGoods();
+        for (int i = 1; i <= 2; i++) {
+            Thread thread = null;
+            thread = new Thread(mallGoods, "商场销售员-" + i);
+            thread.start();
+        }
+        Print.cfo(getCurThreadName() + " 运行结束.");
+    }
+```
+
+在上面的例子中这两种启动线程的方式，由于用runnable方法创建出来的线程**共用一个对象**，那么就共享一个资源，如果把**MallGoods mallGoods = new MallGoods();**写到了for循环里面的话，其实和继承的方式差不多的，我认为这种的方式更加的灵活一点，所以整体的好处就是：
+
+* 继承Thread是一个比较“死板”的方法，每个线程“各忙各的”
+* 然后实现Runnable的方式就比较的灵活，可以**控制访问共享的资源**，体现了面向对象的思想，需要使用原子变量来维护数据的一致性
 
 
 
+**第三种创建的方式：使用Callable和FutureTask创建线程**
+
+使用这种方式可以获取线程异步执行结果的返回值，可以采用**Callable**接口和**FutureTask**结合的方式来进行
 
 
 
