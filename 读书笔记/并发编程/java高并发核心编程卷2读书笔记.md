@@ -487,7 +487,9 @@ public class CreateDemo3 {
 * 这个异步的结果被放在了outcome这个属性中
 * 然后在外部调用这个类的get属性后去outcome的结果
 * 当outcome不为空并且call执行完成，那么调用get获取outcome
-* 如果outcome为空，并且call方法还没有执行完，那么**结果获取线程会阻塞**，直到这个线程异步任务之心古玩城
+* 如果outcome为空，并且call方法还没有执行完，那么**结果获取线程会阻塞**，直到这个线程异步任务执行完成
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/1-9.jpg?raw=true)
 
 
 
