@@ -418,12 +418,76 @@ public interface Future<V> {
 可以看到里面有5个主要的方法：
 
 * boolean cancel(boolean mayInterruptIfRunning):取消异步任务的执行
+
 * boolean isCancelled():判断是不是任务被取消了
 * boolean isDone():判断任务是不是完成了
 * V get() throws InterruptedException, ExecutionException:获取异步任务的结构，是**阻塞性的**如果异步任务没有执行完成，那么调用线程会**一直阻塞**
 *  V get(long timeout, TimeUnit unit):设置等待的时限，不会一直阻塞
 
 
+
+**FutureTask:**
+
+类图大致结构：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/1-8.jpg?raw=true)
+
+在这个类的内部有一个Callable类型的成员变量，通过这个成员变量可以让FutureTask获取到异步任务的返回结果，在执行run方法的时候，其实就执行了call来获取结果，还有private Object **outcome**;来保存call方法的**异步执行结果**
+
+具体例子：
+
+```java
+public class CreateDemo3 {
+    public static final int MAX_TURN = 5;
+    public static final int COMPUTE_TIMES = 100000000;
+    static class ReturnableTask implements Callable<Long> {
+        //返回并发执行的时间
+        public Long call() throws Exception {
+            long startTime = System.currentTimeMillis();
+            Print.cfo(getCurThreadName() + " 线程运行开始.");
+            Thread.sleep(1000);
+            for (int i = 0; i < COMPUTE_TIMES; i++) {
+                int j = i * 10000;
+            }
+            long used = System.currentTimeMillis() - startTime;
+            Print.cfo(getCurThreadName() + " 线程运行结束.");
+            return used;
+        }
+    }
+    public static void main(String args[]) throws InterruptedException {
+        //创造出callable实例
+        ReturnableTask task = new ReturnableTask();
+        //把这个实例放入FutureTake中，并构造出一个FutureTask实例
+        FutureTask<Long> futureTask = new FutureTask<Long>(task);
+        //在把这个FutureTake实例放入Thread的构造器，创建出一个线程实例
+        Thread thread = new Thread(futureTask, "returnableThread");
+        thread.start();
+        Thread.sleep(500);
+        Print.cfo(getCurThreadName() + " 让子弹飞一会儿.");
+        Print.cfo(getCurThreadName() + " 做一点自己的事情.");
+        for (int i = 0; i < COMPUTE_TIMES / 2; i++) {
+            int j = i * 10000;
+        }
+        Print.cfo(getCurThreadName() + " 获取并发任务的执行结果.");
+        try {
+            Print.cfo(thread.getName() + "线程占用时间：" + futureTask.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        Print.cfo(getCurThreadName() + " 运行结束.");
+    }
+}
+```
+
+在这个实例执行run方法的时候：
+
+* 实际上执行的是FutureTask中的run方法，然后这个run方法执行的是callable中的call方法
+* 这个异步的结果被放在了outcome这个属性中
+* 然后在外部调用这个类的get属性后去outcome的结果
+* 当outcome不为空并且call执行完成，那么调用get获取outcome
+* 如果outcome为空，并且call方法还没有执行完，那么**结果获取线程会阻塞**，直到这个线程异步任务之心古玩城
 
 
 

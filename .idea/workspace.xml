@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/algorithm/algorithm.md" beforeDir="false" afterPath="$PROJECT_DIR$/algorithm/algorithm.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/读书笔记/并发编程/java高并发核心编程卷2读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/并发编程/java高并发核心编程卷2读书笔记.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,7 +35,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/algorithm/算法题解" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/javaimg/java高并发核心编程卷二图片" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -51,8 +50,8 @@
       <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\ReadStudyNote\algorithm\算法题解" />
       <recent name="F:\ReadStudyNote\javaimg\java高并发核心编程卷二图片" />
+      <recent name="F:\ReadStudyNote\algorithm\算法题解" />
       <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
       <recent name="F:\ReadStudyNote\从上到下源码分析\java集合" />
       <recent name="F:\ReadStudyNote\从上到下源码分析\java并发" />
@@ -167,7 +166,7 @@
       <workItem from="1654692667847" duration="1571000" />
       <workItem from="1654740604426" duration="2273000" />
       <workItem from="1654823496632" duration="964000" />
-      <workItem from="1655030952272" duration="1564000" />
+      <workItem from="1655030952272" duration="2176000" />
     </task>
     <servers />
   </component>
