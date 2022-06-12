@@ -2709,6 +2709,8 @@ class Solution {
 
 ### 763 划分字母区间
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/algorithm/%E7%AE%97%E6%B3%95%E9%A2%98%E8%A7%A3/763.png?raw=true)
+
 ```java
 class Solution {
     public List<Integer> partitionLabels(String s) {
@@ -2736,6 +2738,8 @@ class Solution {
     }
 }
 ```
+
+
 
 
 

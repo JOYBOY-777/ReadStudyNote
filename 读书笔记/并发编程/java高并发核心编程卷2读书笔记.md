@@ -376,9 +376,52 @@ public class CreateDemo2 {
 
 **第三种创建的方式：使用Callable和FutureTask创建线程**
 
-使用这种方式可以获取线程异步执行结果的返回值，可以采用**Callable**接口和**FutureTask**结合的方式来进行
+使用这种方式可以获取线程**异步执行结果**的**返回值**，可以采用**Callable**接口和**FutureTask**结合的方式来进行
 
+* Callable:
 
+```java
+public interface Callable<V> {
+    V call() throws Exception;
+}
+```
+
+有一个call方法可以获取异步结果的返回值，并且允许方法的实现版本内部抛出异常，也就是相应异常的
+
+* RunnableFuture:
+
+```java
+public interface RunnableFuture<V> extends Runnable, Future<V> {
+    /**
+     * Sets this Future to the result of its computation
+     * unless it has been cancelled.
+     */
+    void run();
+}
+```
+
+很显然这个接口聚合了功能，可以作为target实例传入，又可以获取线程执行的返回结果
+
+* future:
+
+```java
+public interface Future<V> {
+    boolean cancel(boolean mayInterruptIfRunning);
+    boolean isCancelled();
+    boolean isDone();
+    V get() throws InterruptedException, ExecutionException;
+    V get(long timeout, TimeUnit unit)
+        throws InterruptedException, ExecutionException, TimeoutException;
+}
+```
+
+可以看到里面有5个主要的方法：
+
+* boolean cancel(boolean mayInterruptIfRunning):取消异步任务的执行
+* boolean isCancelled():判断是不是任务被取消了
+* boolean isDone():判断任务是不是完成了
+* V get() throws InterruptedException, ExecutionException:获取异步任务的结构，是**阻塞性的**如果异步任务没有执行完成，那么调用线程会**一直阻塞**
+*  V get(long timeout, TimeUnit unit):设置等待的时限，不会一直阻塞
 
 
 
