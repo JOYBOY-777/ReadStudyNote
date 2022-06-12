@@ -2710,7 +2710,31 @@ class Solution {
 ### 763 划分字母区间
 
 ```java
-
+class Solution {
+    public List<Integer> partitionLabels(String s) {
+        //保存结果集
+        List<Integer> list = new LinkedList();
+        //记录每个字母最后的出现下标
+        int[] arr = new int[26];
+        char[] chars = s.toCharArray();
+        for(int i = 0;i<chars.length;i++){
+            //把每个字母的最后出现下标记录下
+            arr[chars[i]-'a'] = i;
+        }
+        int idx = 0,last = -1;
+        for(int i = 0;i<chars.length;i++){
+            idx = Math.max(idx,arr[chars[i]-'a']);
+            //发现当前遍历的位置就是最大的出现下标
+            if(idx == i){
+                //直接添加结果集
+                list.add(i-last);
+                //更新左边界
+                last = i;
+            }
+        }
+        return list;
+    }
+}
 ```
 
 
