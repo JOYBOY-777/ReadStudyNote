@@ -484,12 +484,87 @@ public class CreateDemo3 {
 在这个实例执行run方法的时候：
 
 * 实际上执行的是FutureTask中的run方法，然后这个run方法执行的是callable中的call方法
-* 这个异步的结果被放在了outcome这个属性中
+* 这个异步的结果被放在了**outcome**这个属性中
 * 然后在外部调用这个类的get属性后去outcome的结果
 * 当outcome不为空并且call执行完成，那么调用get获取outcome
 * 如果outcome为空，并且call方法还没有执行完，那么**结果获取线程会阻塞**，直到这个线程异步任务执行完成
 
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/1-9.jpg?raw=true)
+
+
+
+**通过线程池创建线程**
+
+在java中创建一个线程的代价其实还是比较的大的，那么为了能够更好地回收利用这些线程资源，就引出了线程池的概念，可以用一个**静态工厂**来创建不同的线程池，静态工厂名为：**Executors**
+
+使用例子：
+
+```java
+public class CreateDemo4 {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        //创建一个包含三个线程的线程池
+        ExecutorService pool = Executors.newFixedThreadPool(3);
+        pool.execute(new DemoThread()); //执行线程实例
+        //执行Runnable执行目标实例
+        pool.execute(new Runnable() {
+            @Override
+            public void run() {
+                for (int j = 1; j < MAX_TURN; j++) {
+                    Print.cfo(getCurThreadName() + ", 轮次：" + j);
+                    sleepMilliSeconds(10);
+                }
+            }
+        });
+        //提交Callable 执行目标实例
+        Future future = pool.submit(new ReturnableTask());
+        Long result = (Long) future.get();
+        Print.cfo("异步任务的执行结果为：" + result);
+        sleepSeconds(Integer.MAX_VALUE);
+    }
+    //无返回的线程实现
+    static class DemoThread implements Runnable {
+        @Override
+        public void run() {
+            for (int j = 1; j < MAX_TURN; j++) {
+                Print.cfo(getCurThreadName() + ", 轮次：" + j);
+                sleepMilliSeconds(10);
+            }
+        }
+    }
+    public static final int MAX_TURN = 5;
+    public static final int COMPUTE_TIMES = 100000000;
+    //又返回的线程实现
+    static class ReturnableTask implements Callable<Long> {
+        //返回并发执行的时间
+        public Long call() throws Exception {
+            long startTime = System.currentTimeMillis();
+            Print.cfo(getCurThreadName() + " 线程运行开始.");
+            for (int j = 1; j < MAX_TURN; j++) {
+                Print.cfo(getCurThreadName() + ", 轮次：" + j);
+                sleepMilliSeconds(10);
+            }
+            long used = System.currentTimeMillis() - startTime;
+            Print.cfo(getCurThreadName() + " 线程运行结束.");
+            return used;
+        }
+    }
+}
+```
+
+在以上的例子中，用Executors创建出三个线程，然后分别根据三种不同的情况来进行线程池的执行，分别接收三种不同的参数，那么submit,execute的区别是：
+
+* 接收的参数不一样：submit接收两种入参，一个是线程的runnable实例，或者是有返回值的Callable类型的参数
+* 返回值的不同：submit有返回值，但是execute没有返回值，只接收线程的实例
+
+
+
+**线程的核心原理**：
+
+CPU时间片：cpu每秒的计算次数非常的高，那么就以**毫秒**为单位进行分段，说白了就是**给线程分配多少秒的计算时间**
+
+调度：基于CPU时间片进行调度，获取到时间片的线程处于运行状态，没有获取的属于就绪状态，由于调度的时间非常短，在在各个线程之间快速的切换，给人的错觉就是线程的并发执行，在java中使用的是**抢占调度模型**，而不是**分时调度模型**，根据线程的优先级分配cpu时间片
+
+线程的优先级：默认是5，最小是1，最大是10，虽然优先级越大理论上分配时间片的机会就越多，但是不是绝对的
 
 
 
