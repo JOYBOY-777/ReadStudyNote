@@ -2741,6 +2741,68 @@ class Solution {
 
 
 
+### 56 合并区间
+
+```java
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        //存放结果的集合
+        List<int[]> res = new LinkedList();
+        //按照数组的前一位大小从小到大排序
+        Arrays.sort(intervals,(o1,o2)->Integer.compare(o1[0],o2[0]));
+        //最原始的左起点
+        int start = intervals[0][0];
+        for(int i = 1;i<intervals.length;i++){
+            //如果后一个数组的第一位>前一个数组的后一位，这是没有相交的情况
+            if(intervals[i][0]>intervals[i-1][1]){
+                //没有相交就把第一个数组添加到结果集中
+                res.add(new int[]{start,intervals[i-1][1]});
+                //更新左起始点
+                start = intervals[i][0];
+             //相交的话就看看就寻找相邻的最大的右边界，看看是什么，得到更大的右边界之后在参与上面的判断，目的是把合并区间的右边界添加到集合中
+            }else intervals[i][1] = Math.max(intervals[i][1],intervals[i-1][1]);
+        }
+        //因为遍历的时候是前n-1组，所以在添加一组构成结果
+        res.add(new int[]{start,intervals[intervals.length-1][1]});
+        //返回结果集
+        return res.toArray(new int[res.size()][]);
+    }
+}
+```
+
+此题类似于452,435，值的注意的是，经过不断的更新右边界，然后进行判断，符合的话就加入结果集，不符合继续扩大右边界,最后的add是补全结果集，核心就是**更新边界在记性上面的判断**
+
+
+
+### 738 单调递增的数字
+
+```java
+class Solution {
+    public int monotoneIncreasingDigits(int n) {
+        //把数组转为String
+        String s = String.valueOf(n);
+        //转为String数组
+        char[] c = s.toCharArray();
+        int start = c.length;
+        //从后往前遍历数组
+        for(int i = c.length-2;i>=0;i--){
+            //不是递增的情况就前一位减一，start加一，并且start后面的都是9
+            if(c[i]>c[i+1]){
+                c[i]--;
+                start = i+1;
+            }
+        }
+        //从start位置开始每个位置都是9
+        for(int i = start;i<c.length;i++){
+            c[i] = '9';
+        }
+        return Integer.parseInt(String.valueOf(c));
+    }
+}
+```
+
+
+
 
 
 
