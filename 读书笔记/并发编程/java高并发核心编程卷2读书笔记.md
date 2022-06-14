@@ -570,11 +570,33 @@ CPU时间片：cpu每秒的计算次数非常的高，那么就以**毫秒**为�
 
 其实一张图就可以概括这个状态：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2.jpg?raw=true)
+
+值的注意的就是当线程实例调用start的时候，如果线程没有获取到CPU的时间片的话，是ready状态，获取到cpu的时间片之后才是运行状态runnable
 
 
 
+**使用Jstack查看线程状态**
+
+可以使用jstack来把线程的堆栈打印出来，那么首先用jps来获取线程对应的线程id，之后根据jstack线程id来获取线程的堆栈信息：那么会有大概这几点比较重要的信息
+
+* tid:在jvm中的线程id
+* nid:在操作系统中的线程id
+* prio:在jvm中的优先级
+* os_prio:在操作系统中对应的优先级
+* 以及线程的状态
 
 
+
+**线程的sleep状态**
+
+当Thread调用sleep方法的时候，线程会进入**显示等待的状态**。但是他并不释放线程的锁，而且对CPU也不是完全的占用（当多个线程的sleep时间较大时）
+
+
+
+**线程的interrupt操作**
+
+首先明确的是，这个interrupt只是给线程设置一个中断的标志位（变为true），并不是像stop一样会把正在运行的线程直接停掉，当线程处在等待状态的时候，线程实例调用interrupt后会直接抛出异常（前提是在线程的run方法捕获了异常），
 
 
 
