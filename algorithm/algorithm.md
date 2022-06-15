@@ -2803,6 +2803,33 @@ class Solution {
 
 
 
+## 动态规划
+
+### 509 斐波那契数
+
+```java
+class Solution {
+    public int fib(int n) {
+        if(n<2) return n;
+        //创建dp数组
+        int[] dp = new int[n+1];
+        //特殊条件初始化
+        dp[0] = 0;
+        dp[1] = 1;
+        //从前往后遍历累加数组
+        for(int i = 2;i<=n;i++){
+            dp[i] = dp[i-1]+dp[i-2];
+        }
+        //返回结果
+        return dp[n];
+    }
+}
+```
+
+
+
+
+
 
 
 
