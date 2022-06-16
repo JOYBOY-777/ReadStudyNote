@@ -669,9 +669,35 @@ join的重载方法可以限时合并，也可以不限时合并
 
 **线程的yield操作**
 
+这个方法是Thread类的一个静态方法，就是让当前的线程放弃cpu的时间片，让这个时间片去供给别的线程，然后这个线程的状态还是runnable，但是他对应的操作系统线程变为就绪状态，这个方法的作用是：
 
+```java
+    static class YieldThread extends Thread {
+        static int threadSeqNumber = 1;
+        public YieldThread() {
+            super("YieldThread-" + threadSeqNumber);
+            threadSeqNumber++;
+            metric.put(this.getName(), new AtomicInteger(0));
+        }
+		//在线程的run方法中调用yield方法，执行后就会放弃cpu时间片
+        public void run() {
+            for (int i = 1; i < MAX_TURN && index.get() < MAX_TURN; i++) {
+                Print.tco("线程优先级：" + getPriority());
+                index.incrementAndGet();
+                metric.get(this.getName()).incrementAndGet();
+                if (i % 2 == 0) {
+                    //让步：出让执行的权限
+                    Thread.yield();
+                }
+            }
+            //输出线程的执行次数
+            printMetric();
+            Print.tco(getName() + " 运行结束.");
+        }
+    }
+```
 
-
+个人感觉这个方法用处不是很大
 
 
 
