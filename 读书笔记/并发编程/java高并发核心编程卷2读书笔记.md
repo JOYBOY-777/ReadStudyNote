@@ -755,7 +755,63 @@ java中高并发应用频繁创建和销毁线程的操作是非常的低效的�
 
 **Executors 四个快捷创建线程池方法**
 
+* newSingleThreadExecutor() ：创建一个线程池，只有一个线程来执行任务，这样保证任务是先入先出的执行
 
+  ```java
+  //异步的执行目标类
+      public static class TargetTask implements Runnable {
+          static AtomicInteger taskNo = new AtomicInteger(1);
+          protected String taskName;
+          public TargetTask() {
+              taskName = "task-" + taskNo.get();
+              taskNo.incrementAndGet();
+          }
+          public void run() {
+              Print.tco("任务：" + taskName + " doing");
+              // 线程睡眠一会
+              sleepMilliSeconds(SLEEP_GAP);
+              Print.tco(taskName + " 运行结束.");
+          }
+          @Override
+          public String toString() {
+              return "TargetTask{" + taskName + '}';
+          }
+      }
+  ```
+
+  调用线程池**让里面的线程**去执行这个异步任务：
+
+  ```java
+  //测试用例：只有一条线程的线程池
+      @Test
+      public void testSingleThreadExecutor() {
+          ExecutorService pool = Executors.newSingleThreadExecutor();
+          for (int i = 0; i < 5; i++) {
+              pool.execute(new TargetTask());
+              pool.submit(new TargetTask());
+          }
+          sleepSeconds(1000);
+          //关闭线程池
+          pool.shutdown();
+      }
+  ```
+
+  从例子中就可以看出，这个类型的线程池里面只有一个线程，这个线程**一个一个**去执行异步的任务
+
+  * 按照**提交的顺序执行**
+  * 池中的线程的存活时间是无限的
+  * 当池中的线程正在执行任务的时候，新提交的任务会进入**池中的无界阻塞队列**
+  * 应用的场景是：任务按照提交次序，一个任务一个任务逐个执行
+
+  
+
+* newFixedThreadPool(int threads) ：创建拥有固定大小线程数的线程池
+
+  
+
+* newCachedThreadPool() ：创建一个拥有n个线程数量的线程池，并且提交的任务立即执行，但是空闲的线程会及时的回收
+
+* newScheduledThreadPool() ：创建一个可定期后者延迟执行任务的线程池
 
 
 
