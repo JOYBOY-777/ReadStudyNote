@@ -701,6 +701,29 @@ join的重载方法可以限时合并，也可以不限时合并
 
 
 
+**守护线程daemon**
+
+顾名思义，负责垃圾回收的线程就是一个守护线程，我们可以通过外部的方法把一条用户线程变为守护线程，当用户线程结束完毕之后，JVM进程也随之结束之后，不管你的守护线程还在不在运行中，这个守护线程也要强制结束
+
+```java
+ static class DaemonThread extends Thread {
+        public DaemonThread() {
+            super("daemonThread");
+        }
+        public void run() {
+            Print.synTco("--daemon线程开始.");
+            //这是个死循环，但是由于在外部设置了守护线程，那么在用户线程结束后，jvm进程也就结束了，会强制你守护线程结束
+            for (int i = 1; ; i++) {
+                Print.synTco("--轮次：" + i + "--守护状态为:" + isDaemon());
+                // 线程睡眠一会
+                sleepMilliSeconds(SLEEP_GAP);
+            }
+        }
+    }
+```
+
+还有就是守护线程创建的线程也属于守护线程
+
 
 
 
