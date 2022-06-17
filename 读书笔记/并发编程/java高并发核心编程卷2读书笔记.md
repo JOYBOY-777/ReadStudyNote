@@ -726,9 +726,34 @@ join的重载方法可以限时合并，也可以不限时合并
 
 
 
+**线程池原理与实践**
+
+java中高并发应用频繁创建和销毁线程的操作是非常的低效的，那么就必须使用线程池来合理的管理和分配这些线程资源
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/1-14.png?raw=true)
+
+* Executor:是一个接口主要提供了执行的功能规范
+
+  ```java
+  void execute(Runnable command)
+  ```
+
+* ExecutorService:这个接口是Executor的子接口，他提供了获取任务执行结果submit方法和invoke等方法
+
+* AbstractExecutorService:是一个抽象类，他为上面的ExecutorService提供了默认的实现
+
+* ThreadPoolExecutor:线程池的实现类，他是继承于AbstractExecutorService这个抽象类的
+
+* ScheduledExecutorService:也是一个接口，他继承于ExecutorService并且提供了“延
+  时，周期性”任务的调度线程池接口
+
+* ScheduledThreadPoolExecutor:继承于线程池实现类ThreadPoolExecutor，并且为延时，周期性等接口提供了默认实现
+
+* Executors:是一个静态工厂方法，通过这个方法可以创建线程池
 
 
 
+**Executors 四个快捷创建线程池方法**
 
 
 

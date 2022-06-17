@@ -2828,7 +2828,44 @@ class Solution {
 
 
 
+### 70 爬楼梯
 
+```java
+class Solution {
+    public int climbStairs(int n) {
+        if(n<=1) return n;
+        int[] dp = new int[n+1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for(int i = 3;i<=n;i++){
+            dp[i] = dp[i-1] + dp[i-2];
+        }
+        return dp[n];
+    }
+}
+```
+
+
+
+### 746 使用最小花费爬楼梯
+
+```java
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int[] dp = new int[cost.length];
+        dp[0] = cost[0];
+        dp[1] = cost[1];
+        for(int i = 2;i<dp.length;i++){
+            //要加上在这层所需要的花费，这个状态是由上一层和下一层的状态推导出来的，是一个连贯并且有规律的连续事件，每一层计算的逻辑都是这样算
+            dp[i] = Math.min(dp[i-1],dp[i-2])+cost[i];
+        }
+        //结果都是前面推到出来的，所以直接返回最后两个的最小值就行了
+        return Math.min(dp[dp.length-2],dp[dp.length-1]);
+    }
+}
+```
+
+dp[i]的含义是：到达第i个台阶需要的**最小花费**是多少，这里直接就是最小的花费了
 
 
 
