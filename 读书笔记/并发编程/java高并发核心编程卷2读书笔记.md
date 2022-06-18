@@ -807,15 +807,110 @@ java中高并发应用频繁创建和销毁线程的操作是非常的低效的�
 
 * newFixedThreadPool(int threads) ：创建拥有固定大小线程数的线程池
 
+  ```java
+      //测试用例：只有3条线程固定大小的线程池
+      @Test
+      public void testNewFixedThreadPool() {
+          ExecutorService pool = Executors.newFixedThreadPool(3);
+          for (int i = 0; i < 5; i++) {
+              pool.execute(new TargetTask());
+              pool.submit(new TargetTask());
+          }
+          sleepSeconds(1000);
+          //关闭线程池
+          pool.shutdown();
+      }
+  ```
+
+  这个代码中向线程池中提交了三个任务，但是这个线程池中只能有三个线程同时执行任务，其余的任务会排队你等待，这个线程池的主要特点是：
+
+  * 线程数量**没有**达到固定数量，那么每次提交一个任务的话，就创建一个线程执行这个任务
+  * 如果达到了固定的数量，那么就会线程数量就会保持不变，如果有的线程因为异常而结束，就会在补充一个线程
+  * 当线程的数量达到规定的峰值那么其他的异步任务就会放到阻塞队列中
+
+  适用场景：
+
+  * 需要任务长期执行（长期有任务得执行着）
+  * 用来处理CPU密集型的任务，可以保证cpu在长时间的使用下**尽可能少的分配系统资源**
+
   
 
 * newCachedThreadPool() ：创建一个拥有n个线程数量的线程池，并且提交的任务立即执行，但是空闲的线程会及时的回收
 
-* newScheduledThreadPool() ：创建一个可定期后者延迟执行任务的线程池
+  ```java
+      //测试用例：“可缓存线程池”
+      @Test
+      public void testNewCacheThreadPool() {
+          ExecutorService pool = Executors.newCachedThreadPool();
+          for (int i = 0; i < 5; i++) {
+              pool.execute(new TargetTask());
+              pool.submit(new TargetTask());
+          }
+          sleepSeconds(1000);
+          //关闭线程池
+          pool.shutdown();
+      }
+  ```
+
+  主要特点：
+
+  * 因为这个线程池里面有n个线程，当池内的线程繁忙的时候，会立刻创建一个线程去执行这个任务
+  * 当需要执行的异步任务数量<线程的数量时，就会及时的回收那些空闲的线程
+
+  使用场景：
+
+  * 用来处理**突发性强，任务耗时短的异步任务**
+  * 不好的地方是：如果一次性的异步任务提交的特别多，那么系统的资源就会快速的消耗殆尽
+
+  
+
+* newScheduledThreadPool() ：创建一个可定期或者延迟执行任务的线程池
+
+  注意：这个是让异步任务重复的并且有周期性的执行，并没有停下的意思，一直重复的执行
+
+  ```java
+  //测试用例：“可调度线程池”
+      @Test
+      public void testNewScheduledThreadPool() {
+          ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(2);
+          //这个是创建几个异步任务给池子里面的线程，并且线程会按照配置的参数重复性的有周期性的执行任务
+          for (int i = 0; i < 2; i++) {
+              scheduled.scheduleAtFixedRate(new TargetTask(),
+                      0, 500, TimeUnit.MILLISECONDS);
+              //以上的参数中：
+              //new TargetTask()表示需要执行的目标实例
+              // 0表示首次执行任务的延迟时间，500表示每次执行任务的间隔时间
+              //TimeUnit.MILLISECONDS所设置的时间的计时单位为毫秒
+          }
+          sleepSeconds(1000);
+          //关闭线程池
+          scheduled.shutdown();
+      }
+  ```
+
+  有两个常用的方法：
+
+  ```java
+  public ScheduledFuture<?> scheduleAtFixedRate(
+      Runnable command, //异步任务 target 执行目标实例；
+      long initialDelay, //首次执行延时；
+      long period, //两次开始执行最小间隔时间；
+      TimeUnit unit //所设置的时间的计时单位，如 TimeUnit.SECONDS 常量；
+  )
+      
+  public ScheduledFuture<?> scheduleWithFixedDelay(
+      Runnable command,//异步任务 target 执行目标实例；
+      long initialDelay, //首次执行延时；
+      long delay, //前一次执行结束到下一次执行开始的间隔时间（间隔执行延迟时间）；
+      TimeUnit unit //所设置的时间的计时单位，如 TimeUnit.SECONDS 常量；
+  )
+  ```
+
+  注意period和delay的意思，前者是**间隔的最小时间**，后者是真正的**指定的间隔时间**，并且当异步任务的执行时间>指定的间隔时间时，系统不会创建一个新的线程去执行这个新的任务，而是等这个任务执行结束
 
 
 
-
+**线程池的标准创建方式**
 
 
 
