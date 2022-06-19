@@ -995,17 +995,102 @@ java中高并发应用频繁创建和销毁线程的操作是非常的低效的�
 
 总的一张图是：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/1-15.png?raw=true)
+
+需要注意的是：核心和最大线程数量、BlockingQueue 队列等参数配置的不好的话会造成严重的排队等待的现象发生，总的原因就是：当核心线程的数量已满，**还要保证阻塞队列已满**才会分配非核心线程去执行异步任务
 
 
 
+**ThreadFactory线程工厂**
+
+如果你设置了线程工厂的话，你就可以自定义的设置线程的名字等功能，比如：
+
+```java
+    //一个简单的线程工厂
+    static public class SimpleThreadFactory implements ThreadFactory {
+        static AtomicInteger threadNo = new AtomicInteger(1);
+        //实现其唯一的创建线程方法
+        @Override
+        public Thread newThread(Runnable target) {
+            String threadName = "simpleThread-" + threadNo.get();
+            Print.tco("创建一条线程，名称为：" + threadName);
+            threadNo.incrementAndGet();
+            //设置线程名称
+            Thread thread = new Thread(target, threadName);
+            //设置为守护线程
+            thread.setDaemon(true);
+            return thread;
+        }
+    }
+
+//使用这个自定义线程工厂
+    @org.junit.Test
+    public void testThreadFactory() {
+        //使用自定义线程工厂，快捷创建线程池
+        ExecutorService pool =
+                Executors.newFixedThreadPool(2, new SimpleThreadFactory());
+        for (int i = 0; i < 5; i++) {
+            pool.submit(new TargetTask());
+        }
+        //等待10秒
+        sleepSeconds(10);
+        Print.tco("关闭线程池");
+        pool.shutdown();
+    }
+```
+
+你用自定义的类实现接口中的方法，然后new出一个线程用这个线程的实例就可以随意操作了
 
 
 
+**任务阻塞队列**
+
+这个阻塞队列是用来存放**异步任务的**，当这个里面没有异步任务的时候，线程从队列里面获取任务执行的时候，如果队列是空的，那么这个线程就会被阻塞，当队列中有任务的时候线程就会被唤醒，这个过程**用户不会察觉**
+
+线程池参数中的BlockingQueue有以下这几个比较重要的实现类:
+
+* ArrayBlockingQueue:是一个用**数组**实现的**有界**的阻塞队列，在创建的时候就**必须设置队列的大小**，并且遵从FIFO的顺序排序
+* LinkedBlockingQueue:是一个用**链表**实现的阻塞队列，你可以不设置队列的大小，不设置的话当任务数量超出核心线程数的时候，其余的任务直接就放在了这个队列中，直到资源耗尽，Executors.newSingleThreadExecutor、Executors.newFixedThreadPool使用了这个
+* PriorityBlockingQueue：具有优先级的无界队列
+* DelayQueue：是无界阻塞延迟队列，每个元素都有过期的时间，并且头部过期最快 Executors.newScheduledThreadPool 使用了这个创建
+* SynchronousQueue：是一个不存储元素的阻塞队列，如果想往这个阻塞队列中增加任务，必须有另一个线程来执行任务才能插入成功，不会保存提交的任务，而是新建一个线程来执行这个任务
 
 
 
+**调度器的钩子方法**
 
+这个有点类似于AOP的概念，当线程池执行异步任务的时候，通过钩子方法可以在执行前后停止这三个时间段“织入”代码例子：
 
+```java
+@org.junit.Test
+    public void testHooks() {
+        ExecutorService pool = new ThreadPoolExecutor(2,
+                4, 60,
+                TimeUnit.SECONDS, new LinkedBlockingQueue<>(2)) {
+            @Override
+            protected void terminated() {
+                Print.tco("调度器已经终止!");
+            }
+            @Override
+            protected void beforeExecute(Thread t, Runnable target) {
+                Print.tco(target + "前钩子被执行");
+                //记录开始执行时间
+                START_TIME.set(System.currentTimeMillis());
+                super.beforeExecute(t, target);
+            }
+            @Override
+            protected void afterExecute(Runnable target, Throwable t) {
+                super.afterExecute(target, t);
+                //计算执行时长
+                long time = (System.currentTimeMillis() - START_TIME.get());
+                Print.tco(target + " 后钩子被执行, 任务执行时长（ms）：" + time);
+                //清空本地变量
+                START_TIME.remove();
+            }
+        };
+```
+
+通过重写这三个方法进行异步任务执行时的“织入操作”，在最后执行结果出来的时候就会发现织入了这些代码
 
 
 
