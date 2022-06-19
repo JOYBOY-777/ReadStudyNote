@@ -912,9 +912,86 @@ java中高并发应用频繁创建和销毁线程的操作是非常的低效的�
 
 **线程池的标准创建方式**
 
+```java
+    public ThreadPoolExecutor(int corePoolSize,
+                              int maximumPoolSize,
+                              long keepAliveTime,
+                              TimeUnit unit,
+                              BlockingQueue<Runnable> workQueue,
+                              ThreadFactory threadFactory,
+                              RejectedExecutionHandler handler) 
+```
+
+这七个参数分别是：
+
+* int corePoolSize：这个是线程池的**核心线程数量**，当有任务进入到线程池中，并且线程池中工作线程数<核心线数量的话，就算工作线程处在空闲状态，也会**新创建**一个线程来执行这个任务，直到数量达到核心线程数，**核心线程数，即使线程空闲（Idle），也不会回收**
+* int maximumPoolSize：池中的**最大线程数**，当工作线程数量>核心线程数量但是小于池中可以容纳的最大线程数的时候，当阻塞队列(当核心线程都在忙，那么这时候新提交的任务就会进入阻塞队列)已满时才会创建新线程
+* long keepAliveTime：线程最大空闲（Idle）时长，超过这个最大的空闲时间**非核心线程就会阻塞**
+* TimeUnit unit：空闲时长的单位
+* BlockingQueue<Runnable> workQueue：阻塞队列的类型
+* ThreadFactory threadFactory：线程创建方法
+* RejectedExecutionHandler handler：拒绝新任务的策略
+
+下面是submit的两个例子：
+
+因为submit可以获取异步任务的返回结果,并且可以响应异常举个栗子：
+
+```java
+//测试用例：提交和执行
+    @Test
+    public void testSubmit() {
+        ScheduledExecutorService pool = Executors.newScheduledThreadPool(2);
+        pool.execute(new TargetTaskWithError());
+        /**
+         * submit(Runnable x) 返回一个future。可以用这个future来判断任务是否成功完成。请看下面：
+         */
+        Future future = pool.submit(new TargetTaskWithError());
+        try {
+            //如果异常抛出，会在调用Future.get()时传递给调用者
+            if (future.get() == null) {
+                //如果Future的返回为null，任务完成
+                Print.tco("任务完成");
+            }
+            //对异步任务中的异常进行捕获
+        } catch (Exception e) {
+            Print.tco(e.getCause().getMessage());
+        }
+        sleepSeconds(10);
+        //关闭线程池
+        pool.shutdown();
+    }
+
+//测试用例：获取异步调用的结果
+    @Test
+    public void testSubmit2() {
+        ScheduledExecutorService pool = Executors.newScheduledThreadPool(2);
+        Future<Integer> future = pool.schedule(new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                //返回200 - 300 之间的随机数
+                return RandomUtil.randInRange(200, 300);
+            }
+        }, 100, TimeUnit.MILLISECONDS);
+        try {
+            //通过future获取异步调用的结果
+            Integer result = future.get();
+            Print.tco("异步执行的结果是:" + result);
+        } catch (InterruptedException e) {
+            Print.tco("异步调用被中断");
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            Print.tco("异步调用过程中，发生了异常");
+            e.printStackTrace();
+        }
+        sleepSeconds(10);
+        //关闭线程池
+        pool.shutdown();
+    }
+```
 
 
 
+**线程池的任务调度流程**
 
 
 
