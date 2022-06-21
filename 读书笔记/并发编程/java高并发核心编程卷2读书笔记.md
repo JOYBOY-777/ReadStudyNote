@@ -1139,6 +1139,94 @@ java中高并发应用频繁创建和销毁线程的操作是非常的低效的�
 * TIDYING：是一个完美的状态，里面的任务都执行完毕了或者终止，将会执行**terminated( )**
 * TERMINATED：执行完terminated( )的状态
 
+shutdown:
+
+```java
+    public void shutdown() {
+        final ReentrantLock mainLock = this.mainLock;
+        mainLock.lock();
+        try {
+            //检查权限
+            checkShutdownAccess();
+            //设置线程状态
+            advanceRunState(SHUTDOWN);
+            //中断空闲线程
+            interruptIdleWorkers();
+            //执行钩子函数
+            onShutdown(); // hook for ScheduledThreadPoolExecutor
+        } finally {
+            mainLock.unlock();
+        }
+        tryTerminate();
+    }
+
+```
+
+shutdownNow:
+
+```java
+    public List<Runnable> shutdownNow() {
+        List<Runnable> tasks;
+        final ReentrantLock mainLock = this.mainLock;
+        mainLock.lock();
+        try {
+            checkShutdownAccess();
+            advanceRunState(STOP);
+            //中断所有线程
+            interruptWorkers();
+            //放弃工作队列中的剩余任务
+            tasks = drainQueue();
+        } finally {
+            mainLock.unlock();
+        }
+        tryTerminate();
+        return tasks;
+    }
+```
+
+awaitTermination ：在调用shutdown或者shutdownnow之后，一般主线程（用户线程）不会等待线程池结束，这个方法就让工作线程主动地等待线程池结束，线程池完成关闭后这个方法返回true
+
+优雅关闭线程池：
+
+```java
+    //测试用例：优雅关闭
+    @Test
+    public void testShutdownGracefully() {
+        ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(2);
+        threadPool.shutdown(); // Disable new tasks from being submitted
+        try {
+            // 设定最大重试次数
+            // 等待 60 s，如果等了60 s还不关闭的话，就直接结束
+            if (!threadPool.awaitTermination(60, TimeUnit.SECONDS)) {
+                // 调用 shutdownNow 取消正在执行的任务
+                threadPool.shutdownNow();
+                // 再次等待 60 s，如果还未结束，可以再次尝试，或则直接放弃
+                if (!threadPool.awaitTermination(60, TimeUnit.SECONDS)) {
+                    System.err.println("线程池任务未正常执行结束");
+                }
+            }
+        } catch (InterruptedException ie) {
+            // 重新调用 shutdownNow
+            threadPool.shutdownNow();
+        }
+    }
+```
+
+
+
+**Executors快捷创建线程池的问题**
+
+* 使用 newFixedThreadPool 工厂方法存在的问题：存在于他使用的阻塞队列：LinkedBlockingQueue<Runnable>() 上，由于可以提交的异步任务不设置限制，这时候如果**提交的速度大于执行的速度**就会造成资源的浪费
+* 使用 newSingleThreadExecutor存在的问题：其实问题还是发生在这个采用的阻塞队列中，**提交速度大于消耗任务的速度就会造成资源的浪费**
+* 使用 newCachedThreadPool 工厂方法问题：存在于其**最大线程数量不设限上**，可以认为是无限次数的创建线程，提交过多的话会造成大量的线程被启动从而导致OOM
+* Executors 的 newScheduledThreadPool 工厂方法：任务的阻塞队列不设限制，无限的加任务导致oom资源浪费
+
+
+
+**确定线程池的线程数**
+
+
+
 
 
 

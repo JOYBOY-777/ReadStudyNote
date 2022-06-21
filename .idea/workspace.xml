@@ -42,19 +42,19 @@
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\ReadStudyNote\javaimg\java高并发核心编程卷二图片" />
-      <recent name="F:\ReadStudyNote\algorithm\算法题解" />
-      <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
-      <recent name="F:\ReadStudyNote\从上到下源码分析\java集合" />
-      <recent name="F:\ReadStudyNote\从上到下源码分析\java并发" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\ReadStudyNote\读书笔记\并发编程" />
       <recent name="F:\ReadStudyNote\读书笔记\java基础" />
       <recent name="F:\ReadStudyNote\读书笔记\mysql" />
       <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
       <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\javaimg\java高并发核心编程卷二图片" />
+      <recent name="F:\ReadStudyNote\algorithm\算法题解" />
+      <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
+      <recent name="F:\ReadStudyNote\从上到下源码分析\java集合" />
+      <recent name="F:\ReadStudyNote\从上到下源码分析\java并发" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -175,7 +175,7 @@
       <workItem from="1655430352308" duration="5974000" />
       <workItem from="1655555614142" duration="1349000" />
       <workItem from="1655640001201" duration="2611000" />
-      <workItem from="1655792485012" duration="1088000" />
+      <workItem from="1655792485012" duration="1706000" />
     </task>
     <servers />
   </component>
