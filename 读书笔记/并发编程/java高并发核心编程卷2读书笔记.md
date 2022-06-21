@@ -1214,6 +1214,27 @@ awaitTermination ：在调用shutdown或者shutdownnow之后，一般主线程�
 
 
 
+**注册 JVM 钩子函数自动关闭线程池**
+
+在**JVM进程关闭**之前，由钩子函数**自动**将线程池优雅的关闭，也就是结束运行的时候自动给你执行钩子函数
+
+```java
+        //JVM关闭时的钩子函数
+        Runtime.getRuntime().addShutdownHook(
+                new ShutdownHookThread("IO密集型任务线程池", new Callable<Void>() {
+                    @Override
+                    public Void call() throws Exception {
+                        //优雅关闭线程池
+                        shutdownThreadPoolGracefully(EXECUTOR);
+                        return null;
+                    }
+                }));
+```
+
+可以看到其实这个钩子函数里面也是一个线程，是有返回值的，重写了call方法
+
+
+
 **Executors快捷创建线程池的问题**
 
 * 使用 newFixedThreadPool 工厂方法存在的问题：存在于他使用的阻塞队列：LinkedBlockingQueue<Runnable>() 上，由于可以提交的异步任务不设置限制，这时候如果**提交的速度大于执行的速度**就会造成资源的浪费
@@ -1225,11 +1246,65 @@ awaitTermination ：在调用shutdown或者shutdownnow之后，一般主线程�
 
 **确定线程池的线程数**
 
+使用线程池的好处：
+
+1. 降低资源的消耗
+2. 提高响应速度
+3. 提高线程的可管理性
 
 
 
+**任务类型对应不同的线程池种类**
 
+我们一般去运用线程池去执行异步任务，但是根据异步任务的类型，有一下三类：
 
+* IO密集型任务：这种的任务主要是执行IO操作，并且这类任务所要执行的时间比较**长**，但是CPU的利用率比较小，比较经典的例子就是Netty的IO读写，这类任务的cpu长期属于**空闲状态**
+* CPU密集型任务：这种主要是需要进行频繁的计算操作，所以cpu的利用率还是比较的高的
+* 混合型任务：就是既需要进行IO的磁盘操作，还要进行频繁的计算任务
+
+**为 IO 密集型任务确定线程数**
+
+因为IO密集型任务对于CPU的消耗不严重，cpu利用率低，所以就需要把线程数量设置为**cpu核心线程数的2倍**，核心来提高**CPU的使用率**
+
+```java
+//CPU核心线程数
+public static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+//求CPU核心线程数的二倍
+public static final int IO_MAX = Math.max(2, CPU_COUNT * 2);
+//懒汉式单例创建线程池：用于IO密集型任务
+public class IoIntenseTargetThreadPoolLazyHolder {
+    //线程池： 用于IO密集型任务
+    public static final ThreadPoolExecutor EXECUTOR = new ThreadPoolExecutor(
+            IO_MAX,
+            IO_MAX,
+            KEEP_ALIVE_SECONDS,
+            TimeUnit.SECONDS,
+        	//1000个有界队列
+            new LinkedBlockingQueue(QUEUE_SIZE),
+            new ThreadUtil.CustomThreadFactory("io"));
+    public static ThreadPoolExecutor getInnerExecutor() {
+        return EXECUTOR;
+    }
+    //钩子函数
+    static {
+        log.info("线程池已经初始化");
+        //把线程空闲时间的范畴拉大到核心线程，使得核心线程超过最大空闲时间时也被回收
+        EXECUTOR.allowCoreThreadTimeOut(true);
+        //JVM关闭时的钩子函数
+        Runtime.getRuntime().addShutdownHook(
+                new ShutdownHookThread("IO密集型任务线程池", new Callable<Void>() {
+                    @Override
+                    public Void call() throws Exception {
+                        //优雅关闭线程池
+                        shutdownThreadPoolGracefully(EXECUTOR);
+                        return null;
+                    }
+                }));
+    }
+}
+```
+
+注意：这里让 corePoolSize 、 maximumPoolSize的值相等的好处是，在接到新的任务的时候，这个任务不会被加入到**等待队列中**而是**直接**
 
 
 
