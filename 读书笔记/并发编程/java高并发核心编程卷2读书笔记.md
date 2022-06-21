@@ -1094,6 +1094,91 @@ java中高并发应用频繁创建和销毁线程的操作是非常的低效的�
 
 
 
+**线程池的拒绝策略**
+
+那种情况下会使得线程池触发拒绝策略呢？
+
+* 线程池已经被关闭
+* 工作队列已满并且允许的最大线程数已满
+
+咱们的JDK提供了这几种拒绝策略：
+
+* AbortPolicy：拒绝策略
+
+  是线程池默认的拒绝策略，在池中线程数已满的情况下，如果这时候再有任务进来的话就会抛出异常
+
+* DiscardPolicy：抛弃策略，这个是不抛出异常的版本
+
+* DiscardOldestPolicy：抛弃最老任务策略，把对头的任务给放弃，因为是最老的任务，然后在尝试把任务加入阻塞队列
+
+* CallerRunsPolicy：调用者执行策略，在新加入任务失败以后，就让**提交任务线程**去执行这个任务，不使用池中的队列
+
+* 自定义策略:
+
+  ```java
+      //自定义拒绝策略
+      public static class CustomIgnorePolicy implements RejectedExecutionHandler {
+          public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+              // 可做日志记录等
+              Print.tco(r + " rejected; " + " - getTaskCount: " + e.getTaskCount());
+          }
+      }
+  ```
+
+  这个在发生拒绝策略的时候就默认走这个自定义的拒绝策略了
+
+
+
+**线程池的优雅关闭**
+
+线程池的5种状态：
+
+* RUNNING：这是线程池创建初的状态，已经可以执行任务了
+* SHUTDOWN：不在接收新的任务，但是会把线程池里面的异步任务消耗干净
+* STOP：不接收新的任务和消耗线程池里面的任务
+* TIDYING：是一个完美的状态，里面的任务都执行完毕了或者终止，将会执行**terminated( )**
+* TERMINATED：执行完terminated( )的状态
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
