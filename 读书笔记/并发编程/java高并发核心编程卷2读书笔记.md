@@ -1304,7 +1304,100 @@ public class IoIntenseTargetThreadPoolLazyHolder {
 }
 ```
 
-注意：这里让 corePoolSize 、 maximumPoolSize的值相等的好处是，在接到新的任务的时候，这个任务不会被加入到**等待队列中**而是**直接**
+注意：这里让 corePoolSize 、 maximumPoolSize的值相等是为了**尽可能的增加CPU的利用率**，关于书里面提到的可以让非核心线程直接去执行异步任务的说法我抱有一点疑问，不加入阻塞队列的话就直接让非核心线程去消耗异步任务的做法很显然是要执行拒绝策略的，所以书里的说法我不是很认同，这里使用的是懒汉式设计模式创建的线程池，当使用的时候创建线程池
+
+**为CPU 密集型任务确定线程数**
+
+对于这种类型的线程池来说的话，就让核心线程数还有最大线程数等于CPU的**核心数**就行了，这样做的目的是尽可能的**最高效的利用CPU**
+
+```java
+//cpu核心数
+public static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+public static final int MAXIMUM_POOL_SIZE = CPU_COUNT;
+//懒汉式单例创建线程池：用于CPU密集型任务
+public class CpuIntenseTargetThreadPoolLazyHolder {
+    //线程池： 用于CPU密集型任务
+    private static final ThreadPoolExecutor EXECUTOR = new ThreadPoolExecutor(
+            MAXIMUM_POOL_SIZE,
+            MAXIMUM_POOL_SIZE,
+            KEEP_ALIVE_SECONDS,
+            TimeUnit.SECONDS,
+            new LinkedBlockingQueue(QUEUE_SIZE),
+            new CustomThreadFactory("cpu"));
+    public static ThreadPoolExecutor getInnerExecutor() {
+        return EXECUTOR;
+    }
+    static {
+        log.info("线程池已经初始化");
+
+        EXECUTOR.allowCoreThreadTimeOut(true);
+        //JVM关闭时的钩子函数
+        Runtime.getRuntime().addShutdownHook(
+                new ShutdownHookThread("CPU密集型任务线程池", new Callable<Void>() {
+                    @Override
+                    public Void call() throws Exception {
+                        //优雅关闭线程池
+                        shutdownThreadPoolGracefully(EXECUTOR);
+                        return null;
+                    }
+                }));
+    }
+}
+```
+
+
+
+**为混合型任务确定线程数**
+
+对于混合型的任务CPU的利用率不是太高，可以根据一个公式来推断出所需要的核心线程数量大小：
+
+```java
+最佳线程数目 =（线程等待时间与线程 CPU 时间之比 + 1）* CPU 核数
+```
+
+比如线程CPU运行时间是100s,线程等待时间是900s那么这个公式就是：[(900s/100s)+1]*8 = 80,一般多线程的场景就是存在相当比例的**非CPU耗时操作**，比如IO、网络操作等，那么这时候就要**提升CPU的利用率**，上面的80就是整体的线程数，核心线程数和最大线程数都是这个，后续还会调用JVM的钩子方法，其实基本上都是差不多的，就不举例了
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
