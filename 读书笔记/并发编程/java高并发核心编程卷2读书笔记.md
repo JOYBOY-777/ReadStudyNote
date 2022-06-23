@@ -1359,7 +1359,9 @@ public class CpuIntenseTargetThreadPoolLazyHolder {
 
 
 
+**ThreadLocal 原理与实战**
 
+为保证多个线程对变量的**安全访问**，线程可以将变量放到ThreadLocal的对象中，这样的话就保证**变量**在每个线程中都有独立的值，可以想象ThreadLocal是一个收容所，线程是父母，把变量这个孩子放到ThreadLocal里面
 
 
 
