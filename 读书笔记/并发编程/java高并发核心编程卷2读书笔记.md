@@ -1466,6 +1466,15 @@ JDK8后的版本内部的结构发生了转变，因为是hash表所以就存在
 
 
 
+**ThreadLocal源码分析**
+
+* set方法
+* get方法
+* remove方法
+* initialValue方法
+
+**ThreadLocalMap源码分析**
+
 
 
 

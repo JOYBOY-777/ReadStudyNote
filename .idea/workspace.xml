@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/javaimg/java高并发核心编程卷二图片/1-19.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/读书笔记/并发编程/java高并发核心编程卷2读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/并发编程/java高并发核心编程卷2读书笔记.md" afterDir="false" />
     </list>
@@ -187,7 +186,7 @@
       <workItem from="1655867508606" duration="1242000" />
       <workItem from="1655946476298" duration="1075000" />
       <workItem from="1655987444808" duration="2146000" />
-      <workItem from="1656032747418" duration="2839000" />
+      <workItem from="1656032747418" duration="4039000" />
     </task>
     <servers />
   </component>
