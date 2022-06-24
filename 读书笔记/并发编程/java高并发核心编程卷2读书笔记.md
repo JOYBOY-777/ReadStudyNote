@@ -1455,9 +1455,14 @@ ThreadLocal保存着**专属于线程的本地变量**，在多线程并发操�
 
 其实这个内部的map结构在处理Hash冲突的时候，采用的方式与hashmap不一致，他采用一种叫做**开放地址**法的方式指的是**发生了碰撞的话按照某种方法继续寻找Hash表中的其他存储单元，直到找到空位置**，可以看到多个线程共用一个Map结构
 
-JDK8后的版本内部的结构发生了转变，因为是hash表所以就存在**扩容性能问题**，比如我们给一个线程创建多个ThreadLocal实例的时候，按照上面的map结构里面的key都是一样的，就会较快的发生hash冲突，于是为了减少扩容的成本，这个map的拥有者发生了变化，为**Thread**实例本身，Thread实例中的KEY为**创建的ThreadLocal实例**，VALUE为**线程设置的值**这样就算你给一个线程创建很多的ThreadLocal，那么hash冲突也是可以避免的，这样的性能损耗就减少很多
+JDK8后的版本内部的结构发生了转变，因为是hash表所以就存在**扩容性能问题**，比如我们给一个线程创建多个ThreadLocal实例的时候，按照上面的map结构里面的key都是一样的，就会较快的发生hash冲突，于是为了减少扩容的成本，这个map的拥有者发生了变化，为**Thread**实例本身，Thread实例中的KEY为**创建的ThreadLocal实例**，VALUE为**线程设置的值**这样就算你给一个线程创建很多的ThreadLocal，那么hash冲突也是可以避免的，这样的性能损耗就减少很多，所以可以知道往往一个系统中几百条线程，几个threadlocal实例是很正常的，所以用下面的这种结构就能减少k-v的数量，如图：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/1-19.png?raw=true)
 
+这种方式的优势为：
+
+1. 每个 ThreadLocalMap 存储的“Key-Value 对”数量变少，因为不跟线程实例作为key强相关了
+2. 早期版本中thread实例销毁后theradlocalmap结构存在，后面的结构就不用了
 
 
 
