@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="" />
+    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/读书笔记/并发编程/java高并发核心编程卷2读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/并发编程/java高并发核心编程卷2读书笔记.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,27 +38,28 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "F:/java高并发核心编程卷二源码/Java-high-concurrency-core-Programming-Volume-2-source-code",
+    "last_opened_file_path": "F:/ReadStudyNote/javaimg/java高并发核心编程卷二图片",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
   }
 }]]></component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\ReadStudyNote\读书笔记\并发编程" />
-      <recent name="F:\ReadStudyNote\读书笔记\java基础" />
-      <recent name="F:\ReadStudyNote\读书笔记\mysql" />
-      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
-      <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\ReadStudyNote\javaimg\java高并发核心编程卷二图片" />
       <recent name="F:\ReadStudyNote\algorithm\算法题解" />
       <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
       <recent name="F:\ReadStudyNote\从上到下源码分析\java集合" />
       <recent name="F:\ReadStudyNote\从上到下源码分析\java并发" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\读书笔记\并发编程" />
+      <recent name="F:\ReadStudyNote\读书笔记\java基础" />
+      <recent name="F:\ReadStudyNote\读书笔记\mysql" />
+      <recent name="F:\ReadStudyNote\javaimg\java编程的逻辑图片" />
+      <recent name="F:\ReadStudyNote\代码随想录\算法gif" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -181,14 +185,30 @@
       <workItem from="1655815728814" duration="1746000" />
       <workItem from="1655867508606" duration="1242000" />
       <workItem from="1655946476298" duration="1075000" />
-      <workItem from="1655987444808" duration="924000" />
+      <workItem from="1655987444808" duration="2146000" />
+      <workItem from="1656032747418" duration="867000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

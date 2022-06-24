@@ -1369,15 +1369,83 @@ public class CpuIntenseTargetThreadPoolLazyHolder {
 
 ThreadLocal保存着**专属于线程的本地变量**，在多线程并发操作线程的本地变量的时候，实际上操作的是线程本地的值，避免了线程安全问题，记住一点就是ThreadLocal代表的是**线程本地变量**
 
-在早期的ThreadLocal中，当线程从本地的变量取值的时候，他自身的这个Thread实例就是作为KEY，然后设置的值为VALUE，这个结构就相当于一个map
+在早期的ThreadLocal中，当线程从本地的变量取值的时候，他自身的这个Thread实例就是作为KEY，然后设置的值为VALUE，这个结构就相当于一个map：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/1-18.png?raw=true)
+
+下面是一个使用的例子：我们着重看这个例子的Run方法,也就是线程要干什么
+
+```java
+    public void testThreadLocal() throws InterruptedException {
+        //获取自定义的混合线程池
+        ThreadPoolExecutor threadPool = ThreadUtil.getMixedTargetThreadPool();
+        //共5个线程
+        for (int i = 0; i < 5; i++) {
+            threadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    //获取“线程本地变量”中当前线程所绑定的值
+                    if (LOCAL_FOO.get() == null) {
+                        //设置“线程本地变量”中当前线程所绑定的值
+                        LOCAL_FOO.set(new Foo());
+                    }
+                    Print.tco("初始的本地值：" + LOCAL_FOO.get());
+                    //每个线程执行10次
+                    for (int i = 0; i < 10; i++) {
+                        Foo foo = LOCAL_FOO.get();
+                        foo.setBar(foo.getBar() + 1);
+                        sleepMilliSeconds(10);
+                    }
+                    Print.tco("累加10次之后的本地值：" + LOCAL_FOO.get());
+
+                    //删除“线程本地变量”中当前线程所绑定的值，对于线程池中的线程尤其重要
+                    LOCAL_FOO.remove();
+                }
+            });
+        }
+        ThreadUtil.sleepMilliSeconds(Integer.MAX_VALUE);
+    }
+```
+
+可以看到每个异步任务在执行自己的run方法的时候从ThreadLocal中添加了值，然后在轮询过后再从ThreadLocal中取值，这一系列丝滑的操作
 
 
 
+**ThreadLocal使用场景**
 
+其实使用这个技术的目的跟给并发线程加锁来解决并发问题是差不多的，并且更简单，更方便
 
+使用例子：
 
+* 线程隔离
 
+  在ThreadLocal中的数据只属于是**当前线程**那么在多线程下可以保证自己的变量不被其他的线程修改，一般的应用就是给每一个线层分配一个数据库的连接，线程独享数据库连接，或者是保存会话Session，这是相对于**不同的线程**
 
+  使用场景:
+
+  ```java
+  private static final ThreadLocal threadSession = new ThreadLocal();
+  public static Session getSession() throws InfrastructureException {
+  Session s = (Session) threadSession.get();
+  try {
+  	if (s == null) {
+  		s = getSessionFactory().openSession();
+  		threadSession.set(s);
+  	}
+  } catch (HibernateException ex) {
+  t	hrow new InfrastructureException(ex);
+  }
+  		return s;
+  }
+  ```
+
+  以上的例子中session代表数据库连接，那么这个session显然就是线程独享的，可以做到线程的安全连接
+
+* 跨函数传递数据
+
+  对于同一个线程相互之间的数据传递时会需要用到返回值和参数，那么可以通过TL进行保存，对于**同一线程**来说在某地方进行设置，在随后的任意地方都可以获取到，我的理解是在一个函数中对TL变量复制后，在后面任意的地方可以对TL中的变量取出来
+
+  
 
 
 
