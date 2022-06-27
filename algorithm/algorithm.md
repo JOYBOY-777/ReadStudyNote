@@ -2926,6 +2926,25 @@ class Solution {
 
 
 
+### 343 整数拆分
+
+```java
+class Solution {
+    public int integerBreak(int n) {
+        int[] dp = new int[n+1];
+        dp[2] = 1;
+        for(int i = 3;i<=n;i++){
+            for(int j = 1;j<=i-j;j++){
+                dp[i] = Math.max(dp[i],Math.max(j*(i-j),j*dp[i-j]));
+            }
+        }
+        return dp[n];
+    }
+}
+```
+
+j是i之前的数，j乘(i-j)就是固定拆分成两个数相乘，j乘(dp[i-j])就是前一个数拆成很多个数的乘积，最后看谁大
+
 
 
 
