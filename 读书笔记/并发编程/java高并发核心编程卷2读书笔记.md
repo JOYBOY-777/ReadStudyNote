@@ -1578,15 +1578,34 @@ JDK8后的版本内部的结构发生了转变，因为是hash表所以就存在
 我们知道在threadLocal内部其实也维护了一个由**KV**键值对构成的数组，然后这个KV键值对是由一个entry来包装，这个entry是个**弱引用（仅有弱引用（WeakReference）指向的对象，只能生存到下一次垃圾回收之
 前）**，如果不用这个entry包装的话那么在线程执行完方法后退出栈帧，引用被释放，那么对应的强引用也不复存在，但是ThreadLocal对应的key的还存在一个引用，如果是强引用的话GC的时候就不能被释放，从而造成内存泄漏（不在用到的内存没有及时的释放）导致后续ThreadLocal清理没用的entry的时候也不能清理，会再次发生内存泄漏：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/1-20.png?raw=true)
 
+如果是强引用的话，就回收不掉了：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/1-21.png?raw=true)
 
+那么尽管ThreadLocal采用了弱引用来最大程度的确保不会发生内存泄漏，但是在**某些特定情况下**还是依旧容易造成内存泄漏：
 
+* 线程长时间的运行，不回收
+* 如果这时的threadLocal实例引用被置为了Null，然而你又没有调用get之类的方法让threadLocal检查，这时候**GC不会发生**（因为线程一直运行）而且**ThreadLocal自己也不会检查**，因为**没有能调用会检查的方法**，那么这个实例就一直会存在，从而**被迫的**发生内存释放
 
+**编程规范推荐使用 static final 修饰 ThreadLocal 对象**
 
+使用static final修饰并且手动释放threadlocal调用 remove():
 
+```java
+   @Override
+            protected void afterExecute(Runnable target, Throwable t) {
+                super.afterExecute(target, t);
+                //计算执行时长
+                long time = (System.currentTimeMillis() - START_TIME.get());
+                Print.tco(target + " 后钩子被执行, 任务执行时长（ms）：" + time);
+                //清空本地变量
+                START_TIME.remove();
+            }
+```
 
-
+我们可以利用threadlocal进行数据的统计，就是给加入到线程本地变量中，然后在别处的地方获取，来进行统计的操作
 
 
 
