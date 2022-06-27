@@ -1469,13 +1469,114 @@ JDK8后的版本内部的结构发生了转变，因为是hash表所以就存在
 **ThreadLocal源码分析**
 
 * set方法
+
+  ```java
+  public void set(T value) {
+      	//获取当前线程
+          Thread t = Thread.currentThread();
+      	//获取当前线程里面的threadlocalmap
+          ThreadLocalMap map = getMap(t);
+      	//如果map存在
+          if (map != null)
+              //给这个KV键值对设置value
+              map.set(this, value);
+          else
+              //不存在的话就创建一个TLM实例然后放入到当前线程实例中
+              createMap(t, value);
+      }
+  ```
+
 * get方法
+
+  ```java
+      public T get() {
+          //获取当前实例
+          Thread t = Thread.currentThread();
+          //获取当前线程的TLM
+          ThreadLocalMap map = getMap(t);
+          //map存在
+          if (map != null) {
+             //获取当前TL在map中对应的值
+              ThreadLocalMap.Entry e = map.getEntry(this);
+               //当前的threadlocal在map中有值，获取并返回
+              if (e != null) {
+                  @SuppressWarnings("unchecked")
+                  T result = (T)e.value;
+                  return result;
+              }
+          }
+          //如果map不存在或者KV没值就返回初始值
+          return setInitialValue();
+      }
+  ```
+
 * remove方法
+
+  ```java
+    public void remove() {
+          //获取当前线程对应的map
+           ThreadLocalMap m = getMap(Thread.currentThread());
+        	//如果存在就移除掉
+           if (m != null)
+               m.remove(this);
+       }
+  ```
+
 * initialValue方法
+
+  ```java
+  //这个就是初始化的时候返回null
+  protected T initialValue() {
+          return null;
+      }
+  ```
+
+
 
 **ThreadLocalMap源码分析**
 
+* set方法
 
+  ```java
+        private void set(ThreadLocal<?> key, Object value) {
+            //给桶位赋值
+              Entry[] tab = table;
+            //获取桶位的程度
+              int len = tab.length;
+            //通过hash算法寻址
+              int i = key.threadLocalHashCode & (len-1);
+  		 //遍历桶位上的每一个元素
+              for (Entry e = tab[i];
+                   e != null;
+                   e = tab[i = nextIndex(i, len)]) {
+                  ThreadLocal<?> k = e.get();
+  			//发现当前的key值本来就存在于桶上，直接进行value的覆盖
+                  if (k == key) {
+                      e.value = value;
+                      return;
+                  }
+  			//如果发现当前的槽点是null的那么直接进行GC并且重设key值和value值
+                  if (k == null) {
+                      replaceStaleEntry(key, value, i);
+                      return;
+                  }
+              }
+  			//key在桶上不存在就包装成一个Entry并放在桶上
+              tab[i] = new Entry(key, value);
+            	//桶的个数加一
+              int sz = ++size;
+            	//清理key为null的无效entry，如果没有发现可清理的entry或者桶之中的元素大于扩容阈值的话就进行扩容处理
+              if (!cleanSomeSlots(i, sz) && sz >= threshold)
+                  rehash();
+          }
+  ```
+
+
+
+**Entry 的 Key 需要使用弱引用**
+
+我们知道在threadLocal内部其实也维护了一个由**KV**键值对构成的数组，然后这个KV键值对是由一个entry来包装，这个entry是个**弱引用（仅有弱引用（WeakReference）指向的对象，只能生存到下一次垃圾回收之
+前）**，如果不用这个entry包装的话那么在线程执行完方法后退出栈帧，引用被释放，那么对应的强引用也不复存在，但是ThreadLocal对应的key的还存在一个引用，如果是强引用的话GC的时候就不能被释放，从而造成内存泄漏（不在用到的内存没有及时的释放）导致后续ThreadLocal清理没用的entry的时候也不能清理，会再次发生内存泄漏：
 
 
 
