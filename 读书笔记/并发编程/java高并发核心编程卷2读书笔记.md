@@ -1609,9 +1609,42 @@ JDK8后的版本内部的结构发生了转变，因为是hash表所以就存在
 
 # 第2章——Java内置锁的核心原理
 
-​	
+​	这一章主要讲述的是在java中的内置锁：synchronized关键字的原理与作用，因为这个关键字，让线程多出了一个状态Blocked状态，其他的lock锁之类的是没有的
 
+**线程安全问题**
 
+就是当多个线程并发访问某个**java对象**的时候，这个对象都能够表现出**一致性的正确的行为**，那么这些对象对这个object的操作就是线程安全的，反之就不是线程安全的
+
+```java
+    @org.junit.Test
+    public void testNotSafePlus() throws InterruptedException {
+        NotSafePlus counter = new NotSafePlus();
+        Runnable runnable = () ->
+        {
+            for (int i = 0; i < MAX_TURN; i++) {
+                counter.selfPlus();
+            }
+            //每执行完让倒数闩数量减一
+            latch.countDown();
+        };
+        for (int i = 0; i < MAX_TREAD; i++) {
+            new Thread(runnable).start();
+        }
+        //一直等待倒数闩的次数减少到 0才往下执行
+        latch.await();
+        Print.tcfo("理论结果：" + MAX_TURN * MAX_TREAD);
+        Print.tcfo("实际结果：" + counter.getAmount());
+        Print.tcfo("差距是：" + (MAX_TURN * MAX_TREAD - counter.getAmount()));
+    }
+```
+
+可见这个自增的操作是不安全的，原因就是：这其中有大概三个步骤：
+
+1. 内存取值
+2. 寄存器+1
+3. 赋值到内存
+
+这三个中分别来看的话其中是分别独立的，但是如果多个线程同时进行操作同一步骤的话，就会使得结果重复，比如三个线程同时读取值+1之后自增后赋值，这是同时发生的，那么结果就错了
 
 
 
