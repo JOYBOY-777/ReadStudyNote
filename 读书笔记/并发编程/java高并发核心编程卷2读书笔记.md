@@ -1646,6 +1646,125 @@ JDK8后的版本内部的结构发生了转变，因为是hash表所以就存在
 
 这三个中分别来看的话其中是分别独立的，但是如果多个线程同时进行操作同一步骤的话，就会使得结果重复，比如三个线程同时读取值+1之后自增后赋值，这是同时发生的，那么结果就错了
 
+**临界区资源与临界区代码段**
+
+书中主要给出了两个比较明确地定义：
+
+1. 临界区资源：表示可以让一个或者多个线程同时访问的公共资源或者共享数据
+2. 临界区代码段：我的理解是临界区代码段中如果加了并发的锁控制，那么只会有一个线程进入，与上面的那种可以被多个线程访问的资源的还是有差距的
+
+**synchronized关键字**
+
+* 同步方法
+
+  在给方法加上syn关键字之后，线程进去临界区代码段就变成**排他性**，只允许有一个线程进入
+
+```java
+public class SafePlus {
+    private Integer amount = 0;
+    public synchronized void selfPlus() {
+            amount++;
+    }
+    public Integer getAmount() {
+        return amount;
+    }
+}
+```
+
+这个例子加上了syn锁那么计算的结果就不会出差错了
+
+* 同步块
+
+  ```java
+  synchronized(syncObject) //同步块而不是方法
+  {
+  //临界区代码段的代码块
+  }
+  ```
+
+  锁的对象，进入临界区代码段需要获取 syncObject 对象的**监视锁**，并且每一个java对象都有一把监视锁
+
+  对于小的临界区，我们直接加上在方法上加syn就行，但是对于较大的临界区，我们最好将同步方法保护的临界区代码段分为较小的临界区代码段：
+
+  ```java
+  public class TwoPlus {
+  	private int sum1 = 0;
+  	private int sum2 = 0;
+  	//同步方法
+  	public synchronized void plus(int val1, int val2){
+  		//临界区代码段
+  		this.sum1 += val1;
+  t		this.sum2 += val2;
+  	}
+  }
+  ```
+
+  上面这个例子我的理解与书中的存在歧义：线程进入方法后肯定是拥有了sum1和sum2的操作权，但是这时的情况是一条线程操作两个临界区资源，那么我们可以用**同步代码段**把这个资源给拆开，这样就可以做到一条线程访问一个资源了，把**锁的粒度**变小，增加了这个方法的吞吐量，这个方法临界区资源只能被一条线程执行，粒度为1：n：
+
+  ```java
+  public class TwoPlus {
+  	private int sum1 = 0;
+  	private int sum2 = 0;
+       private  Integer sum1Lock = new Integer(1); // 同步锁一
+  	private Integer sum2Lock = new Integer(2);// 同步锁二
+  		//同步方法
+  	public void plus(int val1, int val2){
+  		//同步块 1
+  	synchronized(this.sum1Lock){
+  		this.sum1 += val1;
+  	}
+          //同步块 2
+  	synchronized(this.sum2Lock){
+  		this.sum1 += val1;
+  		}
+  	}
+  }
+  ```
+
+  这样这两个临界区资源可以被多个线程同时执行，粒度将为1:1
+
+  其实这两种的关系很直接：
+
+  ```java
+  版本一，使用 synchronized 代码块进行方法内部全部代码的保护，具体代码如下：
+  public void plus() {
+      synchronized(this){ //进行方法内部全部代码的保护
+  		amount++;
+  	}
+  }
+  
+  版本二，synchronized 方法进行方法内部全部代码的保护，具体代码如下：
+  public synchronized void plus() {
+  	amount++;
+  }
+  ```
+
+* 静态的同步方法
+
+  java中有两种对象，一种是object的实例对象，另外一种是Class对象，Class 对象是在**类加载**的时候由 Java 虚拟机调用类加载器中的defineClass 方法自动构造的，不能显式地声明一个 Class 对象，所有的类都是在**第一次使用时**，被动态加载到 JVM 中，如下的例子：
+
+  ```java
+  public class SafeStaticMethodPlus {
+      private static Integer amount = 0;
+      public static synchronized void selfPlus() {
+          amount++;
+      }
+      public Integer getAmount() {
+          return amount;
+      }
+  }
+  ```
+
+  那么这个静态同步方法中的同步锁不是简单的object了，而是**Class对象**的监视锁，也就是**类锁**，每个类可以有很多的对象，但是只能有一个Class实例，那么会造成**同一个JVM内**所有线程都阻塞，是非常**粗粒度**的同步机制，对象锁好一些，如果线程争抢的是不同的对象锁，锁的粒度就变细一些	
+
+  
+
+  **生产者消费者问题**
+
+  
+
+
+
 
 
 
