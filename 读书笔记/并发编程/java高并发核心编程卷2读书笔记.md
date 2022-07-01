@@ -1770,7 +1770,7 @@ public class SafePlus {
 
 * 一个**线程不安全**的实现版本
 
-  首先就是这个缓冲区的定义(DataBuffer),并且还向外部提供了两个添加，移除缓冲区的方法操作：
+  首先就是这个缓冲区的定义(DataBuffer),并且还向外部提供了两个添加，移除缓冲区的方法操作NotSafeDataBuffer：
 
   属性：
 
@@ -1826,17 +1826,173 @@ public class SafePlus {
 
   
 
+* 生产者的设计：**组合一个**Callable类型的成员变量，代表了生产者实际生产动作,是一个生产者线程，Producer:
+
+  属性：
+
+  ```java
+  //生产的时间间隔200ms
+  public static final int PRODUCE_GAP = 200;
+  //总的生产次数
+  static final AtomicInteger TURN = new AtomicInteger(0);
+  //生产者的对象编号
+  static final AtomicInteger PRODUCER_NO = new AtomicInteger(1);
+  //生产者的名字
+  String name = null;
+  //为了获取run方法的执行结果
+  Callable action = null;
+  int gap = PRODUCE_GAP;
+  ```
+
+  构造方法：
+
+  ```java
+  //把生产的动作通过构造方法给加入进来
+  public Producer(Callable action, int gap) {
+          this.action = action;
+          this.gap = gap;
+          if (this.gap <= 0) {
+              this.gap = PRODUCE_GAP;
+          }
+          name = "生产者-" + PRODUCER_NO.incrementAndGet();
+      }
+   public Producer(Callable action) {
+          this.action = action;
+          this.gap = PRODUCE_GAP;
+          name = "生产者-" + PRODUCER_NO.incrementAndGet();
+      }
+  ```
+
+  run方法主体：定义了生产者一系列流程，其中实际的消费动作在后面会给出，并执行给出后的call中的流程
+
+  ```java
+      @Override
+      public void run() {
+          while (true) {
+              try {
+                  //执行生产动作，执行这个call的时候会在后面代码中总写，然后执行call进行生产
+                  Object out = action.call();
+                  //进行判断不为空的话输出生产的结果
+                  if (null != out) {
+                      Print.tcfo("第" + TURN.get() + "轮生产：" + out);
+                  }
+                  //每一轮生产之后，稍微等待一下
+                  sleepMilliSeconds(gap);
+                  //增加生产轮次
+                  TURN.incrementAndGet();
+              } catch (Exception e) {
+                  e.printStackTrace();
+              }
+          }
+      }
+  ```
+
   
 
+* 消费者的设计：也是通过组合Callable来解决实际的消费动作，Consumer
+
+  属性：
+
+  ```java
+   //消费时间间隔 
+   public static final int CONSUME_GAP = 100;
+   //消费的总次数
+   static final AtomicInteger TURN = new AtomicInteger(0);
+   //消费者编号
+   static final AtomicInteger CONSUMER_NO = new AtomicInteger(1);
+   //消费者名字
+   String name;
+   //实际的消费动作
+   Callable action = null;
+   int gap = CONSUME_GAP;
+  ```
+
+  构造方法：这个也是通过构造函数传入进去的
+
+  ```java
+  public Consumer(Callable action, int gap) {
+          this.action = action;
+          this.gap = gap;
+          name = "消费者-" + CONSUMER_NO.incrementAndGet();
+  
+      }
+      public Consumer(Callable action) {
+          this.action = action;
+          this.gap = gap;
+          this.gap = CONSUME_GAP;
+          name = "消费者-" + CONSUMER_NO.incrementAndGet();
+      }
+  ```
+
+  run方法：
+
+  ```java
+      @Override
+      public void run() {
+          while (true) {
+              //增加消费次数
+              TURN.incrementAndGet();
+              try {
+                  //执行消费动作
+                  Object out = action.call();
+                  if (null != out) {
+                      Print.tcfo("第" + TURN.get() + "轮消费：" + out);
+                  }
+                  //每一轮消费之后，稍微等待一下
+                  sleepMilliSeconds(gap);
+              } catch (Exception e) {
+                  e.printStackTrace();
+              }
+          }
+      }
+  ```
 
 
 
+* 数据区缓冲区实例、生产 Action、消费 Action 的定义并测试类NotSafePetStore：
 
+  属性：
 
+  ```java
+  把数据缓冲区弄进来
+  private static NotSafeDataBuffer<IGoods> notSafeDataBuffer = new NotSafeDataBuffer();
+  ```
 
+  生产者实际执行动作：在生产者run方法中执行的call实际上会走这里，这是一个匿名类
 
+  ```java
+      static Callable<IGoods> produceAction = () ->
+      {
+          //首先生成一个随机的商品
+          IGoods goods = Goods.produceOne();
+          //将商品加上共享数据区
+          try {
+              notSafeDataBuffer.add(goods);
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+          return goods;
+      };
+  ```
 
+  消费者实际执行动作：
 
+  ```java
+  //消费者执行的动作
+      static Callable<IGoods> consumerAction = () ->
+      {
+          // 从PetStore获取商品
+          IGoods goods = null;
+          try {
+              goods = notSafeDataBuffer.fetch();
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+          return goods;
+      };
+  ```
+
+  **组合这个callable只是坐着的一种减少代码使用的方法罢了，而不用在额外去定义一个接口**,这就是组合的好处解耦合，把在线程获取执行结果拆分成run方法里面去获取执行结果，由于线程的run方法没有返回值，所以组合一个实例进去，调用这个实例在线程执行过程中去和获取结果，较少代码书写借用了一个callable
 
 
 
