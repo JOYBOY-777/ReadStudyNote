@@ -1765,10 +1765,68 @@ public class SafePlus {
   
   1. 生产者不会在**缓冲区满**时加入数据，消费者不会在**缓冲区空**是消费数据
   2. 并且保证在生产者生产数据时，或者在消费者消费数据的时候，**不会产生错误的数据和行为**
+  
+     ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/2-2.png?raw=true)
 
+* 一个**线程不安全**的实现版本
 
+  首先就是这个缓冲区的定义(DataBuffer),并且还向外部提供了两个添加，移除缓冲区的方法操作：
 
+  属性：
 
+  ```java
+  	//缓冲区中的最大数量
+      public static final int MAX_AMOUNT = 10;
+      //保存元素需要的队列
+      private List<T> dataList = new LinkedList<>();
+      //保存数量,统计缓冲区元素个数
+      private AtomicInteger amount = new AtomicInteger(0);
+  ```
+
+  向缓冲区添加操作add：
+
+  ```java
+  public void add(T element) throws Exception {
+          if (amount.get() > MAX_AMOUNT) {
+              Print.tcfo("队列已经满了！");
+              return;
+          }
+          //没有满就加入List
+          dataList.add(element);
+          Print.tcfo(element + "");
+          //并且每加入一次就统计一次数量
+          amount.incrementAndGet();
+          //如果统计的数量和List中的元素不一致的话就抛出异常
+          if (amount.get() != dataList.size()) {
+              throw new Exception(amount + "!=" + dataList.size());
+          }
+      }
+  ```
+
+  向缓冲区取数据的操作fetch：
+
+  ```java
+      public T fetch() throws Exception {
+          if (amount.get() <= 0) {
+              Print.tcfo("队列已经空了！");
+              return null;
+          }
+          //从list中移除队列头元素
+          T element = dataList.remove(0);
+          Print.tcfo(element + "");
+          //减少统计数量
+          amount.decrementAndGet();
+          //如果数据不一致，抛出异常
+          if (amount.get() != dataList.size()) {
+              throw new Exception(amount + "!=" + dataList.size());
+          }
+          return element;
+      }
+  ```
+
+  
+
+  
 
 
 
