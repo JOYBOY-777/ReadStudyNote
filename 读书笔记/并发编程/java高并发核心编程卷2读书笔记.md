@@ -2078,9 +2078,28 @@ public class SafePlus {
 
 **Mark Word 的结构信息**
 
-Mark Word 的位长度为 JVM 的一个 Word 大小，也就是说 32 位 JVM 的 Mark word为 32 位，64 位 JVM 为 64 位,在java中Java 内置锁的状态总共有四种，级别由低到高依次为：**无锁、偏向锁、轻量级锁、重量级锁**，并且这四种状态会随着竞争的情况逐渐升级，并且是**不可逆的过程，不可降级**
+Mark Word 的位长度为 JVM 的一个 Word 大小，也就是说 32 位 JVM 的 Mark word为 32 位，64 位 JVM 为 64 位,在java中Java 内置锁的状态总共有四种，级别由低到高依次为：**无锁、偏向锁、轻量级锁、重量级锁**，并且这四种状态会随着竞争的情况逐渐升级，并且是**不可逆的过程，不可降级**，64位Mark Word结构信息和对应的锁升级编号如下：
 
+ 64 位 Mark Word 的结构信息:
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/%E8%A1%A82-2.png?raw=true)
+
+锁升级对应编码：
+
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/%E8%A1%A82-3.png?raw=true)
+
+64位MarkWorld信息：
+
+* lock：锁状态标志位
+* biased_lock：是否开启偏向锁的标识
+* age: java对象的分代年龄,记录对象是否要进行GC的标识
+* identity_hashcode：31 位的对象标识 HashCode（哈希码），延迟加载只有调用Object.hashCode( )方法或者 System.identityHashCode( ) 计算对象的hashcode后就会写到对象头中
+* thread：54 位的线程 ID 值，为持有偏向锁的线程 ID
+* epoch：偏向时间戳
+* ptr_to_lock_record：占 62 位，在轻量级锁的状态下，指向栈帧中锁记录的指针,这里说一下栈帧中的所记录，因为线程访问方法的时候会在栈帧中进行压栈，那么加了syn关键字的方法再被访问后必然会存在一个锁记录的指针，这个东西就执行的这个，当然这个锁记录指针肯定也是指向的对象头中的东西，是一种双向的指向
+* ptr_to_heavyweight_monitor：占 62 位，在重量级锁的状态下，指向对象监视器 Monitor(对象锁)的指针
+
+**使用JOL工具**
 
 
 
