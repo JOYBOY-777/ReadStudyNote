@@ -2099,11 +2099,28 @@ Mark Word 的位长度为 JVM 的一个 Word 大小，也就是说 32 位 JVM �
 * ptr_to_lock_record：占 62 位，在轻量级锁的状态下，指向栈帧中锁记录的指针,这里说一下栈帧中的所记录，因为线程访问方法的时候会在栈帧中进行压栈，那么加了syn关键字的方法再被访问后必然会存在一个锁记录的指针，这个东西就执行的这个，当然这个锁记录指针肯定也是指向的对象头中的东西，是一种双向的指向
 * ptr_to_heavyweight_monitor：占 62 位，在重量级锁的状态下，指向对象监视器 Monitor(对象锁)的指针
 
-**使用JOL工具**
+**使用JOL工具看对象的布局**
 
+在添加maven依赖后
 
+```java
+ @org.junit.Test
+    public void showNoLockObject() throws InterruptedException {
+        //输出JVM的信息
+        Print.fo(VM.current().details());
+        //创建一个对象
+        ObjectLock objectLock = new ObjectLock();
+        Print.fo("object status: ");
+        //输出对象的布局信息
+        objectLock.printSelf();
+    }
+```
 
+对象布局如下：
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/jol%E5%AF%B9%E8%B1%A1%E5%B8%83%E5%B1%80.png?raw=true)
+
+要记住:调用重写的hashcode方法是不计入对象头的，在上面的对象头中hashcode编码的后面是001表示无锁
 
 
 
