@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/javaimg/java高并发核心编程卷二图片/img_2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javaimg/java高并发核心编程卷二图片/jol对象布局.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -197,7 +195,7 @@
       <workItem from="1656507926823" duration="737000" />
       <workItem from="1656637954269" duration="2297000" />
       <workItem from="1656657143794" duration="1212000" />
-      <workItem from="1656897086401" duration="4790000" />
+      <workItem from="1656897086401" duration="5982000" />
     </task>
     <servers />
   </component>
