@@ -1949,7 +1949,7 @@ public class SafePlus {
 
 
 
-* 数据区缓冲区实例、生产 Action、消费 Action 的定义并测试类NotSafePetStore：
+* 数据区缓冲区实例、生产 Action、消费 Action 的定义并测试类NotSafePetStore(线程不安全版本)：
 
   属性：
 
@@ -1992,7 +1992,73 @@ public class SafePlus {
       };
   ```
 
-  **组合这个callable只是坐着的一种减少代码使用的方法罢了，而不用在额外去定义一个接口**,这就是组合的好处解耦合，把在线程获取执行结果拆分成run方法里面去获取执行结果，由于线程的run方法没有返回值，所以组合一个实例进去，调用这个实例在线程执行过程中去和获取结果，较少代码书写借用了一个callable
+  **组合这个callable只是坐着的一种减少代码使用的方法罢了，而不用在额外去定义一个接口**,这就是组合的好处解耦合，把在线程获取执行结果拆分成run方法里面去获取执行结果，由于线程的run方法没有返回值，所以组合一个实例进去，调用这个实例在线程执行过程中去和获取结果，较少代码书写借用了一个callable,从执行结果上看，其中的元素个数已经开始混乱起来，这时候就在生产者消费者问题中发生了所谓的线程安全问题，那么下面就是一个线程安全的版本：
+  
+  
+  
+* 线程安全但是串行化的版本SafeDataBuffer ：
+
+  属性：
+
+  ```java
+  	//缓冲区中最大数量
+  	public static final int MAX_AMOUNT = 10;
+  	//保存元素需要的队列
+      private List<T> dataList = new LinkedList<>();
+      //保存数量
+      private AtomicInteger amount = new AtomicInteger(0);
+  
+  ```
+
+  添加方法：
+
+  ```java
+      public synchronized void add(T element) throws Exception {
+          if (amount.get() > MAX_AMOUNT) {
+              Print.tcfo("队列已经满了！");
+              return;
+          }
+          dataList.add(element);
+          Print.tcfo(element + "");
+          amount.incrementAndGet();
+  
+          //如果数据不一致，抛出异常
+          if (amount.get() != dataList.size()) {
+              throw new Exception(amount + "!=" + dataList.size());
+          }
+      }
+  ```
+
+  取出方法：
+
+  ```java
+      public synchronized T fetch() throws Exception {
+          if (amount.get() <= 0) {
+              Print.tcfo("队列已经空了！");
+              return null;
+          }
+          T element = dataList.remove(0);
+          Print.tcfo(element + "");
+          amount.decrementAndGet();
+          //如果数据不一致，抛出异常
+          if (amount.get() != dataList.size()) {
+              throw new Exception(amount + "!=" + dataList.size());
+          }
+          return element;
+      }
+  ```
+
+  可见在加入和取出中都设置了synchronized关键字来保证线程的安全性，但是这样做会导致线程的串行化执行，效率不高
+
+  
+
+**对象结构与内置锁**
+
+**java对象结构**
+
+ oop-klass:就是在java中的对象可以映射到JVM上的一个对象，大致的关系如图：
+
+
 
 
 
