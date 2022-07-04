@@ -2066,6 +2066,15 @@ public class SafePlus {
 
 
 
+分为：
+
+1. 对象头：这一部分主要有三部分组成是_mark Word，_klass Pointer，Array Length
+   * _mark Word：存储自身运行时的数据如GC标志位，哈希码，锁状态信息
+   * _klass Pointer:存放此对象的元数据地址
+   * Array Length:如果对象是一个java数组的话就会有，否则就没有
+2. 对象体：
+3. 对其字节：
+
 
 
 
