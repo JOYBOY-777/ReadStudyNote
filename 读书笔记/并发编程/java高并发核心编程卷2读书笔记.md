@@ -2064,18 +2064,21 @@ public class SafePlus {
 
 实际上java对象实例的三个部分如下图所示：
 
-
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/2-4.png?raw=true)
 
 分为：
 
 1. 对象头：这一部分主要有三部分组成是_mark Word，_klass Pointer，Array Length
-   * _mark Word：存储自身运行时的数据如GC标志位，哈希码，锁状态信息
-   * _klass Pointer:存放此对象的元数据地址
+   * _mark Word：存储自身运行时的数据如GC标志位，哈希码，锁状态信息，表示对象的线程锁状态，另外还可以用来配合 GC、存放该对象的 hashCode
+   * _klass Pointer:存放此对象的元数据地址，是一个指向方法区中类元数据信息的指针，意味着该对象可
+     随时知道自己是哪个 Class（实际为 InstanceKlass）的实例
    * Array Length:如果对象是一个java数组的话就会有，否则就没有
-2. 对象体：
-3. 对其字节：
+2. 对象体：包含了对象的实例变量4字节，用于保存对象属性值，是对象的主体部分，占用的内存空间大小取决于对象的属性数量和类型
+3. 对其字节：因为java对象所占的内存数必须为8的倍数，所以如果不够的就填充字节来保证是8的倍数
 
+**Mark Word 的结构信息**
 
+Mark Word 的位长度为 JVM 的一个 Word 大小，也就是说 32 位 JVM 的 Mark word为 32 位，64 位 JVM 为 64 位,在java中Java 内置锁的状态总共有四种，级别由低到高依次为：**无锁、偏向锁、轻量级锁、重量级锁**，并且这四种状态会随着竞争的情况逐渐升级，并且是**不可逆的过程，不可降级**
 
 
 
