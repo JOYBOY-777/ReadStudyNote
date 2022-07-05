@@ -2228,7 +2228,7 @@ JDK1.6之前是的内置锁都是默认**重量级锁**，但是这会造成CPU�
      3. 由于代码优化所引起的指令重排
      4. 类重新定义（Class redefinition），如 hot swap 热部署、AOP 的代码植入
      5. Dump 一个或者全部线程
-     6. Dump 堆
+     6. Dump堆
 
 
 
