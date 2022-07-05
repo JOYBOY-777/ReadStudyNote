@@ -2956,6 +2956,8 @@ class Solution {
         dp[0] = 1;
         for(int i = 1;i<=n;i++){
             for(int j = 1;j<=i;j++){
+                //dp[i] += dp[以j为头结点左子树节点数量] * dp[以j为头结点右子树节点数量]
+                //dp[i] += dp[j - 1] * dp[i - j]; ，j-1 为j为头结点左子树节点数量，i-j 为以j为头结点右子树节点数量
                 dp[i] += dp[j-1]*dp[i-j];
             }
         }
@@ -2964,7 +2966,7 @@ class Solution {
 }
 ```
 
-
+这个题目的递推公式很几把的难想，
 
 
 
