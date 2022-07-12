@@ -2350,16 +2350,93 @@ sleepMilliSeconds(1000); //等待1s
 Monitor中比较重要的几个部分：后面三个是队列
 
 *  Owner ：这个指针所指向的线程就是枪锁线程
+
 * WaitSet ：当拥有锁的线程在调用Object.wait的时候就被阻塞了，那么就会加入到这个队列中
+
 * Cxq：所有请求锁的线程首先被放在这个竞争队列中，在线程进入 Cxq 前，抢锁线程会先尝试通过 CAS 自旋获取锁，并且新增元素在对头，获取元素在队尾
+
 * EntryList ：Cxq中那些**有资格**成为候选资源的线程被移动到这个队列中
+
 * OnDeck Thread 获取到锁资源后会变为 Owner Thread，OnDeck Thread具有竞争锁的权利
+
+  ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/2-13.png?raw=true)
+
+  可以看到在监视器中这个内部枪锁的流程
 
 **对比**：
 
+第一次对象打印：
+
+```java
+        Print.tcfo(VM.current().details());
+        //JVM延迟偏向锁
+        sleepMilliSeconds(5000);  
+        ObjectLock counter = new ObjectLock();
+        Print.tcfo("抢占锁前, counter 的状态: ");
+        counter.printObjectStruct();
+        sleepMilliSeconds(5000);
+        CountDownLatch latch = new CountDownLatch(3);
+```
+
+开启道门栓数量为3，表示有三个线程枪锁，此时是无锁状态
 
 
 
+第一个线程枪锁，第二次对象打印,并提供轻量级锁场景：
+
+```java
+        Runnable runnable = () ->
+        {
+            for (int i = 0; i < MAX_TURN; i++) {
+                synchronized (counter) {
+                    counter.increase();
+                    if (i == 0) {
+                        Print.tcfo("第一个线程占有锁, counter 的状态: ");
+                        counter.printObjectStruct();
+                    }
+                }
+            }
+            //循环完毕
+            latch.countDown();
+            //线程虽然释放锁，但是一直存在
+            for (int j = 0; ; j++) {
+                //每一次循环等待1ms
+                sleepMilliSeconds(1);
+            }
+        };
+        new Thread(runnable).start();
+```
+
+此时是偏向锁状态
+
+
+
+```java
+    sleepMilliSeconds(1000); //等待2s
+        Runnable lightweightRunnable = () ->
+        {
+            for (int i = 0; i < MAX_TURN; i++) {
+                synchronized (counter) {
+                    counter.increase();
+                    if (i == 0) {
+                        Print.tcfo("占有锁, counter 的状态: ");
+                        counter.printObjectStruct();
+                    }
+                    //每一次循环等待10ms
+                    sleepMilliSeconds(1);
+                }
+            }
+            //循环完毕
+            latch.countDown();
+        };
+        new Thread(lightweightRunnable, "抢锁线程1").start();
+        sleepMilliSeconds(100);  //等待2s
+        new Thread(lightweightRunnable, "抢锁线程2").start();
+```
+
+随机又开启两个线程去枪锁，第二个线程打印是轻量级锁状态，后来第三个线程去打印就膨胀为了重量级锁
+
+锁升级的大致流程：
 
 
 
