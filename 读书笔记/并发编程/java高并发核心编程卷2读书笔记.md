@@ -2476,13 +2476,17 @@ locko.wait()；
 * void wait(long timeout ):这个给当前线程在限定的时间中等待
 * void wait(long timeout, int nanos):这个则是一个更加精确的版本
 
+主要原理：
 
+当wait触发之后JVM会把当前的线程加入到WAITSET中，当前线程会释放掉OWNER的权利，然后线程的状态变为WAITING
 
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/2-15.jpg?raw=true)
 
+notify方法：
 
+当调用这个方法的时候会唤醒在waitset中的第一条等待的线程，并加入到EntryList中去进行抢占CPU的时间片，另外一个notityAll方法就是把waitset中的所有的等待线程加入到EntryList中
 
-
-
+![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/2-16.jpg?raw=true)
 
 
 
