@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="z">
-      <change beforePath="$PROJECT_DIR$/读书笔记/并发编程/java高并发核心编程卷2读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/并发编程/java高并发核心编程卷2读书笔记.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,27 +32,27 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/ReadStudyNote/javaimg/java高并发核心编程卷二图片&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.updates&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "F:/ReadStudyNote/读书笔记/框架相关/Mybatis",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.updates",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\读书笔记\框架相关\Mybatis" />
       <recent name="F:\ReadStudyNote\javaimg\java高并发核心编程卷二图片" />
       <recent name="F:\ReadStudyNote\algorithm\算法题解" />
       <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
       <recent name="F:\ReadStudyNote\从上到下源码分析\java集合" />
-      <recent name="F:\ReadStudyNote\从上到下源码分析\java并发" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\ReadStudyNote\读书笔记\并发编程" />
@@ -220,6 +220,7 @@
       <workItem from="1658317257901" duration="476000" />
       <workItem from="1658405398084" duration="49000" />
       <workItem from="1658493317732" duration="1715000" />
+      <workItem from="1658907888397" duration="1933000" />
     </task>
     <task id="LOCAL-00001" summary="z">
       <created>1657008253498</created>
