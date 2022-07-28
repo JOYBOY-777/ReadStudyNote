@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="z">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="z" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,7 +35,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "F:/ReadStudyNote/读书笔记/框架相关/Mybatis",
+    "last_opened_file_path": "F:/ReadStudyNote/javaimg",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
@@ -48,11 +46,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\ReadStudyNote\javaimg" />
+      <recent name="F:\ReadStudyNote\读书笔记\项目修炼心得" />
       <recent name="F:\ReadStudyNote\读书笔记\框架相关\Mybatis" />
       <recent name="F:\ReadStudyNote\javaimg\java高并发核心编程卷二图片" />
       <recent name="F:\ReadStudyNote\algorithm\算法题解" />
-      <recent name="F:\ReadStudyNote\javaimg\Mysql是怎样运行的图片" />
-      <recent name="F:\ReadStudyNote\从上到下源码分析\java集合" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\ReadStudyNote\读书笔记\并发编程" />
@@ -221,6 +219,7 @@
       <workItem from="1658405398084" duration="49000" />
       <workItem from="1658493317732" duration="1715000" />
       <workItem from="1658907888397" duration="1933000" />
+      <workItem from="1658992770365" duration="541000" />
     </task>
     <task id="LOCAL-00001" summary="z">
       <created>1657008253498</created>
