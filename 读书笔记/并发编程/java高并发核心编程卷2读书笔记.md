@@ -1992,7 +1992,7 @@ public class SafePlus {
       };
   ```
 
-  **组合这个callable只是坐着的一种减少代码使用的方法罢了，而不用在额外去定义一个接口**,这就是组合的好处解耦合，把在线程获取执行结果拆分成run方法里面去获取执行结果，由于线程的run方法没有返回值，所以组合一个实例进去，调用这个实例在线程执行过程中去和获取结果，较少代码书写借用了一个callable,从执行结果上看，其中的元素个数已经开始混乱起来，这时候就在生产者消费者问题中发生了所谓的线程安全问题，那么下面就是一个线程安全的版本：
+  **组合这个callable只是作者的一种减少代码使用的方法罢了，而不用在额外去定义一个接口**,这就是组合的好处解耦合，把在线程获取执行结果拆分成run方法里面去获取执行结果，由于线程的run方法没有返回值，所以组合一个实例进去，调用这个实例在线程执行过程中去和获取结果，较少代码书写借用了一个callable,从执行结果上看，其中的元素个数已经开始混乱起来，这时候就在生产者消费者问题中发生了所谓的线程安全问题，那么下面就是一个线程安全的版本：
   
   
   
@@ -2489,6 +2489,126 @@ notify方法：
 ![](https://github.com/JOYBOY-777/ReadStudyNote/blob/main/javaimg/java%E9%AB%98%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%BA%8C%E5%9B%BE%E7%89%87/2-16.jpg?raw=true)
 
 
+
+举一个线程之间进行通讯的例子：比如A,B两个线程共同享有一个对象的话，A线程执行后调用了wait()方法，这时候这个线程就释放了锁，从而进入到了WAITING状态，然后另外一个线程B自然的就获取到这个锁，之后就执行同步代码块，之后执行了notify()方法，注意**这时候还要继续执行完这个线程**，等到线程B结束以后A线程重新获取到CPU的时间片之后在执行线程A的同步代码块
+
+**一个完美的生产者消费者例子**
+
+数据缓冲器长度
+
+```java
+public static final int MAX_AMOUNT = 10;
+```
+
+共享缓冲区定义：
+
+```java
+    //共享数据区，类定义
+    static class DateBuffer<T> {
+        //保存数据
+        private List<T> dataList = new LinkedList<>();
+        //保存数量
+        private volatile int amount = 0;
+        //操作缓冲区的对象
+        private final Object LOCK_OBJECT = new Object();
+        //缓冲区满了的对象
+        private final Object NOT_FULL = new Object();
+        //缓冲区未满的对象
+        private final Object NOT_EMPTY = new Object();
+        // 向数据区增加一个元素
+        public void add(T element) throws Exception {
+            synchronized (NOT_FULL) {
+                while (amount >= MAX_AMOUNT) {
+                    Print.tcfo("队列已经满了！");
+                    //等待未满通知
+                    NOT_FULL.wait();
+                }
+            }
+            synchronized (LOCK_OBJECT) {
+
+                if (amount < MAX_AMOUNT) { // 加上双重检查，模拟双检锁在单例模式中应用
+                    dataList.add(element);
+                    amount++;
+                }
+            }
+            synchronized (NOT_EMPTY) {
+                //发送未空通知
+                NOT_EMPTY.notify();
+            }
+        }
+        /**
+         * 从数据区取出一个商品
+         */
+        public T fetch() throws Exception {
+            synchronized (NOT_EMPTY) {
+                while (amount <= 0) {
+                    Print.tcfo("队列已经空了！");
+                    //等待未空通知
+                    NOT_EMPTY.wait();
+                }
+            }
+            T element = null;
+            synchronized (LOCK_OBJECT) {
+                if (amount > 0) {  // 加上双重检查，模拟双检锁在单例模式中应用
+                    element = dataList.remove(0);
+                    amount--;
+                }
+            }
+            synchronized (NOT_FULL) {
+                //发送未满通知
+                NOT_FULL.notify();
+            }
+            return element;
+        }
+    }
+```
+
+这里比较重要的就是定义了三种不同的对象分开控制不同的情况，并且在添加或者移除的时候操作方法的线程都要获取这这三个锁
+
+启动类：
+
+```java
+    public static void main(String[] args) throws InterruptedException {
+        Print.cfo("当前进程的ID是" + JvmUtil.getProcessID());
+        System.setErr(System.out);
+        //共享数据区，实例对象
+        DateBuffer<IGoods> dateBuffer = new DateBuffer<>();
+        //生产者执行的动作
+        Callable<IGoods> produceAction = () ->
+        {
+            //首先生成一个随机的商品
+            IGoods goods = Goods.produceOne();
+            //将商品加上共享数据区
+            dateBuffer.add(goods);
+            return goods;
+        };
+        //消费者执行的动作
+        Callable<IGoods> consumerAction = () ->
+        {
+            // 从PetStore获取商品
+            IGoods goods = null;
+            goods = dateBuffer.fetch();
+            return goods;
+        };
+        // 同时并发执行的线程数
+        final int THREAD_TOTAL = 20;
+        //线程池，用于多线程模拟测试
+        ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_TOTAL);
+        //假定共11条线程，其中有10个消费者，但是只有1个生产者；
+        final int CONSUMER_TOTAL = 11;
+        final int PRODUCE_TOTAL = 1;
+        for (int i = 0; i < PRODUCE_TOTAL; i++) {
+            //生产者线程每生产一个商品，间隔50ms
+            threadPool.submit(new Producer(produceAction, 50));
+        }
+        for (int i = 0; i < CONSUMER_TOTAL; i++) {
+            //消费者线程每消费一个商品，间隔100ms
+            threadPool.submit(new Consumer(consumerAction, 100));
+        }
+    }
+```
+
+这里就是要注意生产者或者消费者线程执行run方法的时候里面执行的生产者后者消费者要执行实际的生产或者消费动作，在上面进行了说明
 
 
 
