@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="z">
+      <change afterPath="$PROJECT_DIR$/OA" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/读书笔记/并发编程/java高并发核心编程卷2读书笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/并发编程/java高并发核心编程卷2读书笔记.md" afterDir="false" />
     </list>
@@ -43,7 +44,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.updates&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -223,7 +224,17 @@
       <workItem from="1658493317732" duration="1715000" />
       <workItem from="1658907888397" duration="1933000" />
       <workItem from="1658992770365" duration="2226000" />
-      <workItem from="1659681423167" duration="2419000" />
+      <workItem from="1659681423167" duration="4181000" />
+      <workItem from="1659944546495" duration="754000" />
+      <workItem from="1660179836611" duration="62000" />
+      <workItem from="1660183027246" duration="381000" />
+      <workItem from="1660184322499" duration="695000" />
+      <workItem from="1660196702607" duration="1753000" />
+      <workItem from="1660210977394" duration="253000" />
+      <workItem from="1660225298940" duration="42000" />
+      <workItem from="1660225481650" duration="531000" />
+      <workItem from="1660226407477" duration="629000" />
+      <workItem from="1660896605286" duration="297000" />
     </task>
     <task id="LOCAL-00001" summary="z">
       <created>1657008253498</created>
