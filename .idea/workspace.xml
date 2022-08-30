@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="z">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/读书笔记/mysql/Mysql是怎样使用的学习笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/mysql/Mysql是怎样使用的学习笔记.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -232,7 +233,7 @@
       <workItem from="1660225298940" duration="42000" />
       <workItem from="1660225481650" duration="531000" />
       <workItem from="1660226407477" duration="629000" />
-      <workItem from="1660896605286" duration="1527000" />
+      <workItem from="1660896605286" duration="2376000" />
     </task>
     <task id="LOCAL-00001" summary="z">
       <created>1657008253498</created>
@@ -241,7 +242,14 @@
       <option name="project" value="LOCAL" />
       <updated>1657008253498</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="z">
+      <created>1660898151574</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1660898151574</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

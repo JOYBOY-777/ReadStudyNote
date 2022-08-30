@@ -6,6 +6,7 @@
 ```sql
 a between b and c
 a not between b and c
+
 ```
 
 3. is null,is not null
