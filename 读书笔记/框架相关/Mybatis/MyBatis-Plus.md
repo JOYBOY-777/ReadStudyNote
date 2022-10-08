@@ -1151,6 +1151,18 @@ public void test12(){
 }
 ```
 
+1. eq:相等 (equal)
+2. ne:不相等 (not equal)
+3. gt:大于 (greater than)
+4. lt:小于 (less than)
+5. ge:大于等于 (greater than or equal)
+6. le：小于等于 (less than or equal)
+
+```java
+//        eq相等   ne不相等，   gt大于，    lt小于         ge大于等于       le 小于等于
+	//        equal/ not equal/ greater than/ less than/ less than or equal/ great than or equal/
+```
+
 
 
 # 六、常用插件

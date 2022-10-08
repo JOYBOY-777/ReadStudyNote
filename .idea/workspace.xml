@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5352514a-aef9-4f4f-bc71-0eb648a639a1" name="Default Changelist" comment="z">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/读书笔记/框架相关/Mybatis/MyBatis-Plus.md" beforeDir="false" afterPath="$PROJECT_DIR$/读书笔记/框架相关/Mybatis/MyBatis-Plus.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -243,7 +242,9 @@
       <workItem from="1661911924480" duration="245000" />
       <workItem from="1662101342266" duration="50000" />
       <workItem from="1664180435298" duration="23000" />
-      <workItem from="1664245841996" duration="594000" />
+      <workItem from="1664245841996" duration="1284000" />
+      <workItem from="1664326255325" duration="16000" />
+      <workItem from="1665193527767" duration="15000" />
     </task>
     <task id="LOCAL-00001" summary="z">
       <created>1657008253498</created>
